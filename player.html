@@ -2310,27 +2310,29 @@ async function setupEpisodeVideoSources(episode) {
   console.log('Setting up episode video sources for:', episode);
 
   try {
-    // For series, check if episode has lookUrl (worker-based)
+    let resolved = null;
+
+    // ✅ Prefer worker (lookUrl) if available
     if (episode.lookUrl && episode.lookUrl.trim()) {
       console.log('Fetching episode video from worker with lookUrl:', episode.lookUrl);
-      const result = await fetchVideoUrl(episode.lookUrl);
-      if (result && result.videoUrl) {
-        console.log('Successfully got episode URLs:', result);
+      resolved = await fetchVideoUrl(episode.lookUrl);
+
+      if (resolved && resolved.videoUrl) {
+        console.log('Successfully got episode URLs from worker:', resolved);
         currentVideoSources.push({
-          url: result.videoUrl,
+          url: resolved.videoUrl,
           quality: '1080p',
-          downloadUrl: result.downloadUrl
+          downloadUrl: resolved.downloadUrl || resolved.videoUrl
         });
       } else {
-        console.log('Failed to get video URL from worker for episode');
+        console.warn('Worker did not return valid URLs for episode.');
       }
     }
 
-    // Fallback to direct URLs if worker URL failed or doesn't exist
+    // ✅ Fallback to direct URLs if worker fails or no lookUrl
     if (currentVideoSources.length === 0) {
-      console.log('No worker URL successful for episode, falling back to direct URLs');
+      console.log('No worker URL success — falling back to direct episode URLs.');
       if (episode.videoUrl) {
-        console.log('Adding direct episode video URL:', episode.videoUrl);
         currentVideoSources.push({
           url: episode.videoUrl,
           quality: '1080p',
@@ -2338,7 +2340,6 @@ async function setupEpisodeVideoSources(episode) {
         });
       }
       if (episode.altVideoUrl) {
-        console.log('Adding direct episode alt URL:', episode.altVideoUrl);
         currentVideoSources.push({
           url: episode.altVideoUrl,
           quality: '720p',
@@ -2347,21 +2348,30 @@ async function setupEpisodeVideoSources(episode) {
       }
     }
 
+    // ✅ Persist the resolved URLs back into the episode object
+    // so download/copy functions later have them
+    if (resolved && resolved.videoUrl) {
+      episode.videoUrl = resolved.videoUrl;
+      episode.downloadUrl = resolved.downloadUrl || resolved.videoUrl;
+    }
+
     console.log('Final episode video sources:', currentVideoSources);
 
     setupResolutionSelector();
+
     if (currentVideoSources.length > 0) {
       console.log('Loading episode video with URL:', currentVideoSources[0].url);
       loadVideo(currentVideoSources[0].url);
     } else {
-      console.log('No video sources available for episode');
+      console.warn('No video sources available for this episode');
       hideLoading();
       showToast('No video sources available for this episode');
     }
   } catch (error) {
     console.error('Error setting up episode video sources:', error);
-    hideLoading();
     showToast('Error loading episode video');
+  } finally {
+    hideLoading();
   }
 }
 
