@@ -1288,8 +1288,8 @@ player.video.addEventListener('click', (e) => {
             e.preventDefault();
             const seekAmount = id === 'tapLeft' ? -10 : 10;
             seek(seekAmount);
-            showHUD(id === 'tapLeft' ? 'fa-backward' : 'fa-forward', 
-                    `${seekAmount > 0 ? '+' : ''}${seekAmount}s`);
+            //showHUD(id === 'tapLeft' ? 'fa-backward' : 'fa-forward', 
+            //        `${seekAmount > 0 ? '+' : ''}${seekAmount}s`);
           }
           lastTapTime = currentTime;
         });
@@ -1392,12 +1392,12 @@ player.video.addEventListener('click', (e) => {
         case 'ArrowLeft':
           e.preventDefault();
           seek(-10);
-          showHUD('fa-backward', '-10s');
+          //showHUD('fa-backward', '-10s');
           break;
         case 'ArrowRight':
           e.preventDefault();
           seek(10);
-          showHUD('fa-forward', '+10s');
+          //showHUD('fa-forward', '+10s');
           break;
         case 'ArrowUp':
           e.preventDefault();
