@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Advanced Video Player - PanguPlay</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
@@ -14,15 +14,29 @@ body {
   background: #0a0a0a;
   color: #fff;
   overflow: hidden;
-  height: 100vh;
+  height: 100dvh; /* Use dynamic viewport height */
   margin: 0;
   padding: 0;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+/* Fallback for browsers that don't support dvh */
+@supports not (height: 100dvh) {
+  body {
+    height: 100vh;
+  }
+  .player-container {
+    height: 100vh;
+  }
 }
 
 .player-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100dvh; /* Use dynamic viewport height */
   margin: 0;
   background: #000;
 }
@@ -515,10 +529,10 @@ body {
 
       <!-- Settings Menu -->
       <div class="settings-menu" id="settingsMenu">
-        <div class="menu-item" id="qualityMenu">
-          <span>Quality</span>
-          <span id="currentQuality">Auto</span>
-        </div>
+<div class="menu-item" id="qualityMenu" style="display: none;">
+  <span>Quality</span>
+  <span id="currentQuality">Auto</span>
+</div>
         <div class="menu-section" id="qualityOptions" style="display:none;">
           <!-- Quality options will be added dynamically -->
         </div>
@@ -574,25 +588,37 @@ body {
     };
 
     // ===== WORKER FETCH LOGIC =====
-    async function fetchFromWorker(lookUrl) {
-      try {
-        const workerUrl = `https://md.porus-in2012.workers.dev/?target=${encodeURIComponent(lookUrl)}`;
-        const response = await fetch(workerUrl);
-        if (!response.ok) throw new Error('Worker fetch failed');
-        
-        const data = await response.json();
-        if (data && data.video) {
-          return {
-            videoUrl: data.video,
-            downloadUrl: data.link || data.video
-          };
-        }
-        return null;
-      } catch (error) {
-        console.error('Worker fetch error:', error);
-        return null;
-      }
+async function fetchFromWorker(lookUrl) {
+  try {
+    const workerUrl = `https://md.porus-in2012.workers.dev/?target=${encodeURIComponent(lookUrl)}`;
+    console.log('Worker URL:', workerUrl);
+    
+    const response = await fetch(workerUrl);
+    console.log('Worker response status:', response.status);
+    
+    if (!response.ok) {
+      console.error('Worker response not OK:', response.status, response.statusText);
+      throw new Error(`Worker fetch failed: ${response.status}`);
     }
+    
+    const data = await response.json();
+    console.log('Worker response data:', data);
+    
+    if (data && data.video) {
+      console.log('Worker returned video URL:', data.video);
+      return {
+        videoUrl: data.video,
+        downloadUrl: data.link || data.video
+      };
+    }
+    
+    console.warn('Worker response missing video field');
+    return null;
+  } catch (error) {
+    console.error('Worker fetch error:', error.message, error);
+    return null;
+  }
+}
 
     // ===== INITIALIZATION =====
     async function init() {
@@ -615,13 +641,17 @@ body {
     }
 
     // ===== LOAD VIDEO =====
-    async function loadDirectVideo(url) {
-      player.data = { title: 'Video Player', type: 'movie' };
-      player.currentSource = { videoUrl: url, downloadUrl: url };
-      player.currentEpisodeId = 'direct-video';
-      document.getElementById('videoTitle').textContent = 'Video Player';
-      loadVideoSource(url, true);
-    }
+async function loadDirectVideo(url) {
+  player.data = { title: 'Video Player', type: 'movie' };
+  player.currentSource = { videoUrl: url, downloadUrl: url };
+  player.currentEpisodeId = 'direct-video';
+  document.getElementById('videoTitle').textContent = 'Video Player';
+  
+  // Hide quality menu for direct video
+  document.getElementById('qualityMenu').style.display = 'none';
+  
+  loadVideoSource(url, true);
+}
 
     async function loadFromDatabase(id) {
       try {
@@ -654,34 +684,46 @@ body {
       }
     }
 
-    async function loadMovieSources(data) {
-      const sources = [];
-      
-      // Try worker URLs first
-      if (data['1080Url']) {
-        const result = await fetchFromWorker(data['1080Url']);
-        if (result) sources.push({ quality: '1080p', ...result });
-      }
-      
-      if (data['720Url']) {
-        const result = await fetchFromWorker(data['720Url']);
-        if (result) sources.push({ quality: '720p', ...result });
-      }
-
-      // Fallback to direct URLs
-      if (sources.length === 0) {
-        if (data.video) sources.push({ quality: '1080p', videoUrl: data.video, downloadUrl: data.video });
-        if (data.alt) sources.push({ quality: '720p', videoUrl: data.alt, downloadUrl: data.alt });
-      }
-
-      if (sources.length > 0) {
-        player.currentSource = sources[0];
-        setupQualityOptions(sources);
-        loadVideoSource(sources[0].videoUrl, true);
-      } else {
-        showToast('No video sources available');
-      }
+async function loadMovieSources(data) {
+  const sources = [];
+  
+  // Check if it's a single quality movie (has lookUrl)
+  if (data.lookUrl) {
+    // Single quality movie
+    const result = await fetchFromWorker(data.lookUrl);
+    if (result) {
+      sources.push({ quality: '1080p', ...result });
+    } else if (data.video) {
+      // Fallback to direct URL
+      sources.push({ quality: '1080p', videoUrl: data.video, downloadUrl: data.video });
     }
+  } else {
+    // Multi-quality movie (has 1080Url and/or 720Url)
+    if (data['1080Url']) {
+      const result = await fetchFromWorker(data['1080Url']);
+      if (result) sources.push({ quality: '1080p', ...result });
+    }
+    
+    if (data['720Url']) {
+      const result = await fetchFromWorker(data['720Url']);
+      if (result) sources.push({ quality: '720p', ...result });
+    }
+
+    // Fallback to direct URLs if worker fetch failed
+    if (sources.length === 0) {
+      if (data.video) sources.push({ quality: '1080p', videoUrl: data.video, downloadUrl: data.video });
+      if (data.alt) sources.push({ quality: '720p', videoUrl: data.alt, downloadUrl: data.alt });
+    }
+  }
+
+  if (sources.length > 0) {
+    player.currentSource = sources[0];
+    setupQualityOptions(sources); // Will hide quality menu if only 1 source
+    loadVideoSource(sources[0].videoUrl, true);
+  } else {
+    showToast('No video sources available');
+  }
+}
 
     async function loadEpisode(index) {
       if (!player.episodes[index]) return;
@@ -739,26 +781,37 @@ player.video.addEventListener('loadedmetadata', () => {
     }
 
     // ===== QUALITY SELECTION =====
-    function setupQualityOptions(sources) {
-      const container = document.getElementById('qualityOptions');
-      container.innerHTML = '';
-      
-      sources.forEach(source => {
-        const item = document.createElement('div');
-        item.className = 'menu-item quality-option';
-        item.textContent = source.quality;
-        item.dataset.quality = source.quality;
-        item.dataset.url = source.videoUrl;
-        item.dataset.download = source.downloadUrl;
-        
-        if (source.quality === player.currentQuality) {
-          item.classList.add('active');
-        }
-        
-        item.onclick = () => changeQuality(source);
-        container.appendChild(item);
-      });
+function setupQualityOptions(sources) {
+  const container = document.getElementById('qualityOptions');
+  const qualityMenu = document.getElementById('qualityMenu');
+  
+  container.innerHTML = '';
+  
+  // Hide quality menu if only one quality available
+  if (sources.length <= 1) {
+    qualityMenu.style.display = 'none';
+    return;
+  }
+  
+  // Show quality menu if multiple qualities
+  qualityMenu.style.display = 'flex';
+  
+  sources.forEach(source => {
+    const item = document.createElement('div');
+    item.className = 'menu-item quality-option';
+    item.textContent = source.quality;
+    item.dataset.quality = source.quality;
+    item.dataset.url = source.videoUrl;
+    item.dataset.download = source.downloadUrl;
+    
+    if (source.quality === player.currentQuality) {
+      item.classList.add('active');
     }
+    
+    item.onclick = () => changeQuality(source);
+    container.appendChild(item);
+  });
+}
 
     function changeQuality(source) {
       const currentTime = player.video.currentTime;
@@ -1139,20 +1192,44 @@ player.video.addEventListener('playing', () => {
       };
 
       // Settings menu options
-      document.getElementById('qualityMenu').onclick = () => {
-        const options = document.getElementById('qualityOptions');
-        options.style.display = options.style.display === 'none' ? 'block' : 'none';
-      };
+document.getElementById('qualityMenu').onclick = () => {
+  const qualityOptions = document.getElementById('qualityOptions');
+  const aspectOptions = document.getElementById('aspectOptions');
+  const speedOptions = document.getElementById('speedOptions');
+  
+  // Hide other sections
+  aspectOptions.style.display = 'none';
+  speedOptions.style.display = 'none';
+  
+  // Toggle quality options
+  qualityOptions.style.display = qualityOptions.style.display === 'none' ? 'block' : 'none';
+};
 
-      document.getElementById('aspectMenu').onclick = () => {
-        const options = document.getElementById('aspectOptions');
-        options.style.display = options.style.display === 'none' ? 'block' : 'none';
-      };
+document.getElementById('aspectMenu').onclick = () => {
+  const qualityOptions = document.getElementById('qualityOptions');
+  const aspectOptions = document.getElementById('aspectOptions');
+  const speedOptions = document.getElementById('speedOptions');
+  
+  // Hide other sections
+  qualityOptions.style.display = 'none';
+  speedOptions.style.display = 'none';
+  
+  // Toggle aspect options
+  aspectOptions.style.display = aspectOptions.style.display === 'none' ? 'block' : 'none';
+};
 
-      document.getElementById('speedMenu').onclick = () => {
-        const options = document.getElementById('speedOptions');
-        options.style.display = options.style.display === 'none' ? 'block' : 'none';
-      };
+document.getElementById('speedMenu').onclick = () => {
+  const qualityOptions = document.getElementById('qualityOptions');
+  const aspectOptions = document.getElementById('aspectOptions');
+  const speedOptions = document.getElementById('speedOptions');
+  
+  // Hide other sections
+  qualityOptions.style.display = 'none';
+  aspectOptions.style.display = 'none';
+  
+  // Toggle speed options
+  speedOptions.style.display = speedOptions.style.display === 'none' ? 'block' : 'none';
+};
 
       document.querySelectorAll('.aspect-option').forEach(el => {
         el.onclick = () => changeAspectRatio(el.dataset.mode);
@@ -1211,48 +1288,85 @@ videoWrapper.addEventListener('touchmove', (e) => {
   // They will be shown when touch ends
 });
 
-videoWrapper.addEventListener('touchend', (e) => {
-  // Show controls briefly after touch interaction
-  if (!e.target.closest('.controls') && !e.target.closest('.tap-zone')) {
-    showControls();
-    if (!player.video.paused) {
-      clearTimeout(player.controlsTimeout);
-      player.controlsTimeout = setTimeout(() => {
-        hideControls();
-      }, 1000);
-    }
-  }
-});
+
 
       // Click video to play/pause
+// Use a more specific click handler that doesn't conflict with touch
+let clickTimeout;
 player.video.addEventListener('click', (e) => {
   // Don't handle if clicking on controls or tap zones
   if (e.target.closest('.controls') || e.target.closest('.tap-zone')) {
     return;
   }
   
-  // If video is playing, toggle controls visibility
-  if (!player.video.paused) {
-    const controls = document.getElementById('controls');
-    const topControls = document.getElementById('topControls');
-    
-    // If controls are visible, hide them
-    if (controls.classList.contains('show')) {
-      hideControls();
-      clearTimeout(player.controlsTimeout);
-    } else {
-      // If controls are hidden, show them briefly
-      showControls();
-      clearTimeout(player.controlsTimeout);
-      player.controlsTimeout = setTimeout(() => {
+  // Prevent double-triggering on mobile
+  clearTimeout(clickTimeout);
+  clickTimeout = setTimeout(() => {
+    // If video is playing, toggle controls visibility
+    if (!player.video.paused) {
+      const controls = document.getElementById('controls');
+      
+      // If controls are visible, hide them
+      if (controls.classList.contains('show')) {
         hideControls();
-      }, 3000);
+        clearTimeout(player.controlsTimeout);
+      } else {
+        // If controls are hidden, show them briefly
+        showControls();
+        clearTimeout(player.controlsTimeout);
+        player.controlsTimeout = setTimeout(() => {
+          hideControls();
+        }, 3000);
+      }
+    } else {
+      // If paused, clicking anywhere plays the video
+      togglePlayPause();
     }
-  } else {
-    // If paused, clicking anywhere plays the video
-    togglePlayPause();
-  }
+  }, 10);
 });
+
+// Center tap for play/pause on mobile
+let centerTapTime = 0;
+
+videoWrapper.addEventListener('touchend', (e) => {
+  // Only handle single touch in the center (not on controls or tap zones)
+  if (e.target.closest('.controls') || 
+      e.target.closest('.tap-zone') || 
+      e.target.closest('.top-controls') ||
+      e.target.closest('.settings-menu') ||
+      e.target.closest('.episode-selector')) {
+    return;
+  }
+  
+  const currentTime = Date.now();
+  const timeSinceLastTap = currentTime - centerTapTime;
+  
+  // Prevent double-tap from triggering play/pause
+  if (timeSinceLastTap > 350) {
+    e.preventDefault();
+    
+    // Check if tap is in center area (not left/right 30%)
+    const tapX = e.changedTouches[0].clientX;
+    const screenWidth = window.innerWidth;
+    const leftZone = screenWidth * 0.3;
+    const rightZone = screenWidth * 0.7;
+    
+    if (tapX > leftZone && tapX < rightZone) {
+      togglePlayPause();
+    } else {
+      // Show controls on side taps
+      showControls();
+      if (!player.video.paused) {
+        clearTimeout(player.controlsTimeout);
+        player.controlsTimeout = setTimeout(() => {
+          hideControls();
+        }, 1000);
+      }
+    }
+  }
+  
+  centerTapTime = currentTime;
+}, { passive: false });
 
       // Close menus when clicking outside
       document.addEventListener('click', (e) => {
