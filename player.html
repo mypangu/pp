@@ -511,8 +511,8 @@ body {
         
         <div class="control-buttons">
           <button id="playPauseBtn" title="Play/Pause"><i class="fas fa-play"></i></button>
-          <button id="rewindBtn" title="Rewind 10s"><i class="fas fa-backward"></i></button>
-          <button id="forwardBtn" title="Forward 10s"><i class="fas fa-forward"></i></button>
+          <button id="rewindBtn" title="Rewind 10s"><i class="fas fa-rotate-left"></i></button>
+          <button id="forwardBtn" title="Forward 10s"><i class="fas fa-rotate-right"></i></button>
           <button id="nextEpisodeBtn" title="Next Episode" style="display:none;"><i class="fas fa-step-forward"></i></button>
           <button id="volumeBtn" title="Mute/Unmute"><i class="fas fa-volume-up"></i></button>
           <div class="time-display">
@@ -998,12 +998,19 @@ function setupQualityOptions(sources) {
       }
     }
 
-    function formatTime(seconds) {
-      if (isNaN(seconds)) return '0:00';
-      const mins = Math.floor(seconds / 60);
-      const secs = Math.floor(seconds % 60);
-      return `${mins}:${secs.toString().padStart(2, '0')}`;
-    }
+function formatTime(seconds) {
+  if (isNaN(seconds)) return '0:00';
+  
+  const hours = Math.floor(seconds / 3600);
+  const mins = Math.floor((seconds % 3600) / 60);
+  const secs = Math.floor(seconds % 60);
+  
+  if (hours > 0) {
+    return `${hours}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  } else {
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  }
+}
 
     // ===== AUTO HIDE CONTROLS =====
 function showControls() {
@@ -1334,7 +1341,8 @@ videoWrapper.addEventListener('touchend', (e) => {
       e.target.closest('.tap-zone') || 
       e.target.closest('.top-controls') ||
       e.target.closest('.settings-menu') ||
-      e.target.closest('.episode-selector')) {
+      e.target.closest('.episode-selector') ||
+	  isPinching) {
     return;
   }
   
@@ -1415,18 +1423,24 @@ videoWrapper.addEventListener('touchend', (e) => {
       let touchStartY = 0;
       let touchStartX = 0;
       let isGesture = false;
+	  let isPinching = false;
       const videoWrapper = document.querySelector('.video-wrapper');
 
-      videoWrapper.addEventListener('touchstart', (e) => {
-        if (e.touches.length === 1) {
-          touchStartY = e.touches[0].clientY;
-          touchStartX = e.touches[0].clientX;
-          isGesture = false;
-        }
-      });
+videoWrapper.addEventListener('touchstart', (e) => {
+  if (e.touches.length === 1) {
+    touchStartY = e.touches[0].clientY;
+    touchStartX = e.touches[0].clientX;
+    isGesture = false;
+  } else {
+    // Reset gesture tracking when multi-touch detected
+    touchStartY = 0;
+    touchStartX = 0;
+    isGesture = false;
+  }
+});
 
       videoWrapper.addEventListener('touchmove', (e) => {
-        if (e.touches.length === 1) {
+        if (e.touches.length === 1 && touchStartY !== 0) {
           const deltaY = e.touches[0].clientY - touchStartY;
           const deltaX = e.touches[0].clientX - touchStartX;
           
@@ -1465,17 +1479,19 @@ videoWrapper.addEventListener('touchend', (e) => {
       videoWrapper.addEventListener('touchstart', (e) => {
         if (e.touches.length === 2) {
           initialDistance = getDistance(e.touches);
+		  isPinching = true;
         }
       });
 
       videoWrapper.addEventListener('touchmove', (e) => {
         if (e.touches.length === 2 && initialDistance !== null) {
           e.preventDefault();
+		  isPinching = true;
           const currentDistance = getDistance(e.touches);
           const diff = currentDistance - initialDistance;
 
           if (Math.abs(diff) > 30) {
-            const mode = diff > 0 ? 'fill' : 'fit';
+            const mode = diff > 0 ? 'stretch' : 'fit';
             changeAspectRatio(mode);
             initialDistance = null;
           }
@@ -1486,6 +1502,13 @@ videoWrapper.addEventListener('touchend', (e) => {
         if (e.touches.length < 2) {
           initialDistance = null;
         }
+		
+		// Reset pinch flag after a short delay to prevent play/pause trigger
+		if (e.touches.length === 0) {
+			setTimeout(() => {
+			isPinching = false;
+		  }, 100);
+		}
       });
     }
 

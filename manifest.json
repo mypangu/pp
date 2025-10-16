@@ -6,7 +6,7 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "display_override": ["fullscreen", "minimal-ui"],
+  "display_override": ["fullscreen", "minimal-ui", "standalone"],
   "background_color": "#fafafa",
   "theme_color": "#1976d2",
   "description": "Watch Latest Movies, TV Shows for free without Ads.",
