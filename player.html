@@ -46,6 +46,12 @@ body {
   width: 100%;
   height: 100%;
   background: #000;
+  cursor: none; /* Hide cursor by default */
+}
+
+/* Show cursor when controls are visible or mouse is moving */
+.video-wrapper.show-cursor {
+  cursor: default;
 }
 
     video {
@@ -505,6 +511,9 @@ body:not(.video-loaded) .top-controls {
           <i class="fas fa-arrow-left"></i>
         </button>
         <div class="video-title" id="videoTitle">Video Player</div>
+		<button class="top-btn" id="reloadBtn" title="Reload">
+		  <i class="fas fa-rotate-right"></i>
+		</button>
         <button class="top-btn" id="shareBtn" title="Share">
           <i class="fas fa-share-alt"></i>
         </button>
@@ -528,6 +537,7 @@ body:not(.video-loaded) .top-controls {
           </div>
           <div class="spacer"></div>
           <button id="episodesBtn" title="Episodes" style="display:none;"><i class="fas fa-list"></i></button>
+		  <button id="linkBtn" title="Copy Link"><i class="fas fa-link"></i></button>
           <button id="downloadBtn" title="Download"><i class="fas fa-download"></i></button>
           <button id="castBtn" title="Cast"><i class="fas fa-tv"></i></button>
           <button id="settingsBtn" title="Settings"><i class="fas fa-cog"></i></button>
@@ -590,6 +600,7 @@ body:not(.video-loaded) .top-controls {
       episodes: [],
       currentEpisodeIndex: 0,
       currentEpisodeId: null,
+	  currentEpisode: null,
       resumeData: {},
       isPlaying: false,
       controlsTimeout: null,
@@ -631,24 +642,24 @@ async function fetchFromWorker(lookUrl) {
 }
 
     // ===== INITIALIZATION =====
-    async function init() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const id = urlParams.get('id');
-      const directUrl = urlParams.get('url');
+async function init() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = urlParams.get('id');
+  const directUrl = urlParams.get('url');
 
-      if (directUrl) {
-        // Direct play mode
-        await loadDirectVideo(decodeURIComponent(directUrl));
-      } else if (id) {
-        // Database mode
-        await loadFromDatabase(id);
-      } else {
-        showToast('No video source provided');
-      }
+  // Load resume data FIRST, before loading videos
+  loadResumeData();
 
-      setupEventListeners();
-      loadResumeData();
-    }
+  if (directUrl) {
+    await loadDirectVideo(decodeURIComponent(directUrl));
+  } else if (id) {
+    await loadFromDatabase(id);
+  } else {
+    showToast('No video source provided');
+  }
+
+  setupEventListeners();
+}
 
     // ===== LOAD VIDEO =====
 async function loadDirectVideo(url) {
@@ -656,6 +667,7 @@ async function loadDirectVideo(url) {
   player.currentSource = { videoUrl: url, downloadUrl: url };
   player.currentEpisodeId = 'direct-video';
   document.getElementById('videoTitle').textContent = 'Video Player';
+  document.title = 'Video Player - PanguPlay';
   
   // Hide quality menu for direct video
   document.getElementById('qualityMenu').style.display = 'none';
@@ -677,15 +689,19 @@ async function loadDirectVideo(url) {
 
         player.data = data;
         document.getElementById('videoTitle').textContent = data.title;
+		document.title = data.title + ' - PanguPlay';
 
-        if (data.type === 'series' && data.episodes) {
-          player.episodes = data.episodes;
-          document.getElementById('episodesBtn').style.display = 'block';
-          await loadEpisode(0);
-        } else {
-          player.currentEpisodeId = id;
-          await loadMovieSources(data);
-        }
+if (data.type === 'series' && data.episodes) {
+  player.episodes = data.episodes;
+  document.getElementById('episodesBtn').style.display = 'block';
+  
+  // Get last watched episode index for THIS series
+  const lastWatchedIndex = getLastWatchedEpisodeIndex(data.id);
+  await loadEpisode(lastWatchedIndex);  // ← Load last watched episode
+} else {
+  player.currentEpisodeId = id;
+  await loadMovieSources(data);
+}
       } catch (error) {
         console.error('Load error:', error);
         showToast('Failed to load video');
@@ -741,10 +757,12 @@ async function loadMovieSources(data) {
       showLoading();
       const episode = player.episodes[index];
       player.currentEpisodeIndex = index;
-      player.currentEpisodeId = episode.id;
+      player.currentEpisodeId = player.data.id; // Use series ID instead of episode ID
+	  player.currentEpisode = episode.id; // Store actual episode ID separately
       
       document.getElementById('videoTitle').textContent = 
         `S${episode.season}E${episode.episode} - ${episode.title || 'Episode ' + episode.episode}`;
+	  document.title = `${player.data.title} - S${episode.season}E${episode.episode} - PanguPlay`;	
 
       let source = null;
       if (episode.lookUrl) {
@@ -934,23 +952,69 @@ function setupQualityOptions(sources) {
       }
     }
 
-    function getResumeTime() {
-      if (player.currentEpisodeId && player.resumeData[player.currentEpisodeId]) {
-        return player.resumeData[player.currentEpisodeId].time;
-      }
-      return 0;
+function getResumeTime() {
+  if (!player.currentEpisodeId || !player.resumeData[player.currentEpisodeId]) {
+    return 0;
+  }
+  
+  const savedData = player.resumeData[player.currentEpisodeId];
+  
+  if (player.data.type === 'series') {
+    // For series: only return time if it's the SAME episode
+    if (savedData.episodeId === player.currentEpisode) {
+      return savedData.time;
     }
+    return 0; // Different episode, start from beginning
+  } else {
+    // For movies: return saved time
+    return savedData.time;
+  }
+}
+	
+function getLastWatchedEpisodeIndex(seriesId) {
+  if (!seriesId || !player.resumeData[seriesId]) {
+    return 0; // No saved data, start from first episode
+  }
+  
+  const savedData = player.resumeData[seriesId];
+  
+  // Check if we have episode index saved
+  if (typeof savedData.episodeIndex === 'number') {
+    return savedData.episodeIndex;
+  }
+  
+  // Fallback: try to find by episode ID
+  if (savedData.episodeId) {
+    const index = player.episodes.findIndex(ep => ep.id === savedData.episodeId);
+    return index >= 0 ? index : 0;
+  }
+  
+  return 0; // Default to first episode
+}	
 
-    function saveResumeTime() {
-      if (player.currentEpisodeId && player.video.currentTime > 5) {
-        player.resumeData[player.currentEpisodeId] = {
-          time: player.video.currentTime,
-          duration: player.video.duration,
-          timestamp: Date.now()
-        };
-        localStorage.setItem('playerResume', JSON.stringify(player.resumeData));
-      }
-    }
+function saveResumeTime() {
+  if (!player.currentEpisodeId || player.video.currentTime <= 5) return;
+  
+  if (player.data.type === 'series') {
+    // For series: store under series ID with episode details
+    player.resumeData[player.currentEpisodeId] = {
+      episodeId: player.currentEpisode, // The actual episode ID
+      episodeIndex: player.currentEpisodeIndex, // The episode index
+      time: player.video.currentTime,
+      duration: player.video.duration,
+      timestamp: Date.now()
+    };
+  } else {
+    // For movies: store directly under movie ID
+    player.resumeData[player.currentEpisodeId] = {
+      time: player.video.currentTime,
+      duration: player.video.duration,
+      timestamp: Date.now()
+    };
+  }
+  
+  localStorage.setItem('playerResume', JSON.stringify(player.resumeData));
+}
 
     // ===== CONTROLS =====
     function togglePlayPause() {
@@ -1039,6 +1103,7 @@ function formatTime(seconds) {
 function showControls() {
   document.getElementById('controls').classList.add('show');
   document.getElementById('topControls').classList.add('show');
+  document.querySelector('.video-wrapper').classList.add('show-cursor');
   
   clearTimeout(player.controlsTimeout);
   
@@ -1055,6 +1120,7 @@ function hideControls() {
   if (!player.video.paused && !player.video.ended) {
     document.getElementById('controls').classList.remove('show');
     document.getElementById('topControls').classList.remove('show');
+	document.querySelector('.video-wrapper').classList.remove('show-cursor');
   }
 }
 
@@ -1098,6 +1164,18 @@ function hideControls() {
       a.click();
       showToast('Download started');
     }
+	
+function copyLink() {
+  if (!player.currentSource) {
+    showToast('No link available');
+    return;
+  }
+  
+  const link = player.currentSource.downloadUrl || player.currentSource.videoUrl;
+  navigator.clipboard.writeText(link)
+    .then(() => showToast('Link copied to clipboard'))
+    .catch(() => showToast('Failed to copy link'));
+}	
 
     function castVideo() {
       if (typeof cast === 'undefined') {
@@ -1218,7 +1296,9 @@ player.video.addEventListener('playing', () => {
       document.getElementById('fullscreenBtn').onclick = toggleFullscreen;
       document.getElementById('settingsBtn').onclick = toggleSettings;
       document.getElementById('backBtn').onclick = () => window.history.back();
+	  document.getElementById('reloadBtn').onclick = () => window.location.reload();
       document.getElementById('shareBtn').onclick = shareVideo;
+	  document.getElementById('linkBtn').onclick = copyLink;
       document.getElementById('downloadBtn').onclick = downloadVideo;
       document.getElementById('castBtn').onclick = castVideo;
       document.getElementById('episodesBtn').onclick = toggleEpisodes;
@@ -1288,25 +1368,32 @@ document.getElementById('speedMenu').onclick = () => {
       setupTouchGestures();
 
       // Mouse movement and touch to show controls
-      const videoWrapper = document.querySelector('.video-wrapper');
-      
+const videoWrapper = document.querySelector('.video-wrapper');
+
 let mouseMoveTimeout;
 videoWrapper.addEventListener('mousemove', (e) => {
+  // Show cursor
+  videoWrapper.classList.add('show-cursor');
+  
   // Show controls on mouse move
   showControls();
   
   // Clear any existing mousemove timeout
   clearTimeout(mouseMoveTimeout);
   
-  // Hide controls after 2 seconds of no mouse movement (if playing)
+  // Hide cursor and controls after 2 seconds of no mouse movement (if playing)
   if (!player.video.paused && !player.video.ended) {
     mouseMoveTimeout = setTimeout(() => {
       hideControls();
-    }, 2000);
+      videoWrapper.classList.remove('show-cursor'); // ADD THIS LINE
+    }, 1000);
   }
 });
 
 videoWrapper.addEventListener('mouseleave', () => {
+  // Hide cursor when mouse leaves
+  videoWrapper.classList.remove('show-cursor'); // ADD THIS LINE
+  
   // Hide controls immediately when mouse leaves if video is playing
   if (!player.video.paused && !player.video.ended) {
     clearTimeout(player.controlsTimeout);
@@ -1561,15 +1648,18 @@ videoWrapper.addEventListener('touchstart', (e) => {
       switch(e.key) {
         case ' ':
         case 'k':
+		case '5':
           e.preventDefault();
           togglePlayPause();
           break;
         case 'ArrowLeft':
+		case '4':
           e.preventDefault();
           seek(-10);
           //showHUD('fa-backward', '-10s');
           break;
         case 'ArrowRight':
+		case '6':
           e.preventDefault();
           seek(10);
           //showHUD('fa-forward', '+10s');
@@ -1588,17 +1678,21 @@ videoWrapper.addEventListener('touchstart', (e) => {
           toggleMute();
           break;
         case 'f':
+		case '8':
+		case 'Enter':
           toggleFullscreen();
           break;
         case 'd':
           downloadVideo();
           break;
         case 'n':
+		case '9':
           if (player.episodes.length > 0 && player.currentEpisodeIndex < player.episodes.length - 1) {
             loadEpisode(player.currentEpisodeIndex + 1);
           }
           break;
         case 'p':
+		case '7':
           if (player.episodes.length > 0 && player.currentEpisodeIndex > 0) {
             loadEpisode(player.currentEpisodeIndex - 1);
           }
