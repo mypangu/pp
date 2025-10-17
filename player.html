@@ -94,7 +94,7 @@ body {
       right: 0;
       background: linear-gradient(transparent, rgba(0,0,0,0.9));
       padding: 20px 15px 15px;
-      opacity: 0;
+      opacity: 1;
       transition: opacity 0.3s;
       z-index: 50;
     }
@@ -171,7 +171,7 @@ body {
       justify-content: space-between;
       align-items: center;
       gap: 15px;
-      opacity: 0;
+      opacity: 1;
       transition: opacity 0.3s;
       z-index: 50;
     }
@@ -585,7 +585,8 @@ body {
       resumeData: {},
       isPlaying: false,
       controlsTimeout: null,
-	  isPinching: false
+	  isPinching: false,
+	  isDoubleTapping: false
     };
 
     // ===== WORKER FETCH LOGIC =====
@@ -639,13 +640,6 @@ async function fetchFromWorker(lookUrl) {
 
       setupEventListeners();
       loadResumeData();
-	  
-	  // Force show controls after a short delay (PWA fix)
-setTimeout(() => {
-  showControls();
-  clearTimeout(player.controlsTimeout); // Prevent auto-hide on initial load
-}, 100);
-
     }
 
     // ===== LOAD VIDEO =====
@@ -959,9 +953,15 @@ function setupQualityOptions(sources) {
       }
     }
 
-    function seek(seconds) {
-      player.video.currentTime = Math.max(0, Math.min(player.video.currentTime + seconds, player.video.duration));
-    }
+function seek(seconds) {
+  player.video.currentTime = Math.max(0, Math.min(player.video.currentTime + seconds, player.video.duration));
+  
+  // Hide controls immediately if video is playing
+  if (!player.video.paused && !player.video.ended) {
+    clearTimeout(player.controlsTimeout);
+    hideControls();
+  }
+}
 
     function toggleMute() {
       player.video.muted = !player.video.muted;
@@ -1189,24 +1189,16 @@ player.video.addEventListener('playing', () => {
       });
 
       player.video.addEventListener('loadstart', showLoading);
-player.video.addEventListener('canplay', () => {
-  hideLoading();
-  // Ensure controls are visible when video is ready (PWA fix)
-  if (player.video.currentTime === 0 && player.video.paused) {
-    showControls();
-    clearTimeout(player.controlsTimeout);
-  }
-});
-      player.video.addEventListener('waiting', showLoading);
-      player.video.addEventListener('playing', hideLoading);
+	  player.video.addEventListener('canplay', hideLoading);
 
-// PWA-specific: Force controls on first frame
-player.video.addEventListener('loadeddata', () => {
-  if (player.video.currentTime === 0 && player.video.paused) {
-    showControls();
-    clearTimeout(player.controlsTimeout);
+player.video.addEventListener('waiting', showLoading);
+player.video.addEventListener('playing', () => {
+  hideLoading();
+  // Don't show controls during double-tap seek
+  if (player.isDoubleTapping) {
+    hideControls();
   }
-}, { once: true });	  
+});  
 
       // Control buttons
       document.getElementById('playPauseBtn').onclick = togglePlayPause;
@@ -1373,7 +1365,8 @@ videoWrapper.addEventListener('touchend', (e) => {
       e.target.closest('.top-controls') ||
       e.target.closest('.settings-menu') ||
       e.target.closest('.episode-selector') ||
-	  player.isPinching) {
+	  player.isPinching ||
+      player.isDoubleTapping) {
     return;
   }
   
@@ -1429,25 +1422,29 @@ videoWrapper.addEventListener('touchend', (e) => {
     }
 
     // ===== DOUBLE TAP TO SEEK =====
-    function setupDoubleTap() {
-      let lastTapTime = 0;
-      const doubleTapDelay = 300;
+function setupDoubleTap() {
+  let lastTapTime = 0;
+  const doubleTapDelay = 300;
 
-      ['tapLeft', 'tapRight'].forEach(id => {
-        const zone = document.getElementById(id);
-        zone.addEventListener('touchend', (e) => {
-          const currentTime = Date.now();
-          if (currentTime - lastTapTime < doubleTapDelay) {
-            e.preventDefault();
-            const seekAmount = id === 'tapLeft' ? -10 : 10;
-            seek(seekAmount);
-            //showHUD(id === 'tapLeft' ? 'fa-backward' : 'fa-forward', 
-            //        `${seekAmount > 0 ? '+' : ''}${seekAmount}s`);
-          }
-          lastTapTime = currentTime;
-        });
-      });
-    }
+  ['tapLeft', 'tapRight'].forEach(id => {
+    const zone = document.getElementById(id);
+    zone.addEventListener('touchend', (e) => {
+      const currentTime = Date.now();
+      if (currentTime - lastTapTime < doubleTapDelay) {
+        e.preventDefault();
+        player.isDoubleTapping = true;
+        const seekAmount = id === 'tapLeft' ? -10 : 10;
+        seek(seekAmount);
+        
+        // Reset double tap flag after a delay
+        setTimeout(() => {
+          player.isDoubleTapping = false;
+        }, 400);
+      }
+      lastTapTime = currentTime;
+    });
+  });
+}
 
     // ===== TOUCH GESTURES =====
     function setupTouchGestures() {
