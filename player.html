@@ -1047,7 +1047,7 @@ function showControls() {
   if (!player.video.paused && !player.video.ended && player.video.currentTime > 0) {
     player.controlsTimeout = setTimeout(() => {
       hideControls();
-    }, 3000);
+    }, 1000);
   }
 }
 
@@ -1355,7 +1355,7 @@ player.video.addEventListener('click', (e) => {
         clearTimeout(player.controlsTimeout);
         player.controlsTimeout = setTimeout(() => {
           hideControls();
-        }, 3000);
+        }, 1000);
       }
     } else {
       // If paused, clicking anywhere plays the video
