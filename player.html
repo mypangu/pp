@@ -492,7 +492,7 @@ body {
       <div class="tap-zone tap-zone-right" id="tapRight"></div>
 
       <!-- Top Controls -->
-      <div class="top-controls show" id="topControls">
+      <div class="top-controls" id="topControls">
         <button class="top-btn" id="backBtn" title="Go Back">
           <i class="fas fa-arrow-left"></i>
         </button>
@@ -503,7 +503,7 @@ body {
       </div>
 
       <!-- Bottom Controls -->
-      <div class="controls show" id="controls">
+      <div class="controls" id="controls">
         <div class="progress-bar" id="progressBar">
           <div class="progress-buffer" id="progressBuffer"></div>
           <div class="progress-filled" id="progressFilled"></div>
@@ -585,8 +585,7 @@ body {
       resumeData: {},
       isPlaying: false,
       controlsTimeout: null,
-	  isPinching: false,
-	  isDoubleTapping: false
+	  isPinching: false
     };
 
     // ===== WORKER FETCH LOGIC =====
@@ -640,6 +639,7 @@ async function fetchFromWorker(lookUrl) {
 
       setupEventListeners();
       loadResumeData();
+	  showControls();
     }
 
     // ===== LOAD VIDEO =====
@@ -769,22 +769,16 @@ player.video.addEventListener('loadedmetadata', () => {
     player.video.currentTime = resumeTime;
     showToast(`Resumed from ${formatTime(resumeTime)}`);
   }
-  
-  // Always show controls when metadata is loaded
-  //showControls();
+
+// Show controls initially
+showControls();
   
   if (autoplay) {
     player.video.play().then(() => {
-      // Controls already shown above, will auto-hide after 3s if playing
     }).catch(err => {
       console.log('Autoplay prevented:', err);
       showToast('Click to play');
-      // Keep controls visible since video didn't play
-      clearTimeout(player.controlsTimeout);
     });
-  } else {
-    // If not autoplaying, keep controls visible
-    clearTimeout(player.controlsTimeout);
   }
 }, { once: true });
     }
@@ -953,15 +947,9 @@ function setupQualityOptions(sources) {
       }
     }
 
-function seek(seconds) {
-  player.video.currentTime = Math.max(0, Math.min(player.video.currentTime + seconds, player.video.duration));
-  
-  // Hide controls immediately if video is playing
-  if (!player.video.paused && !player.video.ended) {
-    clearTimeout(player.controlsTimeout);
-    hideControls();
-  }
-}
+    function seek(seconds) {
+      player.video.currentTime = Math.max(0, Math.min(player.video.currentTime + seconds, player.video.duration));
+    }
 
     function toggleMute() {
       player.video.muted = !player.video.muted;
@@ -1035,8 +1023,7 @@ function showControls() {
   clearTimeout(player.controlsTimeout);
   
   // Check if video is actually playing (not paused and not ended)
-  // Only auto-hide if video is playing and has started (currentTime > 0)
-  if (!player.video.paused && !player.video.ended && player.video.currentTime > 0) {
+  if (!player.video.paused && !player.video.ended) {
     player.controlsTimeout = setTimeout(() => {
       hideControls();
     }, 3000);
@@ -1189,16 +1176,9 @@ player.video.addEventListener('playing', () => {
       });
 
       player.video.addEventListener('loadstart', showLoading);
-	  player.video.addEventListener('canplay', hideLoading);
-
-player.video.addEventListener('waiting', showLoading);
-player.video.addEventListener('playing', () => {
-  hideLoading();
-  // Don't show controls during double-tap seek
-  if (player.isDoubleTapping) {
-    hideControls();
-  }
-});  
+      player.video.addEventListener('canplay', hideLoading);
+      player.video.addEventListener('waiting', showLoading);
+      player.video.addEventListener('playing', hideLoading);
 
       // Control buttons
       document.getElementById('playPauseBtn').onclick = togglePlayPause;
@@ -1365,8 +1345,7 @@ videoWrapper.addEventListener('touchend', (e) => {
       e.target.closest('.top-controls') ||
       e.target.closest('.settings-menu') ||
       e.target.closest('.episode-selector') ||
-	  player.isPinching ||
-      player.isDoubleTapping) {
+	  player.isPinching) {
     return;
   }
   
@@ -1422,29 +1401,25 @@ videoWrapper.addEventListener('touchend', (e) => {
     }
 
     // ===== DOUBLE TAP TO SEEK =====
-function setupDoubleTap() {
-  let lastTapTime = 0;
-  const doubleTapDelay = 300;
+    function setupDoubleTap() {
+      let lastTapTime = 0;
+      const doubleTapDelay = 300;
 
-  ['tapLeft', 'tapRight'].forEach(id => {
-    const zone = document.getElementById(id);
-    zone.addEventListener('touchend', (e) => {
-      const currentTime = Date.now();
-      if (currentTime - lastTapTime < doubleTapDelay) {
-        e.preventDefault();
-        player.isDoubleTapping = true;
-        const seekAmount = id === 'tapLeft' ? -10 : 10;
-        seek(seekAmount);
-        
-        // Reset double tap flag after a delay
-        setTimeout(() => {
-          player.isDoubleTapping = false;
-        }, 400);
-      }
-      lastTapTime = currentTime;
-    });
-  });
-}
+      ['tapLeft', 'tapRight'].forEach(id => {
+        const zone = document.getElementById(id);
+        zone.addEventListener('touchend', (e) => {
+          const currentTime = Date.now();
+          if (currentTime - lastTapTime < doubleTapDelay) {
+            e.preventDefault();
+            const seekAmount = id === 'tapLeft' ? -10 : 10;
+            seek(seekAmount);
+            //showHUD(id === 'tapLeft' ? 'fa-backward' : 'fa-forward', 
+            //        `${seekAmount > 0 ? '+' : ''}${seekAmount}s`);
+          }
+          lastTapTime = currentTime;
+        });
+      });
+    }
 
     // ===== TOUCH GESTURES =====
     function setupTouchGestures() {
@@ -1467,7 +1442,7 @@ videoWrapper.addEventListener('touchstart', (e) => {
 });
 
       videoWrapper.addEventListener('touchmove', (e) => {
-        if (e.touches.length === 1 && touchStartY !== 0 && !player.isPinching) {
+		if (e.touches.length === 1 && touchStartY !== 0 && !player.isPinching) {
           const deltaY = e.touches[0].clientY - touchStartY;
           const deltaX = e.touches[0].clientX - touchStartX;
           
@@ -1483,10 +1458,10 @@ videoWrapper.addEventListener('touchstart', (e) => {
               player.video.volume = Math.max(0, Math.min(1, player.video.volume + volumeChange));
               showHUD('fa-volume-up', `${Math.round(player.video.volume * 100)}%`);
             } else {
-              // Brightness control on left side (visual feedback only)
-              const brightnessChange = -deltaY / 300;
-			  const currentBrightness = parseFloat(player.video.style.filter.replace('brightness(', '').replace(')', '') || '1');
-			  const brightness = Math.max(0.3, Math.min(1, currentBrightness + brightnessChange));
+// Brightness control on left side (visual feedback only)
+const brightnessChange = -deltaY / 300;
+const currentBrightness = parseFloat(player.video.style.filter.replace('brightness(', '').replace(')', '') || '1');
+const brightness = Math.max(0.3, Math.min(1, currentBrightness + brightnessChange));
               player.video.style.filter = `brightness(${brightness})`;
               showHUD('fa-sun', `${Math.round(brightness * 100)}%`);
             }
