@@ -639,7 +639,7 @@ async function fetchFromWorker(lookUrl) {
 
       setupEventListeners();
       loadResumeData();
-	  showControls();
+	  //showControls();
     }
 
     // ===== LOAD VIDEO =====
@@ -769,16 +769,22 @@ player.video.addEventListener('loadedmetadata', () => {
     player.video.currentTime = resumeTime;
     showToast(`Resumed from ${formatTime(resumeTime)}`);
   }
-
-    // Show controls initially, then hide after 3 seconds
-    showControls();
-	  
+  
+  // Always show controls when metadata is loaded
+  //showControls();
+  
   if (autoplay) {
     player.video.play().then(() => {
+      // Controls already shown above, will auto-hide after 3s if playing
     }).catch(err => {
       console.log('Autoplay prevented:', err);
       showToast('Click to play');
+      // Keep controls visible since video didn't play
+      clearTimeout(player.controlsTimeout);
     });
+  } else {
+    // If not autoplaying, keep controls visible
+    clearTimeout(player.controlsTimeout);
   }
 }, { once: true });
     }
@@ -1023,7 +1029,8 @@ function showControls() {
   clearTimeout(player.controlsTimeout);
   
   // Check if video is actually playing (not paused and not ended)
-  if (!player.video.paused && !player.video.ended) {
+  // Only auto-hide if video is playing and has started (currentTime > 0)
+  if (!player.video.paused && !player.video.ended && player.video.currentTime > 0) {
     player.controlsTimeout = setTimeout(() => {
       hideControls();
     }, 3000);
