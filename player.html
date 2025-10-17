@@ -639,7 +639,13 @@ async function fetchFromWorker(lookUrl) {
 
       setupEventListeners();
       loadResumeData();
-	  //showControls();
+	  
+	  // Force show controls after a short delay (PWA fix)
+setTimeout(() => {
+  showControls();
+  clearTimeout(player.controlsTimeout); // Prevent auto-hide on initial load
+}, 100);
+
     }
 
     // ===== LOAD VIDEO =====
@@ -1183,9 +1189,24 @@ player.video.addEventListener('playing', () => {
       });
 
       player.video.addEventListener('loadstart', showLoading);
-      player.video.addEventListener('canplay', hideLoading);
+player.video.addEventListener('canplay', () => {
+  hideLoading();
+  // Ensure controls are visible when video is ready (PWA fix)
+  if (player.video.currentTime === 0 && player.video.paused) {
+    showControls();
+    clearTimeout(player.controlsTimeout);
+  }
+});
       player.video.addEventListener('waiting', showLoading);
       player.video.addEventListener('playing', hideLoading);
+
+// PWA-specific: Force controls on first frame
+player.video.addEventListener('loadeddata', () => {
+  if (player.video.currentTime === 0 && player.video.paused) {
+    showControls();
+    clearTimeout(player.controlsTimeout);
+  }
+}, { once: true });	  
 
       // Control buttons
       document.getElementById('playPauseBtn').onclick = togglePlayPause;
