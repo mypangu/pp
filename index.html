@@ -456,7 +456,7 @@ footer { text-align: center; padding: 20px; font-size: 14px; background: #1f1f1f
       height: 100%;
       background: linear-gradient(to bottom, #0a0a1a 0%, #1a0a2e 50%, #2d1b3d 100%);
       z-index: 99999;
-      display: flex;
+      display: none;
       flex-direction: column;
       justify-content: center;
       align-items: center;
@@ -103983,22 +103983,24 @@ function shouldShowDiwali() {
     document.getElementById('mainDiwaliBtn').addEventListener('click', showScratchCard);
     document.getElementById('claimButton').addEventListener('click', claimPrize);
 
-    // Initialize
-    if (shouldShowDiwali()) {
-      document.getElementById('diwaliOverlay').style.display = 'flex';
-      animate();
-      createSparkles();
-      
-      setInterval(createFirework, 400);
-      
-      setTimeout(() => {
-        for (let i = 0; i < 5; i++) {
-          setTimeout(createFirework, i * 100);
-        }
-      }, 1000);
-    } else {
-      document.getElementById('diwaliOverlay').style.display = 'none';
-    }
+// Initialize - Wait for page to fully load
+window.addEventListener('DOMContentLoaded', function() {
+  if (shouldShowDiwali()) {
+    const overlay = document.getElementById('diwaliOverlay');
+    overlay.style.display = 'flex';
+    animate();
+    createSparkles();
+    
+    setInterval(createFirework, 400);
+    
+    setTimeout(() => {
+      for (let i = 0; i < 5; i++) {
+        setTimeout(createFirework, i * 100);
+      }
+    }, 1000);
+  }
+  // No else needed - it's already hidden by CSS
+});
 
     window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;
