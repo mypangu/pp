@@ -71,11 +71,25 @@
   background: #333;
   color: #ff4500;
 }
+
 /* Menu icon for mobile */
 .menu-icon {
   font-size: 24px;
   cursor: pointer;
   display: none;
+  padding: 12px 15px; /* Add padding to increase touch area */
+  margin: -12px -15px; /* Negative margin to keep visual position */
+  min-width: 44px; /* Apple's recommended minimum touch target */
+  min-height: 44px; /* Apple's recommended minimum touch target */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.menu-icon:active {
+  background: rgba(255, 255, 255, 0.1); /* Visual feedback on tap */
 }
 
     .search-bar {
@@ -279,7 +293,7 @@
 
     @media(max-width:768px) {
       .nav-links { display: none; }
-      .menu-icon { display: block; }
+      .menu-icon { display: flex; }
       .cards { grid-template-columns: repeat(3, 1fr); }
 	  .search-bar input { width: 140px; }
     
