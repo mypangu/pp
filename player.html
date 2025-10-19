@@ -1111,6 +1111,11 @@ function formatTime(seconds) {
 
     // ===== AUTO HIDE CONTROLS =====
 function showControls() {
+  // Don't show controls if currently seeking
+  if (player.isDoubleTapping || player.isKeyboardSeeking) {
+    return;
+  }
+  
   document.getElementById('controls').classList.add('show');
   document.getElementById('topControls').classList.add('show');
   document.querySelector('.video-wrapper').classList.add('show-cursor');
@@ -1307,10 +1312,17 @@ player.video.addEventListener('waiting', () => {
 
 player.video.addEventListener('playing', () => {
   hideLoading();
+  
   // Don't show controls during double-tap seek or keyboard seek
   if (player.isDoubleTapping || player.isKeyboardSeeking) {
     clearTimeout(player.controlsTimeout);
     hideControls();
+    
+    // Reset seeking flags after a short delay (video is now playing smoothly)
+    setTimeout(() => {
+      player.isDoubleTapping = false;
+      player.isKeyboardSeeking = false;
+    }, 300);
   }
 });
 
@@ -1551,26 +1563,23 @@ function setupDoubleTap() {
 
   ['tapLeft', 'tapRight'].forEach(id => {
     const zone = document.getElementById(id);
-    zone.addEventListener('touchend', (e) => {
-      const currentTime = Date.now();
-      if (currentTime - lastTapTime < doubleTapDelay) {
-        e.preventDefault();
-        player.isDoubleTapping = true;
-        
-        // Hide controls immediately
-        clearTimeout(player.controlsTimeout);
-        hideControls();
-        
-        const seekAmount = id === 'tapLeft' ? -10 : 10;
-        seek(seekAmount);
-        
-        // Reset double tap flag after a delay
-        setTimeout(() => {
-          player.isDoubleTapping = false;
-        }, 500);
-      }
-      lastTapTime = currentTime;
-    });
+zone.addEventListener('touchend', (e) => {
+  const currentTime = Date.now();
+  if (currentTime - lastTapTime < doubleTapDelay) {
+    e.preventDefault();
+    player.isDoubleTapping = true;
+    
+    // Hide controls immediately
+    clearTimeout(player.controlsTimeout);
+    hideControls();
+    
+    const seekAmount = id === 'tapLeft' ? -10 : 10;
+    seek(seekAmount);
+    
+    // Don't reset flag here - let 'playing' event handle it
+  }
+  lastTapTime = currentTime;
+});
   });
 }
 
@@ -1689,20 +1698,14 @@ case '4':
   e.preventDefault();
   player.isKeyboardSeeking = true;
   seek(-10);
-  setTimeout(() => {
-    player.isKeyboardSeeking = false;
-  }, 500);
-  //showHUD('fa-backward', '-10s');
+  // Don't reset flag here - let 'playing' event handle it
   break;
 case 'ArrowRight':
 case '6':
   e.preventDefault();
   player.isKeyboardSeeking = true;
   seek(10);
-  setTimeout(() => {
-    player.isKeyboardSeeking = false;
-  }, 500);
-  //showHUD('fa-forward', '+10s');
+  // Don't reset flag here - let 'playing' event handle it
   break;
         case 'ArrowUp':
           e.preventDefault();
