@@ -614,7 +614,8 @@ disable-paste='false'>
       isPlaying: false,
       controlsTimeout: null,
 	  isPinching: false,
-	  isDoubleTapping: false
+	  isDoubleTapping: false,
+	  isKeyboardSeeking: false
     };
 
     // ===== WORKER FETCH LOGIC =====
@@ -770,8 +771,8 @@ async function loadMovieSources(data) {
 	  player.currentEpisode = episode.id; // Store actual episode ID separately
       
       document.getElementById('videoTitle').textContent = 
-        `S${episode.season}E${episode.episode} - ${episode.title || 'Episode ' + episode.episode}`;
-	  document.title = `${player.data.title} - S${episode.season}E${episode.episode} - PanguPlay`;	
+        `S${episode.season || episode.Season}E${episode.episode} - ${episode.title || 'Episode ' + episode.episode}`;
+	  document.title = `${player.data.title} - S${episode.season || episode.Season}E${episode.episode} - PanguPlay`;	
 
       let source = null;
       if (episode.lookUrl) {
@@ -1037,8 +1038,8 @@ function saveResumeTime() {
 function seek(seconds) {
   player.video.currentTime = Math.max(0, Math.min(player.video.currentTime + seconds, player.video.duration));
   
-  // Hide controls immediately if video is playing
-  if (!player.video.paused && !player.video.ended) {
+  // Hide controls immediately if video is playing OR if seeking via gestures/keyboard
+  if ((!player.video.paused && !player.video.ended) || player.isDoubleTapping || player.isKeyboardSeeking) {
     clearTimeout(player.controlsTimeout);
     hideControls();
   }
@@ -1284,17 +1285,34 @@ player.video.addEventListener('playing', () => {
         }
       });
 
-      player.video.addEventListener('loadstart', showLoading);
-	  player.video.addEventListener('canplay', hideLoading);
+player.video.addEventListener('loadstart', showLoading);
 
-player.video.addEventListener('waiting', showLoading);
-player.video.addEventListener('playing', () => {
+player.video.addEventListener('canplay', () => {
   hideLoading();
-  // Don't show controls during double-tap seek
-  if (player.isDoubleTapping) {
+  // Keep controls hidden if seeking
+  if (player.isDoubleTapping || player.isKeyboardSeeking) {
+    clearTimeout(player.controlsTimeout);
     hideControls();
   }
-});  
+});
+
+player.video.addEventListener('waiting', () => {
+  showLoading();
+  // Keep controls hidden if seeking
+  if (player.isDoubleTapping || player.isKeyboardSeeking) {
+    clearTimeout(player.controlsTimeout);
+    hideControls();
+  }
+});
+
+player.video.addEventListener('playing', () => {
+  hideLoading();
+  // Don't show controls during double-tap seek or keyboard seek
+  if (player.isDoubleTapping || player.isKeyboardSeeking) {
+    clearTimeout(player.controlsTimeout);
+    hideControls();
+  }
+});
 
       // Control buttons
       document.getElementById('playPauseBtn').onclick = togglePlayPause;
@@ -1538,13 +1556,18 @@ function setupDoubleTap() {
       if (currentTime - lastTapTime < doubleTapDelay) {
         e.preventDefault();
         player.isDoubleTapping = true;
+        
+        // Hide controls immediately
+        clearTimeout(player.controlsTimeout);
+        hideControls();
+        
         const seekAmount = id === 'tapLeft' ? -10 : 10;
         seek(seekAmount);
         
         // Reset double tap flag after a delay
         setTimeout(() => {
           player.isDoubleTapping = false;
-        }, 400);
+        }, 500);
       }
       lastTapTime = currentTime;
     });
@@ -1661,18 +1684,26 @@ videoWrapper.addEventListener('touchstart', (e) => {
           e.preventDefault();
           togglePlayPause();
           break;
-        case 'ArrowLeft':
-		case '4':
-          e.preventDefault();
-          seek(-10);
-          //showHUD('fa-backward', '-10s');
-          break;
-        case 'ArrowRight':
-		case '6':
-          e.preventDefault();
-          seek(10);
-          //showHUD('fa-forward', '+10s');
-          break;
+case 'ArrowLeft':
+case '4':
+  e.preventDefault();
+  player.isKeyboardSeeking = true;
+  seek(-10);
+  setTimeout(() => {
+    player.isKeyboardSeeking = false;
+  }, 500);
+  //showHUD('fa-backward', '-10s');
+  break;
+case 'ArrowRight':
+case '6':
+  e.preventDefault();
+  player.isKeyboardSeeking = true;
+  seek(10);
+  setTimeout(() => {
+    player.isKeyboardSeeking = false;
+  }, 500);
+  //showHUD('fa-forward', '+10s');
+  break;
         case 'ArrowUp':
           e.preventDefault();
           player.video.volume = Math.min(1, player.video.volume + 0.1);
