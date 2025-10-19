@@ -1,6 +1,50 @@
 [
 {
   "type": "movie",
+  "title": "Bison (2025)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/5IPFJ2XFbYjdIw4912ZufCMolX.jpg",
+  "video": "https://dl4.hotshare.click/Bison_2025_HQ_PreDVD_720p_HD.mp4",
+  "lookUrl": "https://play.onestream.watch/stream/page/93340",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "quality": "PreDVD",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "19 October 2025",
+    "fileSize": "1.57 GB",
+    "streamURL": "https://dl4.hotshare.click/Bison_2025_HQ_PreDVD_720p_HD.mp4"
+  },
+  "id": "bison-2025",
+  "mature": "",
+  "categories": ""
+},
+{
+  "type": "movie",
+  "title": "Mirage (2025)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/dhZowBuRjVKQfPgfYsykf3Be1MF.jpg",
+  "video": "https://s08.hotshare.link/Mirage_2025_Original_1080p_HD.mp4",
+  "alt": "https://dl1.hotshare.click/Mirage_2025_Original_720p_HD.mp4",
+  "1080Url": "https://play.onestream.watch/stream/page/93333",
+  "720Url": "https://play.onestream.watch/stream/page/93330",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "quality": "1080p",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "18 October 2025",
+    "fileSize": "1.73 GB",
+    "streamURL": "https://s08.hotshare.link/Mirage_2025_Original_1080p_HD.mp4"
+  },
+  "id": "mirage-2025",
+  "mature": "",
+  "categories": ""
+},
+{
+  "type": "movie",
   "title": "Diesal (2025)",
   "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/gO37NsZpcyK6CM8FhnK7DNrV4ml.jpg",
   "video": "https://s05.hotshare.link/Diesal_2025_HQ_PreDVD_720p_HD.mp4",
@@ -61,27 +105,6 @@
     "streamURL": "https://dl6.hotshare.click/Moviesda.Mobi_-_Dear_Jeeva_2025_Original_1080p_HD.mp4"
   },
   "id": "dear-jeeva-2025",
-  "mature": "",
-  "categories": ""
-},
-{
-  "type": "movie",
-  "title": "Mirage (2025)",
-  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/dhZowBuRjVKQfPgfYsykf3Be1MF.jpg",
-  "video": "https://s04.hotshare.link/Mirage_2025_Original_720p_HD.mp4",
-  "lookUrl": "https://play.onestream.watch/stream/page/93330",
-  "details": {
-    "director": "",
-    "starring": "",
-    "genres": "",
-    "quality": "720p",
-    "language": "Tamil",
-    "movieRating": "",
-    "lastUpdated": "19 October 2025",
-    "fileSize": "1.39 GB",
-    "streamURL": "https://s04.hotshare.link/Mirage_2025_Original_720p_HD.mp4"
-  },
-  "id": "mirage-2025",
   "mature": "",
   "categories": ""
 },
