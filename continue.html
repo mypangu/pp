@@ -468,7 +468,18 @@
 
   <!-- Main Content -->
   <div class="section">
-    <h2>Continue Watching</h2>
+	<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+		<h2 style="margin: 0;">Continue Watching</h2>
+		<div style="display: flex; gap: 10px;">
+			<button onclick="exportHistory()" style="padding: 8px 16px; background: #2a2a2a; color: white; border: none; border-radius: 20px; cursor: pointer; font-size: 13px; transition: background 0.3s;">
+				📥 Export
+			</button>
+			<button onclick="importHistory()" style="padding: 8px 16px; background: #2a2a2a; color: white; border: 1px solid #444; border-radius: 20px; cursor: pointer; font-size: 13px; transition: all 0.3s;">
+				📤 Import
+			</button>
+			<input type="file" id="importFile" accept=".json" style="display: none;">
+		</div>
+	</div>
     
     <div id="loadingIndicator" style="display: none;">
       <div class="loader"></div>
@@ -715,6 +726,99 @@ disable-paste='false'>
     function showEmptyState() {
       document.getElementById('emptyState').style.display = 'block';
       document.getElementById('continueGrid').style.display = 'none';
+    }
+
+// Export watch history
+    function exportHistory() {
+      if (Object.keys(continueWatching).length === 0) {
+        alert('No watch history to export!');
+        return;
+      }
+
+      const dataStr = JSON.stringify(continueWatching, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(dataBlob);
+      
+const now = new Date();
+const year = now.getFullYear();
+const month = String(now.getMonth() + 1).padStart(2, '0');
+const day = String(now.getDate()).padStart(2, '0');
+const hours = String(now.getHours()).padStart(2, '0');
+const minutes = String(now.getMinutes()).padStart(2, '0');
+const seconds = String(now.getSeconds()).padStart(2, '0');
+const timestamp = `${year}-${month}-${day}T${hours}-${minutes}-${seconds}`;
+link.download = `panguplay-history-${timestamp}.json`;
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      URL.revokeObjectURL(link.href);
+      
+      alert('Watch history exported successfully!');
+    }
+
+    // Import watch history
+    function importHistory() {
+      const fileInput = document.getElementById('importFile');
+      
+      fileInput.onchange = function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        
+        reader.onload = function(event) {
+          try {
+            const importedData = JSON.parse(event.target.result);
+            
+            // Validate the data structure
+            if (typeof importedData !== 'object' || importedData === null) {
+              throw new Error('Invalid data format');
+            }
+            
+            // Ask user if they want to merge or replace
+            const merge = confirm(
+              'Do you want to MERGE with existing history?\n\n' +
+              'Click OK to merge (keep both old and new)\n' +
+              'Click Cancel to replace (delete old history)'
+            );
+            
+            if (merge) {
+              // Merge: keep existing data and add new items
+              continueWatching = { ...continueWatching, ...importedData };
+            } else {
+              // Replace: use only imported data
+              continueWatching = importedData;
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('playerResume', JSON.stringify(continueWatching));
+            
+            // Refresh the display
+            if (Object.keys(continueWatching).length === 0) {
+              showEmptyState();
+            } else {
+              renderContinueWatching();
+            }
+            
+            alert('Watch history imported successfully!');
+            
+          } catch (error) {
+            alert('Error importing file: ' + error.message + '\n\nPlease make sure you selected a valid PanguPlay history file.');
+          }
+          
+          // Reset file input
+          fileInput.value = '';
+        };
+        
+        reader.readAsText(file);
+      };
+      
+      // Trigger file selection
+      fileInput.click();
     }
 
     // Initialize on load
