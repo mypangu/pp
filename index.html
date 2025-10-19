@@ -103543,22 +103543,26 @@ gestureZone.addEventListener('touchend', (e) => {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
     // Check if should show Diwali animation
-    function shouldShowDiwali() {
-      const today = new Date();
-      const day = today.getDate();
-      const month = today.getMonth() + 1;
-      const year = today.getFullYear();
-      
-      // Only show on October 20, 2025
-      // For testing, comment out the date check below and use: if (true) {
-      //if (false) {	  
-      if (year !== 2025 || month !== 10 || day !== 20) {
-	  return false;
-      }
-      
-      const lastShown = sessionStorage.getItem('diwaliShown');
-      return !lastShown;
-    }
+function shouldShowDiwali() {
+  const today = new Date();
+  const day = today.getDate();
+  const month = today.getMonth() + 1;
+  const year = today.getFullYear();
+  
+  // First check: Is it October 20, 2025?
+  const isCorrectDate = (year === 2025 && month === 10 && day === 20);
+  
+  // If not the correct date, don't show at all
+  if (!isCorrectDate) {
+    return false;
+  }
+  
+  // Second check: Has it been shown already in this session?
+  const lastShown = sessionStorage.getItem('diwaliShown');
+  
+  // Show only if not shown yet
+  return (lastShown === null || lastShown === undefined);
+}
 
     // Prize selection logic
     function selectPrize() {
