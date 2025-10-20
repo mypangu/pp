@@ -627,7 +627,7 @@ disable-paste='false'>
 
         card.innerHTML = `
           <div class="card-image-container">
-            <img src="${content.image}" alt="${content.title}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'placeholder-image\\'><div class=\\'placeholder-icon\\'>🎬</div></div>'">
+            <img src="${content.image || 'https://www.mymovierack.com/sys_images/fallback-poster.jpg'}" alt="${content.title}" loading="lazy" onerror="this.src='https://www.mymovierack.com/sys_images/fallback-poster.jpg'">
             <div class="watch-info">${Math.round(progressPercent)}%</div>
             <button class="remove-btn" onclick="removeItem(event, '${id}')">✖</button>
             <div class="progress-indicator">
