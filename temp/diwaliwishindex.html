@@ -399,6 +399,393 @@ footer { text-align: center; padding: 20px; font-size: 14px; background: #1f1f1f
 
 <body>
 
+<!-- Diwali Animation - Shows only on Oct 20, 2025 -->
+  <div id="diwaliOverlay">
+    <canvas id="fireworksCanvas"></canvas>
+    
+    <div class="diwali-content">
+      <h1 class="diwali-title">🪔 Happy Diwali 🪔</h1>
+      <p class="diwali-subtitle">Festival of Lights</p>
+      <p class="diwali-message">May your life be filled with joy, prosperity and happiness!</p>
+      
+      <div class="diya-container">
+        <div class="diya">
+          <div class="diya-flame"></div>
+          <div class="diya-base"></div>
+        </div>
+        <div class="diya" style="animation-delay: 0.2s;">
+          <div class="diya-flame" style="animation-delay: 0.1s;"></div>
+          <div class="diya-base"></div>
+        </div>
+        <div class="diya" style="animation-delay: 0.4s;">
+          <div class="diya-flame" style="animation-delay: 0.2s;"></div>
+          <div class="diya-base"></div>
+        </div>
+      </div>
+      
+      <button class="skip-button" id="mainDiwaliBtn">Claim Your Diwali Gift 🎁</button>
+    </div>
+  </div>
+
+  <!-- Scratch Card Overlay -->
+  <div id="scratchCardOverlay">
+    <div class="scratch-card-container" id="scratchContainer">
+      <h2 class="scratch-card-title">🎁 Diwali Gift 🎁</h2>
+      <p class="scratch-card-subtitle">Scratch to reveal your prize!</p>
+      
+      <div class="scratch-canvas-wrapper">
+        <div class="prize-background">
+          <div class="prize-amount" id="prizeAmount">₹10</div>
+          <div class="prize-text">Congratulations!</div>
+        </div>
+        <canvas id="scratchCanvas" width="300" height="200"></canvas>
+      </div>
+      
+      <p class="scratch-instruction" id="scratchInstruction">👆 Scratch the card above</p>
+      <button class="claim-button" id="claimButton">Claim Prize 🎉</button>
+    </div>
+  </div>
+
+  <style>
+    
+    #diwaliOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, #0a0a1a 0%, #1a0a2e 50%, #2d1b3d 100%);
+      z-index: 99999;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    
+    #fireworksCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .diwali-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 20px;
+      animation: fadeInScale 1.5s ease-out;
+    }
+    
+    .diwali-title {
+      font-size: 4rem;
+      font-weight: bold;
+      background: linear-gradient(45deg, #ff6b35, #f7931e, #ffd700, #ff1744, #ff6b35);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s linear infinite, glow 2s ease-in-out infinite;
+      text-shadow: 0 0 30px rgba(255, 107, 53, 0.5);
+      margin-bottom: 20px;
+      font-family: 'Georgia', serif;
+    }
+    
+    .diwali-subtitle {
+      font-size: 1.5rem;
+      color: #ffd700;
+      margin-bottom: 10px;
+      animation: fadeIn 2s ease-out 0.5s both;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+    
+    .diwali-message {
+      font-size: 1.2rem;
+      color: #fff;
+      margin-bottom: 30px;
+      animation: fadeIn 2s ease-out 1s both;
+    }
+    
+    .diya-container {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin: 30px 0;
+      animation: fadeIn 2s ease-out 1.5s both;
+    }
+    
+    .diya {
+      width: 60px;
+      height: 60px;
+      position: relative;
+    }
+    
+    .diya-flame {
+      width: 20px;
+      height: 30px;
+      background: linear-gradient(to top, #ff6b35 0%, #ffd700 50%, #fff 100%);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: flicker 0.3s ease-in-out infinite alternate;
+      box-shadow: 0 0 20px #ff6b35, 0 0 40px #ffd700;
+    }
+    
+    .diya-base {
+      width: 60px;
+      height: 30px;
+      background: linear-gradient(to bottom, #d4af37, #aa8621);
+      border-radius: 0 0 50% 50%;
+      position: absolute;
+      bottom: 0;
+      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.5);
+    }
+    
+    .skip-button {
+      position: relative;
+      z-index: 3;
+      padding: 15px 40px;
+      font-size: 1.1rem;
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      color: white;
+      border: 2px solid #ffd700;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      animation: fadeIn 2s ease-out 2s both, pulse 2s ease-in-out 3s infinite;
+      box-shadow: 0 0 20px rgba(255, 107, 53, 0.6);
+    }
+    
+    .skip-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 30px rgba(255, 107, 53, 0.8);
+    }
+    
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #ffd700;
+      border-radius: 50%;
+      animation: sparkleFloat 3s ease-in-out infinite;
+      box-shadow: 0 0 10px #ffd700;
+    }
+
+    /* Scratch Card Styles */
+    #scratchCardOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(10px);
+      z-index: 100000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .scratch-card-container {
+      background: linear-gradient(135deg, #2a1a4e 0%, #1a0a2e 100%);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 50px rgba(255, 107, 53, 0.3);
+      border: 3px solid #ffd700;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+
+    .scratch-card-title {
+      font-size: 2rem;
+      color: #ffd700;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    .scratch-card-subtitle {
+      font-size: 1rem;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    .scratch-canvas-wrapper {
+      position: relative;
+      width: 300px;
+      height: 200px;
+      margin: 20px auto;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    #scratchCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      cursor: pointer;
+      touch-action: none;
+    }
+
+    .prize-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #ff6b35, #f7931e, #ffd700);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: 15px;
+    }
+
+    .prize-amount {
+      font-size: 4rem;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      margin-bottom: 10px;
+    }
+
+    .prize-text {
+      font-size: 1.2rem;
+      color: #fff;
+      font-weight: bold;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .scratch-instruction {
+      font-size: 0.9rem;
+      color: #ffd700;
+      margin-top: 15px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .claim-button {
+      margin-top: 20px;
+      padding: 12px 35px;
+      font-size: 1rem;
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      color: white;
+      border: 2px solid #ffd700;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(76, 175, 80, 0.6);
+      display: none;
+    }
+
+    .claim-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(76, 175, 80, 0.8);
+    }
+
+    .claim-button:active {
+      transform: scale(0.98);
+    }
+
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background: #ffd700;
+      animation: confettiFall 3s linear;
+      pointer-events: none;
+    }
+    
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    
+    @keyframes shimmer {
+      to { background-position: 200% center; }
+    }
+    
+    @keyframes glow {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.3); }
+    }
+    
+    @keyframes flicker {
+      0% { transform: translateX(-50%) scale(1) rotate(-2deg); }
+      100% { transform: translateX(-50%) scale(1.1) rotate(2deg); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    @keyframes sparkleFloat {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes confettiFall {
+      0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .diwali-title { font-size: 2.5rem; }
+      .diwali-subtitle { font-size: 1.2rem; }
+      .diwali-message { font-size: 1rem; }
+      .diya { width: 40px; height: 40px; }
+      .diya-base { width: 40px; height: 20px; }
+      .diya-flame { width: 15px; height: 20px; }
+      .scratch-card-title { font-size: 1.5rem; }
+      .scratch-canvas-wrapper { width: 250px; height: 170px; }
+      .prize-amount { font-size: 3rem; }
+      #scratchCanvas { width: 250px; height: 170px; }
+    }
+  </style>
+
 <script>
   const splash = document.getElementById('splash-screen');
   let splashTimeout = setTimeout(() => {
@@ -103149,6 +103536,477 @@ gestureZone.addEventListener('touchend', (e) => {
     });
   }
 </script>
+
+  <script>
+    // Global variables
+    let selectedPrize = 0;
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+    // Check if should show Diwali animation
+function shouldShowDiwali() {
+  const today = new Date();
+  const day = today.getDate();
+  const month = today.getMonth() + 1;
+  const year = today.getFullYear();
+  
+  // First check: Is it October 20, 2025?
+  const isCorrectDate = (year === 2025 && month === 10 && day === 20);
+  
+  // If not the correct date, don't show at all
+  if (!isCorrectDate) {
+    return false;
+  }
+  
+  // Second check: Has it been shown already in this session?
+  const lastShown = sessionStorage.getItem('diwaliShown');
+  
+  // Show only if not shown yet
+  return (lastShown === null || lastShown === undefined);
+}
+
+    // Prize selection logic
+    function selectPrize() {
+      const random = Math.random() * 100;
+      if (random < 40) return 2;
+      else if (random < 70) return 5;
+      else if (random < 85) return 7;
+      else if (random < 93) return 10;
+      else if (random < 98) return 15;
+      else return 20;
+    }
+
+    selectedPrize = selectPrize();
+
+    function closeDiwali() {
+      sessionStorage.setItem('diwaliShown', 'true');
+      const overlay = document.getElementById('diwaliOverlay');
+      overlay.style.animation = 'fadeOut 1s ease-out';
+      setTimeout(() => {
+        overlay.style.display = 'none';
+      }, 1000);
+    }
+
+    function showScratchCard() {
+      console.log('showScratchCard called');
+      closeDiwali();
+      
+      setTimeout(() => {
+        const scratchOverlay = document.getElementById('scratchCardOverlay');
+        scratchOverlay.style.display = 'flex';
+        
+        const alreadyClaimed = sessionStorage.getItem('diwaliClaimed') || localStorage.getItem('diwaliClaimed2025');
+        
+        if (alreadyClaimed) {
+          showAlreadyClaimed();
+        } else {
+          document.getElementById('prizeAmount').textContent = `₹${selectedPrize}`;
+          initScratchCard();
+        }
+      }, 1000);
+    }
+
+    function showAlreadyClaimed() {
+      const container = document.getElementById('scratchContainer');
+      container.innerHTML = `
+        <h2 class="scratch-card-title">🎁 Diwali Gift 🎁</h2>
+        <div style="padding: 40px 20px;">
+          <div style="font-size: 4rem; margin-bottom: 20px;">🎉</div>
+          <p style="font-size: 1.3rem; color: #ffd700; margin-bottom: 15px; font-weight: bold;">Already Claimed!</p>
+          <p style="font-size: 1rem; color: #fff; margin-bottom: 30px;">You've already claimed your Diwali gift today.<br>Come back next year for more surprises!</p>
+          <button onclick="closeAllDiwali()" style="padding: 15px 40px; font-size: 1.1rem; background: linear-gradient(135deg, #ff6b35, #f7931e); color: white; border: 2px solid #ffd700; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 0 20px rgba(255,107,53,0.6); transition: all 0.3s ease;">
+            Continue to PanguPlay ✨
+          </button>
+        </div>
+      `;
+    }
+
+    function initScratchCard() {
+      const canvas = document.getElementById('scratchCanvas');
+      const ctx = canvas.getContext('2d');
+      let isScratching = false;
+
+      // Adjust for mobile
+      if (window.innerWidth <= 768) {
+        canvas.width = 250;
+        canvas.height = 170;
+      }
+
+      // Draw scratch surface
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, '#c0c0c0');
+      gradient.addColorStop(0.5, '#e0e0e0');
+      gradient.addColorStop(1, '#c0c0c0');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#666';
+      ctx.font = 'bold 24px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('Scratch Here', canvas.width / 2, canvas.height / 2 - 10);
+      ctx.font = '18px Arial';
+      ctx.fillText('🎁', canvas.width / 2, canvas.height / 2 + 20);
+
+      function scratch(x, y) {
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(x, y, 25, 0, Math.PI * 2);
+        ctx.fill();
+        checkScratchComplete();
+      }
+
+      function checkScratchComplete() {
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        let transparent = 0;
+        
+        for (let i = 3; i < imageData.data.length; i += 4) {
+          if (imageData.data[i] === 0) transparent++;
+        }
+        
+        const scratchedPercentage = (transparent / (imageData.data.length / 4)) * 100;
+        
+        if (scratchedPercentage > 60) {
+          revealPrize();
+        }
+      }
+
+      function revealPrize() {
+        canvas.style.display = 'none';
+        document.getElementById('scratchInstruction').style.display = 'none';
+        document.getElementById('claimButton').style.display = 'inline-block';
+        createConfetti();
+        playSuccessSound();
+      }
+
+      // Mouse events
+      canvas.addEventListener('mousedown', (e) => {
+        isScratching = true;
+        const rect = canvas.getBoundingClientRect();
+        scratch(e.clientX - rect.left, e.clientY - rect.top);
+      });
+
+      canvas.addEventListener('mousemove', (e) => {
+        if (isScratching) {
+          const rect = canvas.getBoundingClientRect();
+          scratch(e.clientX - rect.left, e.clientY - rect.top);
+        }
+      });
+
+      canvas.addEventListener('mouseup', () => {
+        isScratching = false;
+      });
+
+      canvas.addEventListener('mouseleave', () => {
+        isScratching = false;
+      });
+
+      // Touch events
+      canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        isScratching = true;
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.touches[0];
+        scratch(touch.clientX - rect.left, touch.clientY - rect.top);
+      });
+
+      canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        if (isScratching) {
+          const rect = canvas.getBoundingClientRect();
+          const touch = e.touches[0];
+          scratch(touch.clientX - rect.left, touch.clientY - rect.top);
+        }
+      });
+
+      canvas.addEventListener('touchend', () => {
+        isScratching = false;
+      });
+    }
+
+    function claimPrize() {
+      console.log('Claim Prize Button Clicked!');
+      
+      const prizeCode = `DIWALI${selectedPrize}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
+      
+      sessionStorage.setItem('diwaliClaimed', 'true');
+      localStorage.setItem('diwaliClaimed2025', 'true');
+      
+      const container = document.getElementById('scratchContainer');
+      container.innerHTML = `
+        <h2 class="scratch-card-title">🎉 Congratulations! 🎉</h2>
+        <div style="background: linear-gradient(135deg, #ff6b35, #f7931e, #ffd700); padding: 30px; border-radius: 15px; margin: 20px 0;">
+          <div style="font-size: 3.5rem; color: #fff; text-shadow: 0 5px 15px rgba(0,0,0,0.5); margin-bottom: 10px; font-weight: bold;">₹${selectedPrize}</div>
+          <div style="font-size: 1.1rem; color: #fff; font-weight: bold; margin-bottom: 15px;">Your Prize Code</div>
+          <div style="background: rgba(255,255,255,0.2); padding: 12px; border-radius: 10px; font-size: 1.3rem; font-weight: bold; color: #fff; letter-spacing: 2px; word-break: break-all;">${prizeCode}</div>
+        </div>
+        <div style="background: rgba(255,215,0,0.1); padding: 20px; border-radius: 10px; border: 2px dashed #ffd700; margin: 20px 0;">
+          <p style="font-size: 1.1rem; color: #ffd700; margin-bottom: 15px; font-weight: bold;">📸 How to Claim:</p>
+          <ol style="text-align: left; color: #fff; font-size: 0.95rem; line-height: 1.8; padding-left: 20px;">
+            <li>Take a screenshot of this page</li>
+            <li>Join our Telegram group</li>
+            <li>Share your screenshot with mobile number</li>
+            <li>Get your prize credited!</li>
+          </ol>
+        </div>
+        <a href="https://t.me/+XZ-XlD5wzWo4NWFl" target="_blank" style="display: inline-block; margin: 10px auto; padding: 15px 40px; font-size: 1.1rem; background: linear-gradient(135deg, #0088cc, #006699); color: white; border: 2px solid #ffd700; border-radius: 50px; cursor: pointer; font-weight: bold; text-decoration: none; box-shadow: 0 0 20px rgba(0,136,204,0.6); transition: all 0.3s ease;">
+          📱 Join Telegram Group
+        </a>
+        <button onclick="closeAllDiwali()" style="display: block; margin: 15px auto 0; padding: 12px 35px; font-size: 1rem; background: linear-gradient(135deg, #ff6b35, #f7931e); color: white; border: 2px solid #ffd700; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 0 20px rgba(255,107,53,0.6); transition: all 0.3s ease;">
+          Continue to PanguPlay ✨
+        </button>
+      `;
+    }
+
+    function closeAllDiwali() {
+      const overlay = document.getElementById('scratchCardOverlay');
+      overlay.style.animation = 'fadeOut 1s ease-out';
+      setTimeout(() => {
+        overlay.style.display = 'none';
+      }, 1000);
+    }
+
+    function createConfetti() {
+      const colors = ['#ff6b35', '#f7931e', '#ffd700', '#ff1744', '#00e5ff', '#76ff03'];
+      const container = document.getElementById('scratchCardOverlay');
+      
+      for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti';
+          confetti.style.left = Math.random() * 100 + '%';
+          confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+          confetti.style.animationDelay = Math.random() * 0.5 + 's';
+          container.appendChild(confetti);
+          
+          setTimeout(() => confetti.remove(), 3000);
+        }, i * 30);
+      }
+    }
+
+    function playExplosionSound() {
+      try {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.value = 100;
+        oscillator.type = 'sawtooth';
+        
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.5);
+      } catch(e) {}
+    }
+
+    function playSuccessSound() {
+      try {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.value = 523.25;
+        oscillator.type = 'sine';
+        
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.8);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.8);
+
+        setTimeout(() => {
+          const osc2 = audioContext.createOscillator();
+          const gain2 = audioContext.createGain();
+          osc2.connect(gain2);
+          gain2.connect(audioContext.destination);
+          osc2.frequency.value = 659.25;
+          osc2.type = 'sine';
+          gain2.gain.setValueAtTime(0.3, audioContext.currentTime);
+          gain2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.8);
+          osc2.start(audioContext.currentTime);
+          osc2.stop(audioContext.currentTime + 0.8);
+        }, 200);
+      } catch(e) {}
+    }
+
+    // Fireworks Animation
+    const canvas = document.getElementById('fireworksCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.velocity = {
+          x: (Math.random() - 0.5) * 8,
+          y: (Math.random() - 0.5) * 8
+        };
+        this.alpha = 1;
+        this.decay = Math.random() * 0.015 + 0.015;
+        this.size = Math.random() * 3 + 2;
+      }
+
+      update() {
+        this.velocity.x *= 0.98;
+        this.velocity.y *= 0.98;
+        this.velocity.y += 0.1;
+        this.x += this.velocity.x;
+        this.y += this.velocity.y;
+        this.alpha -= this.decay;
+      }
+
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    class Firework {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.targetY = Math.random() * canvas.height * 0.4 + canvas.height * 0.1;
+        this.velocity = -8;
+        this.exploded = false;
+        this.particles = [];
+        this.colors = [
+          '#ff6b35', '#f7931e', '#ffd700', '#ff1744', 
+          '#ff4081', '#00e5ff', '#76ff03', '#ffffff'
+        ];
+        this.color = this.colors[Math.floor(Math.random() * this.colors.length)];
+        this.trail = [];
+      }
+
+      update() {
+        if (!this.exploded) {
+          this.trail.push({ x: this.x, y: this.y, alpha: 1 });
+          if (this.trail.length > 10) this.trail.shift();
+          
+          this.y += this.velocity;
+          this.velocity += 0.2;
+
+          if (this.y <= this.targetY) {
+            this.explode();
+          }
+        }
+
+        this.particles = this.particles.filter(p => p.alpha > 0);
+        this.particles.forEach(p => p.update());
+        
+        this.trail.forEach(t => t.alpha -= 0.05);
+        this.trail = this.trail.filter(t => t.alpha > 0);
+      }
+
+      explode() {
+        this.exploded = true;
+        const particleCount = Math.random() * 50 + 80;
+        
+        for (let i = 0; i < particleCount; i++) {
+          this.particles.push(new Particle(this.x, this.y, this.color));
+        }
+        
+        playExplosionSound();
+      }
+
+      draw() {
+        if (!this.exploded) {
+          this.trail.forEach((t) => {
+            ctx.save();
+            ctx.globalAlpha = t.alpha;
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(t.x, t.y, 2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          });
+          
+          ctx.save();
+          ctx.fillStyle = this.color;
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = this.color;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+
+        this.particles.forEach(p => p.draw());
+      }
+    }
+
+    let fireworks = [];
+    
+    function createFirework() {
+      const x = Math.random() * canvas.width;
+      const y = canvas.height;
+      fireworks.push(new Firework(x, y));
+    }
+
+    function animate() {
+      ctx.fillStyle = 'rgba(10, 10, 26, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      fireworks = fireworks.filter(f => !f.exploded || f.particles.length > 0);
+      fireworks.forEach(f => {
+        f.update();
+        f.draw();
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    function createSparkles() {
+      const overlay = document.getElementById('diwaliOverlay');
+      for (let i = 0; i < 30; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.left = Math.random() * 100 + '%';
+        sparkle.style.animationDelay = Math.random() * 3 + 's';
+        sparkle.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        overlay.appendChild(sparkle);
+      }
+    }
+
+    // Event Listeners
+    document.getElementById('mainDiwaliBtn').addEventListener('click', showScratchCard);
+    document.getElementById('claimButton').addEventListener('click', claimPrize);
+
+// Initialize - Wait for page to fully load
+window.addEventListener('DOMContentLoaded', function() {
+  if (shouldShowDiwali()) {
+    const overlay = document.getElementById('diwaliOverlay');
+    overlay.style.display = 'flex';
+    animate();
+    createSparkles();
+    
+    setInterval(createFirework, 400);
+    
+    setTimeout(() => {
+      for (let i = 0; i < 5; i++) {
+        setTimeout(createFirework, i * 100);
+      }
+    }, 1000);
+  }
+  // No else needed - it's already hidden by CSS
+});
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
 
 </body>
 </html>
