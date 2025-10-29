@@ -1,6 +1,72 @@
 [
 {
   "type": "movie",
+  "title": "Anandham TV",
+  "image": "https://oxolive.com/wp-content/uploads/2025/04/ChatGPT-Image-Apr-28-2025-02_30_57-PM-150x150.png",
+  "video": "https://cable88tataplay.akamaized.net/live/anandhamtv/index.mpd",
+  "details": {
+    "lastUpdated": "29 October 2023",
+	"quality": "TV"
+  },
+  "id": "anandham-tv-mpd"
+},
+{
+  "type": "movie",
+  "title": "Raj TV",
+  "image": "https://oxolive.com/wp-content/uploads/2020/01/ChatGPT-Image-Oct-9-2025-09_28_02-PM-1-150x150.png",
+  "video": "https://anywhere.pwisetthon.com/http://livestream.rajtv.tv/cluster1/Content/Channel/RajTV/HLS/master.m3u8",
+  "details": {
+    "lastUpdated": "29 October 2023",
+	"quality": "TV"
+  },
+  "id": "raj-tv-hls"
+},
+{
+  "type": "movie",
+  "title": "Raj Musix Tamil",
+  "image": "https://oxolive.com/wp-content/uploads/2020/01/ChatGPT-Image-Oct-9-2025-09_49_13-PM-1-150x150.png",
+  "video": "https://anywhere.pwisetthon.com/http://livestream.rajtv.tv/cluster1/Content/Channel/RajMusix/HLS/master.m3u8",
+  "details": {
+    "lastUpdated": "29 October 2023",
+	"quality": "TV"
+  },
+  "id": "raj-musix-tamil-tv-hls"
+},
+{
+  "type": "movie",
+  "title": "Raj Digital Plus",
+  "image": "https://oxolive.com/wp-content/uploads/2020/01/ChatGPT-Image-Oct-9-2025-09_30_48-PM-1-150x150.png",
+  "video": "https://anywhere.pwisetthon.com/http://livestream.rajtv.tv/cluster1/Content/Channel/Rajdigitalplus/HLS/master.m3u8",
+  "details": {
+    "lastUpdated": "29 October 2023",
+	"quality": "TV"
+  },
+  "id": "raj-digital-plus-tv-hls"
+},
+{
+  "type": "movie",
+  "title": "Kalaignar TV",
+  "image": "https://oxolive.com/wp-content/uploads/2020/01/ChatGPT-Image-Apr-10-2025-11_02_45-AM-150x150.png",
+  "video": "https://segment.yuppcdn.net/240122/kalaignartv/playlist.m3u8",
+  "details": {
+    "lastUpdated": "29 October 2023",
+	"quality": "TV"
+  },
+  "id": "kalaignar-tv-hls"
+},
+{
+  "type": "movie",
+  "title": "BIGGBOSS S9 Live",
+  "image": "https://img10.hotstar.com/image/upload/f_auto,q_90,w_256/sources/r1/cms/prod/9573/1759685259573-v",
+  "video": "https://cdn.tamiltool.site:60997/live/bb-tamil-s9-live/master.m3u8",
+  "details": {
+    "lastUpdated": "29 October 2023",
+	"quality": "TV"
+  },
+  "id": "biggboss-s9-live-hls"
+},
+{
+  "type": "movie",
   "title": "Idli Kadai (2025)",
   "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/vwxDJsbgTjtUEP3jAyeYNdU4JvK.jpg",
   "video": "https://dl8.hotshare.click/Moviesda.Mobi_-_Idli_Kadai_2025_Original_1080p_HD.mp4",
