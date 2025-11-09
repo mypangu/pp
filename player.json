@@ -1,6 +1,207 @@
 [
 {
   "type": "movie",
+  "title": "Vattakhanal (2025)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/kU7x4Ki24zE6i8sFluM6Xf9mcg3.jpg",
+  "video": "https://s08.hotshare.link/Vattakhanal_2025_HQ_PreDVD_720p_HD.mp4",
+  "lookUrl": "https://play.onestream.watch/stream/page/93810",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "quality": "PreDVD",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "09 November 2025",
+    "fileSize": "1.5 GB",
+    "streamURL": "https://s08.hotshare.link/Vattakhanal_2025_HQ_PreDVD_720p_HD.mp4"
+  },
+  "id": "vattakhanal-2025",
+  "mature": "",
+  "categories": ""
+},
+{
+  "type": "movie",
+  "title": "Aaromaley (2025)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/mNByaBOo2t0r6FjTXFgX0e6oLAX.jpg",
+  "video": "https://s09.hotshare.link/Aaromaley_2025_HQ_PreDVD_720p_HD.mp4",
+  "lookUrl": "https://play.onestream.watch/stream/page/93792",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "quality": "PreDVD",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "09 November 2025",
+    "fileSize": "1.49 GB",
+    "streamURL": "https://s09.hotshare.link/Aaromaley_2025_HQ_PreDVD_720p_HD.mp4"
+  },
+  "id": "aaromaley-2025",
+  "mature": "",
+  "categories": ""
+},
+{
+  "type": "movie",
+  "title": "Pagal Kanavu (2025)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/iizW3UP6ZnyEeD89qsU8YTcrPP.jpg",
+  "video": "https://s04.hotshare.link/Pagal_Kanavu_2025_HQ_PreDVD_720p_HD.mp4",
+  "lookUrl": "https://play.onestream.watch/stream/page/93817",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "quality": "PreDVD",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "09 November 2025",
+    "fileSize": "1.46 GB",
+    "streamURL": "https://s04.hotshare.link/Pagal_Kanavu_2025_HQ_PreDVD_720p_HD.mp4"
+  },
+  "id": "pagal-kanavu-2025",
+  "mature": "",
+  "categories": ""
+},
+{
+  "type": "movie",
+  "title": "Bachelor Prasad (2025)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/cio0AOT0CKfYAL4Kxy3gQRUXdIc.jpg",
+  "video": "https://dl4.hotshare.click/Moviesda.Mobi_-_Bachelor_Prasad_2025_Original_1080p_HD.mp4",
+  "alt": "https://dl2.hotshare.click/Moviesda.Mobi_-_Bachelor_Prasad_2025_Original_720p_HD.mp4",
+  "1080Url": "https://play.onestream.watch/stream/page/93771",
+  "720Url": "https://play.onestream.watch/stream/page/93774",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "quality": "1080p",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "09 November 2025",
+    "fileSize": "1.38 GB",
+    "streamURL": "https://dl4.hotshare.click/Moviesda.Mobi_-_Bachelor_Prasad_2025_Original_1080p_HD.mp4"
+  },
+  "id": "bachelor-prasad-2025",
+  "mature": "",
+  "categories": ""
+},
+{
+  "type": "movie",
+  "title": "Bhaje Vaayu Vegam (2025)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/mvYvH5TYe66axlE5CII3tdwXDcF.jpg",
+  "video": "https://s10.hotshare.link/Bhaje_Vaayu_Vegam_2025_Original_1080p_HD.mp4",
+  "alt": "https://dl3.hotshare.click/Bhaje_Vaayu_Vegam_2025_Original_720p_HD.mp4",
+  "1080Url": "https://play.onestream.watch/stream/page/93797",
+  "720Url": "https://play.onestream.watch/stream/page/93800",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "quality": "1080p",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "09 November 2025",
+    "fileSize": "1.55 GB",
+    "streamURL": "https://s10.hotshare.link/Bhaje_Vaayu_Vegam_2025_Original_1080p_HD.mp4"
+  },
+  "id": "bhaje-vaayu-vegam-2025",
+  "mature": "",
+  "categories": ""
+},
+{
+  "type": "movie",
+  "title": "Kiss (2025)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/8GqbavoU41HijvHcNk589yqxK9N.jpg",
+  "video": "https://s08.hotshare.link/Moviesda.Mobi_-_Kiss_2025_Original_1080p_HD.mp4",
+  "alt": "https://dl7.hotshare.click/Moviesda.Mobi_-_Kiss_2025_Original_720p_HD.mp4",
+  "1080Url": "https://play.onestream.watch/stream/page/93732",
+  "720Url": "https://play.onestream.watch/stream/page/93737",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "quality": "1080p",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "09 November 2025",
+    "fileSize": "1.65 GB",
+    "streamURL": "https://s08.hotshare.link/Moviesda.Mobi_-_Kiss_2025_Original_1080p_HD.mp4"
+  },
+  "id": "kiss-2025",
+  "mature": "",
+  "categories": ""
+},
+{
+  "type": "movie",
+  "title": "Mithra Mandali (2025)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/A1nFTGWgoP1FAiDsE0NJXTVjORk.jpg",
+  "video": "https://s01.hotshare.link/Moviesda.Mobi_-_Mithra_Mandali_2025_Original_1080p_HD.mp4",
+  "alt": "https://dl1.hotshare.click/Moviesda.Mobi_-_Mithra_Mandali_2025_Original_720p_HD.mp4",
+  "1080Url": "https://play.onestream.watch/stream/page/93721",
+  "720Url": "https://play.onestream.watch/stream/page/93726",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "quality": "1080p",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "09 November 2025",
+    "fileSize": "1.58 GB",
+    "streamURL": "https://s01.hotshare.link/Moviesda.Mobi_-_Mithra_Mandali_2025_Original_1080p_HD.mp4"
+  },
+  "id": "mithra-mandali-2025",
+  "mature": "",
+  "categories": ""
+},
+{
+  "type": "movie",
+  "title": "Samsaram Adhu Minsaram (1986)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/5EUdQON8LpgXFXeHWb3ike97e45.jpg",
+  "video": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Samsaram%20Adhu%20Minsaram%20(1986)/Samsaram%20Adhu%20Minsaram%20(Original)/Samsaram%20Adhu%20Minsaram%20(1080p%20HD)/Moviesda.Mobi%20-%20Samsaram%20Adhu%20Minsaram%201986%20Original%201080p%20HD.mp4?h=39d1d7ba4ea503afbd27dfe9630386c7e2afb90e&e=1763561084",
+  "alt": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Samsaram%20Adhu%20Minsaram%20(1986)/Samsaram%20Adhu%20Minsaram%20(Original)/Samsaram%20Adhu%20Minsaram%20(720p%20HD)/Moviesda.Mobi%20-%20Samsaram%20Adhu%20Minsaram%201986%20Original%20720p%20HD.mp4?h=5f7584e4127fae7ebebbae0df3937098d618eef4&e=1763561084",
+  "1080Url": "https://play.onestream.watch/stream/page/93707",
+  "720Url": "https://play.onestream.watch/stream/page/93712",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "quality": "1080p",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "09 November 2025",
+    "fileSize": "1.61 GB",
+    "streamURL": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Samsaram%20Adhu%20Minsaram%20(1986)/Samsaram%20Adhu%20Minsaram%20(Original)/Samsaram%20Adhu%20Minsaram%20(1080p%20HD)/Moviesda.Mobi%20-%20Samsaram%20Adhu%20Minsaram%201986%20Original%201080p%20HD.mp4?h=39d1d7ba4ea503afbd27dfe9630386c7e2afb90e&e=1763561084"
+  },
+  "id": "samsaram-adhu-minsaram-1986",
+  "mature": "",
+  "categories": ""
+},
+{
+  "type": "movie",
+  "title": "Sathyaa (1988)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/bfcfKf8EBjpkhgV9mZmoL3V8rGe.jpg",
+  "video": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Sathyaa%20(1988)/Sathyaa%20(Original)/Sathyaa%20(1080p%20HD)/Moviesda.Mobi%20-%20Sathyaa%201988%20Original%201080p%20HD.mp4?h=498b15c45a5e1c44e24bcfaadbae1d2838ee0020&e=1763561084",
+  "alt": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Sathyaa%20(1988)/Sathyaa%20(Original)/Sathyaa%20(720p%20HD)/Moviesda.Mobi%20-%20Sathyaa%201988%20Original%20720p%20HD.mp4?h=9d237eaa27843a792229f6292b7f90e31e164de7&e=1763561084",
+  "1080Url": "https://play.onestream.watch/stream/page/93766",
+  "720Url": "https://play.onestream.watch/stream/page/93764",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "quality": "1080p",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "09 November 2025",
+    "fileSize": "1.60 GB",
+    "streamURL": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Sathyaa%20(1988)/Sathyaa%20(Original)/Sathyaa%20(1080p%20HD)/Moviesda.Mobi%20-%20Sathyaa%201988%20Original%201080p%20HD.mp4?h=498b15c45a5e1c44e24bcfaadbae1d2838ee0020&e=1763561084"
+  },
+  "id": "sathyaa-1988",
+  "mature": "",
+  "categories": ""
+},
+{
+  "type": "movie",
   "title": "Bad Girl (2025)",
   "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/1vCLv1AyDP5aeNCMJqw7RVCLkSp.jpg",
   "video": "https://dl8.hotshare.click/Moviesda.Mobi_-_Bad_Girl_2025_Original_1080p_HD.mp4",
@@ -29309,6 +29510,343 @@
   },
 {
   "type": "series",
+  "id": "asyoustoodby-s01",
+  "title": "As You Stood By Season 1 (2025)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/6ZX3RxTbC8LrAq4sTSzOe4RLLxv.jpg",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "09 November 2025",
+    "Season": "S01"
+  },
+  "episodes": [
+    {
+      "id": "as-you-stood-by-s1e1",
+      "season": 1,
+      "episode": 1,
+      "title": "Episode 1",
+      "videoUrl": "https://s01.dubshare.one/isaiDub.me_-_As_You_Stood_By_2025_Season_01_Epi_01_.mp4",
+      "streamURL": "https://s01.dubshare.one/isaiDub.me_-_As_You_Stood_By_2025_Season_01_Epi_01_.mp4",
+      "lookUrl": "https://dub.onestream.watch/stream/video/102211"
+    },
+    {
+      "id": "as-you-stood-by-s1e2",
+      "season": 1,
+      "episode": 2,
+      "title": "Episode 2",
+      "videoUrl": "https://s02.dubshare.one/isaiDub.me_-_As_You_Stood_By_2025_Season_01_Epi_02_.mp4",
+      "streamURL": "https://s02.dubshare.one/isaiDub.me_-_As_You_Stood_By_2025_Season_01_Epi_02_.mp4",
+      "lookUrl": "https://dub.onestream.watch/stream/video/102212"
+    },
+    {
+      "id": "as-you-stood-by-s1e3",
+      "season": 1,
+      "episode": 3,
+      "title": "Episode 3",
+      "videoUrl": "https://s03.dubshare.one/isaiDub.me_-_As_You_Stood_By_2025_Season_01_Epi_03_.mp4",
+      "streamURL": "https://s03.dubshare.one/isaiDub.me_-_As_You_Stood_By_2025_Season_01_Epi_03_.mp4",
+      "lookUrl": "https://dub.onestream.watch/stream/video/102213"
+    },
+    {
+      "id": "as-you-stood-by-s1e4",
+      "season": 1,
+      "episode": 4,
+      "title": "Episode 4",
+      "videoUrl": "https://s03.dubshare.one/isaiDub.me_-_As_You_Stood_By_2025_Season_01_Epi_04_.mp4",
+      "streamURL": "https://s03.dubshare.one/isaiDub.me_-_As_You_Stood_By_2025_Season_01_Epi_04_.mp4",
+      "lookUrl": "https://dub.onestream.watch/stream/video/102214"
+    },
+    {
+      "id": "as-you-stood-by-s1e5",
+      "season": 1,
+      "episode": 5,
+      "title": "Episode 5",
+      "videoUrl": "https://s02.dubshare.one/isaiDub.me_-_As_You_Stood_By_2025_Season_01_Epi_05_.mp4",
+      "streamURL": "https://s02.dubshare.one/isaiDub.me_-_As_You_Stood_By_2025_Season_01_Epi_05_.mp4",
+      "lookUrl": "https://dub.onestream.watch/stream/video/102215"
+    },
+    {
+      "id": "as-you-stood-by-s1e6",
+      "season": 1,
+      "episode": 6,
+      "title": "Episode 6",
+      "videoUrl": "https://s03.dubshare.one/isaiDub.me_-_As_You_Stood_By_2025_Season_01_Epi_06_.mp4",
+      "streamURL": "https://s03.dubshare.one/isaiDub.me_-_As_You_Stood_By_2025_Season_01_Epi_06_.mp4",
+      "lookUrl": "https://dub.onestream.watch/stream/video/102216"
+    },
+    {
+      "id": "as-you-stood-by-s1e7",
+      "season": 1,
+      "episode": 7,
+      "title": "Episode 7",
+      "videoUrl": "https://s02.dubshare.one/isaiDub.me_-_As_You_Stood_By_2025_Season_01_Epi_07_.mp4",
+      "streamURL": "https://s02.dubshare.one/isaiDub.me_-_As_You_Stood_By_2025_Season_01_Epi_07_.mp4",
+      "lookUrl": "https://dub.onestream.watch/stream/video/102217"
+    },
+    {
+      "id": "as-you-stood-by-s1e8",
+      "season": 1,
+      "episode": 8,
+      "title": "Episode 8",
+      "videoUrl": "https://s03.dubshare.one/isaiDub.me_-_As_You_Stood_By_2025_Season_01_Epi_08_.mp4",
+      "streamURL": "https://s03.dubshare.one/isaiDub.me_-_As_You_Stood_By_2025_Season_01_Epi_08_.mp4",
+      "lookUrl": "https://dub.onestream.watch/stream/video/102218"
+    }
+  ]
+},
+{
+  "type": "series",
+  "id": "deathbylightning-s01",
+  "title": "Death by Lightning Season 1 (2025)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/KyUrz3GA1FML3XnKkY795XxDxN.jpg",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "09 November 2025",
+    "Season": "S01"
+  },
+  "episodes": [
+    {
+      "id": "death-by-lightning-s1e1",
+      "season": 1,
+      "episode": 1,
+      "title": "Episode 1",
+      "videoUrl": "https://s01.dubshare.one/isaiDub.me_-_Death_by_Lightning_2025_Season_01_Epi_01_.mp4",
+      "streamURL": "https://s01.dubshare.one/isaiDub.me_-_Death_by_Lightning_2025_Season_01_Epi_01_.mp4",
+      "lookUrl": "https://dub.onestream.watch/stream/video/102181"
+    },
+    {
+      "id": "death-by-lightning-s1e2",
+      "season": 1,
+      "episode": 2,
+      "title": "Episode 2",
+      "videoUrl": "https://s01.dubshare.one/isaiDub.me_-_Death_by_Lightning_2025_Season_01_Epi_02_.mp4",
+      "streamURL": "https://s01.dubshare.one/isaiDub.me_-_Death_by_Lightning_2025_Season_01_Epi_02_.mp4",
+      "lookUrl": "https://dub.onestream.watch/stream/video/102182"
+    },
+    {
+      "id": "death-by-lightning-s1e3",
+      "season": 1,
+      "episode": 3,
+      "title": "Episode 3",
+      "videoUrl": "https://s03.dubshare.one/isaiDub.me_-_Death_by_Lightning_2025_Season_01_Epi_03_.mp4",
+      "streamURL": "https://s03.dubshare.one/isaiDub.me_-_Death_by_Lightning_2025_Season_01_Epi_03_.mp4",
+      "lookUrl": "https://dub.onestream.watch/stream/video/102183"
+    },
+    {
+      "id": "death-by-lightning-s1e4",
+      "season": 1,
+      "episode": 4,
+      "title": "Episode 4",
+      "videoUrl": "https://s01.dubshare.one/isaiDub.me_-_Death_by_Lightning_2025_Season_01_Epi_04_.mp4",
+      "streamURL": "https://s01.dubshare.one/isaiDub.me_-_Death_by_Lightning_2025_Season_01_Epi_04_.mp4",
+      "lookUrl": "https://dub.onestream.watch/stream/video/102184"
+    }
+  ]
+},
+{
+  "type": "series",
+  "id": "maharani-s04",
+  "title": "Maharani Season 4 (2025)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/630GpKD3YUbIaHWTBKWEG6ZH7MW.jpg",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "09 November 2025",
+    "Season": "S04"
+  },
+  "episodes": [
+    {
+      "id": "maharani-s4e1",
+      "season": 4,
+      "episode": 1,
+      "title": "Episode 1",
+      "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Maharani_2025_Season_04__Epi_01_.mp4",
+      "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Maharani_2025_Season_04__Epi_01_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93740"
+    },
+    {
+      "id": "maharani-s4e2",
+      "season": 4,
+      "episode": 2,
+      "title": "Episode 2",
+      "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Maharani_2025_Season_04__Epi_02_.mp4",
+      "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Maharani_2025_Season_04__Epi_02_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93741"
+    },
+    {
+      "id": "maharani-s4e3",
+      "season": 4,
+      "episode": 3,
+      "title": "Episode 3",
+      "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Maharani_2025_Season_04__Epi_03_.mp4",
+      "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Maharani_2025_Season_04__Epi_03_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93742"
+    },
+    {
+      "id": "maharani-s4e4",
+      "season": 4,
+      "episode": 4,
+      "title": "Episode 4",
+      "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Maharani_2025_Season_04__Epi_04_.mp4",
+      "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Maharani_2025_Season_04__Epi_04_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93743"
+    },
+    {
+      "id": "maharani-s4e5",
+      "season": 4,
+      "episode": 5,
+      "title": "Episode 5",
+      "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Maharani_2025_Season_04__Epi_05_.mp4",
+      "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Maharani_2025_Season_04__Epi_05_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93744"
+    },
+    {
+      "id": "maharani-s4e6",
+      "season": 4,
+      "episode": 6,
+      "title": "Episode 6",
+      "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Maharani_2025_Season_04__Epi_06_.mp4",
+      "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Maharani_2025_Season_04__Epi_06_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93745"
+    },
+    {
+      "id": "maharani-s4e7",
+      "season": 4,
+      "episode": 7,
+      "title": "Episode 7",
+      "videoUrl": "https://big3.uptoweb.link/Moviesda.Mobi_-_Maharani_2025_Season_04__Epi_07_.mp4",
+      "streamURL": "https://big3.uptoweb.link/Moviesda.Mobi_-_Maharani_2025_Season_04__Epi_07_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93746"
+    },
+    {
+      "id": "maharani-s4e8",
+      "season": 4,
+      "episode": 8,
+      "title": "Episode 8",
+      "videoUrl": "https://big3.uptoweb.link/Moviesda.Mobi_-_Maharani_2025_Season_04__Epi_08_.mp4",
+      "streamURL": "https://big3.uptoweb.link/Moviesda.Mobi_-_Maharani_2025_Season_04__Epi_08_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93801"
+    }
+  ]
+},
+{
+  "type": "series",
+  "id": "maxtonhall-s02",
+  "title": "Maxton Hall Season 2 (2025)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/29Fp7mBANFwPlDlvPcZ5IG6oVul.jpg",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "09 November 2025",
+    "Season": "S02"
+  },
+  "episodes": [
+    {
+      "id": "maxton-hall-s2e1",
+      "season": 2,
+      "episode": 1,
+      "title": "Episode 1",
+      "videoUrl": "https://s01.dubshare.one/isaiDub.io_-_Maxton_Hall_2025_Season_02_Epi_01_.mp4",
+      "streamURL": "https://s01.dubshare.one/isaiDub.io_-_Maxton_Hall_2025_Season_02_Epi_01_.mp4",
+      "lookUrl": "https://dub.onestream.watch/stream/video/102221"
+    },
+    {
+      "id": "maxton-hall-s2e2",
+      "season": 2,
+      "episode": 2,
+      "title": "Episode 2",
+      "videoUrl": "https://s01.dubshare.one/isaiDub.io_-_Maxton_Hall_2025_Season_02_Epi_02_.mp4",
+      "streamURL": "https://s01.dubshare.one/isaiDub.io_-_Maxton_Hall_2025_Season_02_Epi_02_.mp4",
+      "lookUrl": "https://dub.onestream.watch/stream/video/102222"
+    },
+    {
+      "id": "maxton-hall-s2e3",
+      "season": 2,
+      "episode": 3,
+      "title": "Episode 3",
+      "videoUrl": "https://s02.dubshare.one/isaiDub.io_-_Maxton_Hall_2025_Season_02_Epi_03_.mp4",
+      "streamURL": "https://s02.dubshare.one/isaiDub.io_-_Maxton_Hall_2025_Season_02_Epi_03_.mp4",
+      "lookUrl": "https://dub.onestream.watch/stream/video/102223"
+    }
+  ]
+},
+{
+  "type": "series",
+  "id": "network-s01",
+  "title": "Network Season 1 (2025)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/u7DXtB0wzrUZpoUeHQYjjb9YeHy.jpg",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "09 November 2025",
+    "Season": "S01"
+  },
+  "episodes": [
+    {
+      "id": "network-s1e1",
+      "season": 1,
+      "episode": 1,
+      "title": "Episode 1",
+      "videoUrl": "https://big3.uptoweb.link/Moviesda.Mobi_-_Network_2025_Season_01__Epi_01_.mp4",
+      "streamURL": "https://big3.uptoweb.link/Moviesda.Mobi_-_Network_2025_Season_01__Epi_01_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93749"
+    },
+    {
+      "id": "network-s1e2",
+      "season": 1,
+      "episode": 2,
+      "title": "Episode 2",
+      "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Network_2025_Season_01__Epi_02_.mp4",
+      "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Network_2025_Season_01__Epi_02_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93750"
+    },
+    {
+      "id": "network-s1e3",
+      "season": 1,
+      "episode": 3,
+      "title": "Episode 3",
+      "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Network_2025_Season_01__Epi_03_.mp4",
+      "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Network_2025_Season_01__Epi_03_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93751"
+    },
+    {
+      "id": "network-s1e4",
+      "season": 1,
+      "episode": 4,
+      "title": "Episode 4",
+      "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Network_2025_Season_01__Epi_04_.mp4",
+      "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Network_2025_Season_01__Epi_04_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93752"
+    },
+    {
+      "id": "network-s1e5",
+      "season": 1,
+      "episode": 5,
+      "title": "Episode 5",
+      "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Network_2025_Season_01__Epi_05_.mp4",
+      "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Network_2025_Season_01__Epi_05_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93753"
+    }
+  ]
+},  
+{
+  "type": "series",
   "id": "squidgamethechallenge-s02",
   "title": "Squid Game The Challenge Season 2 (2025)",
   "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/1758WusuH1OQiMkwF56Rnx1kcNK.jpg",
@@ -29950,7 +30488,7 @@
       "genres": "",
       "language": "Tamil",
       "movieRating": "",
-      "lastUpdated": "04 November 2025",
+      "lastUpdated": "09 November 2025",
       "Season": "S09"
     },
     "episodes": [
@@ -30232,6 +30770,42 @@
       "videoUrl": "https://big3.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_31___Day_30_.mp4",
       "streamURL": "https://big3.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_31___Day_30_.mp4",
       "lookUrl": "https://play.onestream.watch/stream/page/93704"
+    },
+	{
+      "id": "bigg-boss-s9e32",
+      "season": 9,
+      "episode": 32,
+      "title": "Day 31 - 05 November 2025",
+      "videoUrl": "https://big3.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_32___Day_31_.mp4",
+      "streamURL": "https://big3.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_32___Day_31_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93713"
+    },
+    {
+      "id": "bigg-boss-s9e33",
+      "season": 9,
+      "episode": 33,
+      "title": "Day 32 - 06 November 2025",
+      "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_33___Day_32_.mp4",
+      "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_33___Day_32_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93727"
+    },
+    {
+      "id": "bigg-boss-s9e34",
+      "season": 9,
+      "episode": 34,
+      "title": "Day 33 - 07 November 2025",
+      "videoUrl": "https://big3.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_34___Day_33_.mp4",
+      "streamURL": "https://big3.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_34___Day_33_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93767"
+    },
+    {
+      "id": "bigg-boss-s9e35",
+      "season": 9,
+      "episode": 35,
+      "title": "Day 34 - 08 November 2025",
+      "videoUrl": "https://big3.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_35___Day_34_.mp4",
+      "streamURL": "https://big3.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_35___Day_34_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93793"
     }
     ]
   },
@@ -30246,7 +30820,7 @@
       "genres": "",
       "language": "Tamil",
       "movieRating": "",
-      "lastUpdated": "01 November 2025",
+      "lastUpdated": "09 November 2025",
       "Season": "S02"
     },
     "episodes": [
@@ -30357,6 +30931,42 @@
       "videoUrl": "https://big3.uptoweb.link/Moviesda.Mobi_-_Heart_Beat_2025_Season_02__Epi_96_.mp4",
       "streamURL": "https://big3.uptoweb.link/Moviesda.Mobi_-_Heart_Beat_2025_Season_02__Epi_96_.mp4",
       "lookUrl": "https://play.onestream.watch/stream/page/93585"
+    },
+	{
+      "id": "heart-beat-s2e97",
+      "season": 2,
+      "episode": 97,
+      "title": "Episode 97",
+      "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Heart_Beat_2025_Season_02__Epi_97_.mp4",
+      "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Heart_Beat_2025_Season_02__Epi_97_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93715"
+    },
+    {
+      "id": "heart-beat-s2e98",
+      "season": 2,
+      "episode": 98,
+      "title": "Episode 98",
+      "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Heart_Beat_2025_Season_02__Epi_98_.mp4",
+      "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Heart_Beat_2025_Season_02__Epi_98_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93716"
+    },
+    {
+      "id": "heart-beat-s2e99",
+      "season": 2,
+      "episode": 99,
+      "title": "Episode 99",
+      "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Heart_Beat_2025_Season_02__Epi_99_.mp4",
+      "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Heart_Beat_2025_Season_02__Epi_99_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93717"
+    },
+    {
+      "id": "heart-beat-s2e100",
+      "season": 2,
+      "episode": 100,
+      "title": "Episode 100",
+      "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Heart_Beat_2025_Season_02__Epi_100_.mp4",
+      "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Heart_Beat_2025_Season_02__Epi_100_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93714"
     }
     ]
   },
@@ -31572,7 +32182,7 @@
       "genres": "",
       "language": "Tamil",
       "movieRating": "",
-      "lastUpdated": "01 November 2025",
+      "lastUpdated": "09 November 2025",
       "Season": "S01"
     },
     "episodes": [
@@ -31827,6 +32437,42 @@
       "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_28_.mp4",
       "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_28_.mp4",
       "lookUrl": "https://play.onestream.watch/stream/page/93630"
+    },
+	{
+      "id": "police-police-s1e29",
+      "season": 1,
+      "episode": 29,
+      "title": "Episode 29",
+      "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_29_.mp4",
+      "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_29_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93782"
+    },
+    {
+      "id": "police-police-s1e30",
+      "season": 1,
+      "episode": 30,
+      "title": "Episode 30",
+      "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_30_.mp4",
+      "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_30_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93783"
+    },
+    {
+      "id": "police-police-s1e31",
+      "season": 1,
+      "episode": 31,
+      "title": "Episode 31",
+      "videoUrl": "https://big3.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_31_.mp4",
+      "streamURL": "https://big3.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_31_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93784"
+    },
+    {
+      "id": "police-police-s1e32",
+      "season": 1,
+      "episode": 32,
+      "title": "Episode 32",
+      "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_32_.mp4",
+      "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_32_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93785"
     }
     ]
   },
@@ -32161,7 +32807,7 @@
       "genres": "",
       "language": "Tamil",
       "movieRating": "",
-      "lastUpdated": "01 November 2025",
+      "lastUpdated": "09 November 2025",
       "quality": "S01"
     },
     "episodes": [
@@ -32452,6 +33098,42 @@
       "videoUrl": "https://big3.uptoweb.link/Moviesda.Mobi_-_Rambo_in_love_2025_Season_01__Epi_32_.mp4",
       "streamURL": "https://big3.uptoweb.link/Moviesda.Mobi_-_Rambo_in_love_2025_Season_01__Epi_32_.mp4",
       "lookUrl": "https://play.onestream.watch/stream/page/93589"
+    },
+	{
+      "id": "rambo-in-love-s1e33",
+      "season": 1,
+      "episode": 33,
+      "title": "Episode 33",
+      "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Rambo_in_love_2025_Season_01__Epi_33_.mp4",
+      "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Rambo_in_love_2025_Season_01__Epi_33_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93754"
+    },
+    {
+      "id": "rambo-in-love-s1e34",
+      "season": 1,
+      "episode": 34,
+      "title": "Episode 34",
+      "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Rambo_in_love_2025_Season_01__Epi_34_.mp4",
+      "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Rambo_in_love_2025_Season_01__Epi_34_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93755"
+    },
+    {
+      "id": "rambo-in-love-s1e35",
+      "season": 1,
+      "episode": 35,
+      "title": "Episode 35",
+      "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Rambo_in_love_2025_Season_01__Epi_35_.mp4",
+      "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Rambo_in_love_2025_Season_01__Epi_35_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93756"
+    },
+    {
+      "id": "rambo-in-love-s1e36",
+      "season": 1,
+      "episode": 36,
+      "title": "Episode 36",
+      "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Rambo_in_love_2025_Season_01__Epi_36_.mp4",
+      "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Rambo_in_love_2025_Season_01__Epi_36_.mp4",
+      "lookUrl": "https://play.onestream.watch/stream/page/93757"
     }
     ]
   },
@@ -55735,6 +56417,121 @@
       }
     ]
   },
+{
+  "type": "dubbed",
+  "title": "Predator Badlands (2025)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/sMybEeAn3aFXsIUUcWPSFXlS6qS.jpg",
+  "video": "https://s02.dubshare.one/Predator_Badlands_2025_HQ_PreDVD_1080p_HD.mp4",
+  "alt": "https://s07.dubshare.one/Predator_Badlands_2025_HQ_PreDVD_720p_HD.mp4",
+  "1080Url": "https://dub.onestream.watch/stream/video/102235",
+  "720Url": "https://dub.onestream.watch/stream/video/102239",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "quality": "1080p",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "09 November 2025",
+    "fileSize": "1.71 GB",
+    "streamURL": "https://s02.dubshare.one/Predator_Badlands_2025_HQ_PreDVD_1080p_HD.mp4"
+  },
+  "id": "predator-badlands-2025",
+  "mature": "",
+  "categories": ""
+},
+{
+  "type": "dubbed",
+  "title": "Baramulla (2025)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/uY6arhshTTJRYIfrVtbqREnUNz9.jpg",
+  "video": "https://s01.dubshare.one/Baramulla_2025_Original_1080p_HD.mp4",
+  "alt": "https://s03.dubshare.one/Baramulla_2025_Original_720p_HD.mp4",
+  "1080Url": "https://dub.onestream.watch/stream/video/102204",
+  "720Url": "https://dub.onestream.watch/stream/video/102208",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "quality": "1080p",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "09 November 2025",
+    "fileSize": "1.62 GB",
+    "streamURL": "https://s01.dubshare.one/Baramulla_2025_Original_1080p_HD.mp4"
+  },
+  "id": "baramulla-2025",
+  "mature": "",
+  "categories": ""
+},
+{
+  "type": "dubbed",
+  "title": "Frankenstein (2025)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/v9NLaLBbrkDwq44qG51v8T6sPuI.jpg",
+  "video": "https://s02.dubshare.one/Frankenstein_2025_Original_1080p_HD.mp4",
+  "alt": "https://s01.dubshare.one/Frankenstein_2025_Original_720p_HD.mp4",
+  "1080Url": "https://dub.onestream.watch/stream/video/102196",
+  "720Url": "https://dub.onestream.watch/stream/video/102200",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "quality": "1080p",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "09 November 2025",
+    "fileSize": "1.61 GB",
+    "streamURL": "https://s02.dubshare.one/Frankenstein_2025_Original_1080p_HD.mp4"
+  },
+  "id": "frankenstein-2025",
+  "mature": "",
+  "categories": ""
+},
+{
+  "type": "dubbed",
+  "title": "Vina Before 7 Days (2024)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/qWedkukryS8hAXHjP2SRCsVuYjf.jpg",
+  "video": "https://s05.dubshare.one/Vina_Before_7_Days_2024_Original_1080p_HD.mp4",
+  "alt": "https://s06.dubshare.one/Vina_Before_7_Days_2024_Original_720p_HD.mp4",
+  "1080Url": "https://dub.onestream.watch/stream/video/102227",
+  "720Url": "https://dub.onestream.watch/stream/video/102231",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "quality": "1080p",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "09 November 2025",
+    "fileSize": "1.37 GB",
+    "streamURL": "https://s05.dubshare.one/Vina_Before_7_Days_2024_Original_1080p_HD.mp4"
+  },
+  "id": "vina-before-7-days-2024",
+  "mature": "",
+  "categories": ""
+},
+{
+  "type": "dubbed",
+  "title": "Jujutsu Kaisen Zero (2021)",
+  "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/23oJaeBh0FDk2mQ2P240PU9Xxfh.jpg",
+  "video": "https://s04.dubshare.one/Jujutsu_Kaisen_Zero_2021_Original_1080p_HD.mp4",
+  "alt": "https://s10.dubshare.one/Jujutsu_Kaisen_Zero_2021_Original_720p_HD.mp4",
+  "1080Url": "https://dub.onestream.watch/stream/video/102188",
+  "720Url": "https://dub.onestream.watch/stream/video/102192",
+  "details": {
+    "director": "",
+    "starring": "",
+    "genres": "",
+    "quality": "1080p",
+    "language": "Tamil",
+    "movieRating": "",
+    "lastUpdated": "09 November 2025",
+    "fileSize": "1.44 GB",
+    "streamURL": "https://s04.dubshare.one/Jujutsu_Kaisen_Zero_2021_Original_1080p_HD.mp4"
+  },
+  "id": "jujutsu-kaisen-zero-2021",
+  "mature": "",
+  "categories": ""
+},  
 {
   "type": "dubbed",
   "title": "Terminal (2018)",
