@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Advanced Video Player - PanguPlay</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+  <!-- HLS and DASH Support -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: #0a0a0a;
+  color: #fff;
+  overflow: hidden;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+@supports not (height: 100dvh) {
+  body {
+    height: 100vh;
+  }
+  .player-container {
+    height: 100vh;
+  }
+}
+
+.player-container {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  margin: 0;
+  background: #000;
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  cursor: none;
+}
+
+.video-wrapper.show-cursor {
+  cursor: default;
+}
+
+    video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      transition: object-fit 0.3s ease;
+    }
+
+    video.fit { object-fit: contain; }
+    video.fill { object-fit: cover; }
+    video.stretch { object-fit: fill; }
+    video.zoom { object-fit: cover; transform: scale(1.5); }
+
+    .loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 100;
+      display: none;
+    }
+
+    .loading.show { display: block; }
+
+    .spinner {
+      border: 4px solid rgba(255,255,255,0.1);
+      border-top: 4px solid #ff4500;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .controls {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.9));
+      padding: 20px 15px 15px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 50;
+    }
+
+    .controls.show {
+      opacity: 1;
+    }
+	
+	/* Show controls by default when video hasn't loaded */
+	body:not(.video-loaded) .controls {
+      opacity: 1;
+    }
+
+    body:not(.video-loaded) .top-controls {
+      opacity: 1;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 5px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .progress-filled {
+      height: 100%;
+      background: #ff4500;
+      border-radius: 5px;
+      width: 0%;
+      transition: width 0.1s;
+    }
+
+    .progress-buffer {
+      position: absolute;
+      height: 100%;
+      background: rgba(255,255,255,0.5);
+      border-radius: 5px;
+      width: 0%;
+    }
+
+    .control-buttons {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .control-buttons button {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 18px;
+      padding: 5px;
+      transition: color 0.2s;
+    }
+
+    .control-buttons button:hover {
+      color: #ff4500;
+    }
+
+    .time-display {
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .spacer {
+      flex: 1;
+    }
+
+    .top-controls {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 15px;
+      background: linear-gradient(rgba(0,0,0,0.9), transparent);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 50;
+    }
+
+    .top-controls.show {
+      opacity: 1;
+    }
+
+    .top-btn {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+
+    .top-btn:hover {
+      background: rgba(255,69,0,0.8);
+    }
+
+    .video-title {
+      font-size: 18px;
+      font-weight: 600;
+      flex: 1;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0 10px;
+    }
+
+    .settings-menu {
+      position: absolute;
+      bottom: 60px;
+      right: 15px;
+      background: rgba(20,20,20,0.95);
+      border-radius: 8px;
+      padding: 10px 0;
+      min-width: 200px;
+      display: none;
+      z-index: 60;
+      backdrop-filter: blur(10px);
+    }
+
+    .settings-menu.show {
+      display: block;
+    }
+
+    .menu-item {
+      padding: 12px 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s;
+      font-size: 14px;
+    }
+
+    .menu-item:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .menu-item.active {
+      color: #ff4500;
+    }
+
+    .menu-section {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: 5px;
+      padding-top: 5px;
+    }
+
+    .episode-selector {
+      position: absolute;
+      bottom: 70px;
+      left: 0;
+      right: 0;
+      background: rgba(20,20,20,0.98);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      display: none;
+      max-height: 300px;
+      overflow-y: auto;
+      z-index: 60;
+      border-top: 2px solid #333;
+    }
+
+    .episode-selector.show {
+      display: block;
+    }
+
+    .episode-selector h3 {
+      margin-bottom: 15px;
+      color: #ff4500;
+    }
+
+    .episode-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .episode-btn {
+      padding: 12px;
+      background: #2a2a2a;
+      border: 2px solid transparent;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+    }
+
+    .episode-btn:hover {
+      background: #3a3a3a;
+    }
+
+    .episode-btn.active {
+      border-color: #ff4500;
+      background: #ff4500;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.9);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 25px;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    .hud {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.8);
+      padding: 20px 30px;
+      border-radius: 12px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      z-index: 80;
+    }
+
+    .hud.show {
+      display: flex;
+    }
+
+    .hud i {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .hud-text {
+      font-size: 18px;
+    }
+
+    .tap-zone {
+      position: absolute;
+      top: 0;
+      width: 30%;
+      height: 100%;
+      z-index: 40;
+    }
+
+    .tap-zone-left { left: 0; }
+    .tap-zone-right { right: 0; }
+
+    .video-wrapper:-webkit-full-screen {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .video-wrapper:-moz-full-screen {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .video-wrapper:fullscreen {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .video-wrapper:fullscreen .episode-selector {
+      max-height: 50vh;
+    }
+
+    @media (max-width: 768px) {
+      .control-buttons {
+        gap: 8px;
+      }
+
+      .control-buttons button {
+        font-size: 16px;
+        padding: 3px;
+      }
+
+      .video-title {
+        font-size: 14px;
+      }
+
+      .top-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+      }
+
+      .time-display {
+        font-size: 12px;
+      }
+
+      .episode-selector {
+        max-height: 200px;
+        padding: 15px;
+      }
+
+      .episode-grid {
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        gap: 8px;
+      }
+
+      .episode-btn {
+        padding: 10px 8px;
+        font-size: 13px;
+      }
+
+      .settings-menu {
+        bottom: 65px;
+        right: 10px;
+        min-width: 180px;
+      }
+
+      .controls {
+        padding: 15px 10px 10px;
+      }
+
+      .top-controls {
+        padding: 10px;
+      }
+
+      #rewindBtn,
+      #forwardBtn,
+      #castBtn {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .video-title {
+        font-size: 12px;
+        padding: 0 5px;
+      }
+
+      .control-buttons {
+        gap: 6px;
+      }
+
+      .control-buttons button {
+        font-size: 14px;
+      }
+
+      .top-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="player-container">
+    <div class="video-wrapper">
+      <video id="videoPlayer" class="stretch" preload="metadata"></video>
+
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+      </div>
+
+      <div class="hud" id="hud">
+        <i id="hudIcon" class="fas fa-volume-up"></i>
+        <div class="hud-text" id="hudText">50%</div>
+      </div>
+
+      <div class="tap-zone tap-zone-left" id="tapLeft"></div>
+      <div class="tap-zone tap-zone-right" id="tapRight"></div>
+
+      <div class="top-controls" id="topControls">
+        <button class="top-btn" id="backBtn" title="Go Back">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="video-title" id="videoTitle">Video Player</div>
+		<button class="top-btn" id="reloadBtn" title="Reload">
+		  <i class="fas fa-rotate-right"></i>
+		</button>
+        <button class="top-btn" id="shareBtn" title="Share">
+          <i class="fas fa-share-alt"></i>
+        </button>
+      </div>
+
+      <div class="controls" id="controls">
+        <div class="progress-bar" id="progressBar">
+          <div class="progress-buffer" id="progressBuffer"></div>
+          <div class="progress-filled" id="progressFilled"></div>
+        </div>
+        
+        <div class="control-buttons">
+          <button id="playPauseBtn" title="Play/Pause"><i class="fas fa-play"></i></button>
+          <button id="rewindBtn" title="Rewind 10s"><i class="fas fa-rotate-left"></i></button>
+          <button id="forwardBtn" title="Forward 10s"><i class="fas fa-rotate-right"></i></button>
+          <button id="nextEpisodeBtn" title="Next Episode" style="display:none;"><i class="fas fa-step-forward"></i></button>
+          <button id="volumeBtn" title="Mute/Unmute"><i class="fas fa-volume-up"></i></button>
+          <div class="time-display">
+            <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+          </div>
+          <div class="spacer"></div>
+          <button id="episodesBtn" title="Episodes" style="display:none;"><i class="fas fa-list"></i></button>
+		  <button id="linkBtn" title="Copy Link"><i class="fas fa-link"></i></button>
+          <button id="downloadBtn" title="Download"><i class="fas fa-download"></i></button>
+          <button id="castBtn" title="Cast"><i class="fas fa-tv"></i></button>
+          <button id="settingsBtn" title="Settings"><i class="fas fa-cog"></i></button>
+          <button id="fullscreenBtn" title="Fullscreen"><i class="fas fa-expand"></i></button>
+        </div>
+      </div>
+
+      <div class="settings-menu" id="settingsMenu">
+        <div class="menu-item" id="qualityMenu" style="display: none;">
+          <span>Quality</span>
+          <span id="currentQuality">Auto</span>
+        </div>
+        <div class="menu-section" id="qualityOptions" style="display:none;"></div>
+        <div class="menu-item" id="aspectMenu">
+          <span>Aspect Ratio</span>
+          <span id="currentAspect">Fit</span>
+        </div>
+        <div class="menu-section" id="aspectOptions" style="display:none;">
+          <div class="menu-item aspect-option" data-mode="fit">Fit to Screen</div>
+          <div class="menu-item aspect-option" data-mode="fill">Fill Screen</div>
+          <div class="menu-item aspect-option" data-mode="stretch">Stretch</div>
+          <div class="menu-item aspect-option" data-mode="zoom">Zoom</div>
+        </div>
+        <div class="menu-item" id="speedMenu">
+          <span>Playback Speed</span>
+          <span id="currentSpeed">1x</span>
+        </div>
+        <div class="menu-section" id="speedOptions" style="display:none;">
+          <div class="menu-item speed-option" data-speed="0.5">0.5x</div>
+          <div class="menu-item speed-option" data-speed="0.75">0.75x</div>
+          <div class="menu-item speed-option" data-speed="1" class="active">1x</div>
+          <div class="menu-item speed-option" data-speed="1.25">1.25x</div>
+          <div class="menu-item speed-option" data-speed="1.5">1.5x</div>
+          <div class="menu-item speed-option" data-speed="2">2x</div>
+        </div>
+      </div>
+
+      <div class="episode-selector" id="episodeSelector">
+        <h3>Select Episode</h3>
+        <div class="episode-grid" id="episodeGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ===== PLAYER STATE =====
+    const player = {
+      video: document.getElementById('videoPlayer'),
+      data: null,
+      currentSource: null,
+      currentQuality: '1080p',
+      aspectMode: 'fit',
+      episodes: [],
+      currentEpisodeIndex: 0,
+      currentEpisodeId: null,
+	  currentEpisode: null,
+      resumeData: {},
+      isPlaying: false,
+      controlsTimeout: null,
+	  isPinching: false,
+	  isDoubleTapping: false,
+	  isKeyboardSeeking: false,
+      hlsInstance: null,
+      dashInstance: null
+    };
+
+    // ===== DETECT VIDEO FORMAT =====
+    function detectVideoFormat(url) {
+      const urlLower = url.toLowerCase();
+      if (urlLower.includes('.m3u8')) {
+        return 'hls';
+      } else if (urlLower.includes('.mpd')) {
+        return 'dash';
+      } else {
+        return 'native';
+      }
+    }
+
+    // ===== CLEANUP PLAYERS =====
+    function cleanupPlayers() {
+      if (player.hlsInstance) {
+        player.hlsInstance.destroy();
+        player.hlsInstance = null;
+      }
+      
+      if (player.dashInstance) {
+        player.dashInstance.reset();
+        player.dashInstance = null;
+      }
+      
+      player.video.removeAttribute('src');
+      player.video.load();
+    }
+
+    // ===== WORKER FETCH LOGIC =====
+    async function fetchFromWorker(lookUrl) {
+      try {
+        const workerUrl = `https://md.porus-in2012.workers.dev/?target=${encodeURIComponent(lookUrl)}`;
+        console.log('Worker URL:', workerUrl);
+        
+        const response = await fetch(workerUrl);
+        console.log('Worker response status:', response.status);
+        
+        if (!response.ok) {
+          console.error('Worker response not OK:', response.status, response.statusText);
+          throw new Error(`Worker fetch failed: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Worker response data:', data);
+        
+        if (data && data.video) {
+          console.log('Worker returned video URL:', data.video);
+          return {
+            videoUrl: data.video,
+            downloadUrl: data.link || data.video
+          };
+        }
+        
+        console.warn('Worker response missing video field');
+        return null;
+      } catch (error) {
+        console.error('Worker fetch error:', error.message, error);
+        return null;
+      }
+    }
+
+    // ===== INITIALIZATION =====
+    async function init() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get('id');
+      const directUrl = urlParams.get('url');
+
+      loadResumeData();
+
+      if (directUrl) {
+        await loadDirectVideo(decodeURIComponent(directUrl));
+      } else if (id) {
+        await loadFromDatabase(id);
+      } else {
+        showToast('No video source provided');
+      }
+
+      setupEventListeners();
+    }
+
+    // ===== LOAD VIDEO =====
+    async function loadDirectVideo(url) {
+      player.data = { title: 'Video Player', type: 'movie' };
+      player.currentSource = { videoUrl: url, downloadUrl: url };
+      player.currentEpisodeId = 'direct-video';
+      document.getElementById('videoTitle').textContent = 'Video Player';
+      document.title = 'Video Player - PanguPlay';
+      
+      document.getElementById('qualityMenu').style.display = 'none';
+      
+      loadVideoSource(url, true);
+    }
+
+    async function loadFromDatabase(id) {
+      try {
+        showLoading();
+        const response = await fetch('alt.json');
+        const database = await response.json();
+        const data = database.find(item => item.id === id);
+        
+        if (!data) {
+          showToast('Video not found');
+          return;
+        }
+
+        player.data = data;
+        document.getElementById('videoTitle').textContent = data.title;
+		document.title = data.title + ' - PanguPlay';
+
+        if (data.type === 'series' && data.episodes) {
+          player.episodes = data.episodes;
+          document.getElementById('episodesBtn').style.display = 'block';
+          
+          const lastWatchedIndex = getLastWatchedEpisodeIndex(data.id);
+          await loadEpisode(lastWatchedIndex);
+        } else {
+          player.currentEpisodeId = id;
+          await loadMovieSources(data);
+        }
+      } catch (error) {
+        console.error('Load error:', error);
+        showToast('Failed to load video');
+      } finally {
+        hideLoading();
+      }
+    }
+
+    async function loadMovieSources(data) {
+      const sources = [];
+      
+      if (data.lookUrl) {
+        const result = await fetchFromWorker(data.lookUrl);
+        if (result) {
+          sources.push({ quality: '1080p', ...result });
+        } else if (data.video) {
+          sources.push({ quality: '1080p', videoUrl: data.video, downloadUrl: data.video });
+        }
+      } else {
+        if (data['1080Url']) {
+          const result = await fetchFromWorker(data['1080Url']);
+          if (result) sources.push({ quality: '1080p', ...result });
+        }
+        
+        if (data['720Url']) {
+          const result = await fetchFromWorker(data['720Url']);
+          if (result) sources.push({ quality: '720p', ...result });
+        }
+
+        if (sources.length === 0) {
+          if (data.video) sources.push({ quality: '1080p', videoUrl: data.video, downloadUrl: data.video });
+          if (data.alt) sources.push({ quality: '720p', videoUrl: data.alt, downloadUrl: data.alt });
+        }
+      }
+
+      if (sources.length > 0) {
+        player.currentSource = sources[0];
+        setupQualityOptions(sources);
+        loadVideoSource(sources[0].videoUrl, true);
+      } else {
+        showToast('No video sources available');
+      }
+    }
+
+    async function loadEpisode(index) {
+      if (!player.episodes[index]) return;
+      
+      showLoading();
+      const episode = player.episodes[index];
+      player.currentEpisodeIndex = index;
+      player.currentEpisodeId = player.data.id;
+	  player.currentEpisode = episode.id;
+      
+      document.getElementById('videoTitle').textContent = 
+        `S${episode.season || episode.Season}E${episode.episode} - ${episode.title || 'Episode ' + episode.episode}`;
+	  document.title = `${player.data.title} - S${episode.season || episode.Season}E${episode.episode} - PanguPlay`;	
+
+      let source = null;
+      if (episode.lookUrl) {
+        source = await fetchFromWorker(episode.lookUrl);
+      }
+      
+      if (!source && episode.videoUrl) {
+        source = { videoUrl: episode.videoUrl, downloadUrl: episode.videoUrl };
+      }
+
+      if (source) {
+        player.currentSource = source;
+        loadVideoSource(source.videoUrl, true);
+      } else {
+        showToast('Episode source not available');
+      }
+      
+      renderEpisodes();
+      updateNextButton();
+      hideLoading();
+    }
+
+    // ===== LOAD VIDEO SOURCE WITH FORMAT DETECTION =====
+    function loadVideoSource(url, autoplay = false) {
+      cleanupPlayers();
+      
+      const format = detectVideoFormat(url);
+      
+      if (format === 'hls') {
+        loadHLS(url, autoplay);
+      } else if (format === 'dash') {
+        loadDASH(url, autoplay);
+      } else {
+        loadNative(url, autoplay);
+      }
+    }
+
+    // ===== LOAD HLS STREAMS =====
+    function loadHLS(url, autoplay) {
+      if (Hls.isSupported()) {
+        player.hlsInstance = new Hls({
+          enableWorker: true,
+          lowLatencyMode: true,
+          backBufferLength: 90
+        });
+        
+        player.hlsInstance.loadSource(url);
+        player.hlsInstance.attachMedia(player.video);
+        
+        player.hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
+          console.log('HLS manifest loaded');
+          setupHLSQualityOptions();
+          handleVideoLoaded(autoplay);
+        });
+        
+        player.hlsInstance.on(Hls.Events.ERROR, (event, data) => {
+          console.error('HLS error:', data);
+          if (data.fatal) {
+            switch(data.type) {
+              case Hls.ErrorTypes.NETWORK_ERROR:
+                showToast('Network error, trying to recover...');
+                player.hlsInstance.startLoad();
+                break;
+              case Hls.ErrorTypes.MEDIA_ERROR:
+                showToast('Media error, trying to recover...');
+                player.hlsInstance.recoverMediaError();
+                break;
+              default:
+                showToast('Fatal error, cannot play video');
+                player.hlsInstance.destroy();
+                break;
+            }
+          }
+        });
+      } else if (player.video.canPlayType('application/vnd.apple.mpegurl')) {
+        player.video.src = url;
+        player.video.load();
+        player.video.addEventListener('loadedmetadata', () => handleVideoLoaded(autoplay), { once: true });
+      } else {
+        showToast('HLS not supported in this browser');
+      }
+    }
+
+    // ===== LOAD DASH STREAMS =====
+    function loadDASH(url, autoplay) {
+      player.dashInstance = dashjs.MediaPlayer().create();
+      player.dashInstance.initialize(player.video, url, false);
+      
+      player.dashInstance.updateSettings({
+        streaming: {
+          fastSwitchEnabled: true,
+          bufferTimeAtTopQuality: 30,
+          bufferTimeAtTopQualityLongForm: 60
+        }
+      });
+      
+      player.dashInstance.on(dashjs.MediaPlayer.events.STREAM_INITIALIZED, () => {
+        console.log('DASH stream initialized');
+        setupDASHQualityOptions();
+        handleVideoLoaded(autoplay);
+      });
+      
+      player.dashInstance.on(dashjs.MediaPlayer.events.ERROR, (e) => {
+        console.error('DASH error:', e);
+        showToast('Error loading DASH stream');
+      });
+    }
+
+    // ===== LOAD NATIVE VIDEO FORMATS =====
+    function loadNative(url, autoplay) {
+      player.video.src = url;
+      player.video.load();
+      player.video.addEventListener('loadedmetadata', () => handleVideoLoaded(autoplay), { once: true });
+    }
+
+    // ===== HANDLE VIDEO LOADED =====
+    function handleVideoLoaded(autoplay) {
+      const resumeTime = getResumeTime();
+      if (resumeTime > 0 && resumeTime < player.video.duration - 30) {
+        player.video.currentTime = resumeTime;
+        showToast(`Resumed from ${formatTime(resumeTime)}`);
+      }
+      
+      if (autoplay) {
+        player.video.play().then(() => {
+        }).catch(err => {
+          console.log('Autoplay prevented:', err);
+          showToast('Click to play');
+          clearTimeout(player.controlsTimeout);
+        });
+      } else {
+        clearTimeout(player.controlsTimeout);
+      }
+    }
+
+    // ===== SETUP HLS QUALITY OPTIONS =====
+    function setupHLSQualityOptions() {
+      if (!player.hlsInstance) return;
+      
+      const levels = player.hlsInstance.levels;
+      if (levels.length <= 1) {
+        document.getElementById('qualityMenu').style.display = 'none';
+        return;
+      }
+      
+      document.getElementById('qualityMenu').style.display = 'flex';
+      const container = document.getElementById('qualityOptions');
+      container.innerHTML = '';
+      
+      const autoItem = document.createElement('div');
+      autoItem.className = 'menu-item quality-option active';
+      autoItem.textContent = 'Auto';
+      autoItem.onclick = () => {
+        player.hlsInstance.currentLevel = -1;
+        document.getElementById('currentQuality').textContent = 'Auto';
+        document.querySelectorAll('.quality-option').forEach(el => el.classList.remove('active'));
+        autoItem.classList.add('active');
+        showToast('Quality: Auto');
+        hideSettings();
+      };
+      container.appendChild(autoItem);
+      
+      levels.forEach((level, index) => {
+        const item = document.createElement('div');
+        item.className = 'menu-item quality-option';
+        item.textContent = `${level.height}p`;
+        item.onclick = () => {
+          player.hlsInstance.currentLevel = index;
+          document.getElementById('currentQuality').textContent = `${level.height}p`;
+          document.querySelectorAll('.quality-option').forEach(el => el.classList.remove('active'));
+          item.classList.add('active');
+          showToast(`Quality: ${level.height}p`);
+          hideSettings();
+        };
+        container.appendChild(item);
+      });
+    }
+
+    // ===== SETUP DASH QUALITY OPTIONS =====
+    function setupDASHQualityOptions() {
+      if (!player.dashInstance) return;
+      
+      const bitrates = player.dashInstance.getBitrateInfoListFor('video');
+      if (bitrates.length <= 1) {
+        document.getElementById('qualityMenu').style.display = 'none';
+        return;
+      }
+      
+      document.getElementById('qualityMenu').style.display = 'flex';
+      const container = document.getElementById('qualityOptions');
+      container.innerHTML = '';
+      
+      const autoItem = document.createElement('div');
+      autoItem.className = 'menu-item quality-option active';
+      autoItem.textContent = 'Auto';
+      autoItem.onclick = () => {
+        player.dashInstance.updateSettings({
+          streaming: {
+            abr: { autoSwitchBitrate: { video: true } }
+          }
+        });
+        document.getElementById('currentQuality').textContent = 'Auto';
+        document.querySelectorAll('.quality-option').forEach(el => el.classList.remove('active'));
+        autoItem.classList.add('active');
+        showToast('Quality: Auto');
+        hideSettings();
+      };
+      container.appendChild(autoItem);
+      
+      bitrates.forEach((bitrate, index) => {
+        const item = document.createElement('div');
+        item.className = 'menu-item quality-option';
+        item.textContent = `${bitrate.height}p`;
+        item.onclick = () => {
+          player.dashInstance.updateSettings({
+            streaming: {
+              abr: { autoSwitchBitrate: { video: false } }
+            }
+          });
+          player.dashInstance.setQualityFor('video', index);
+          document.getElementById('currentQuality').textContent = `${bitrate.height}p`;
+          document.querySelectorAll('.quality-option').forEach(el => el.classList.remove('active'));
+          item.classList.add('active');
+          showToast(`Quality: ${bitrate.height}p`);
+          hideSettings();
+        };
+        container.appendChild(item);
+      });
+    }
+
+    // ===== QUALITY SELECTION =====
+    function setupQualityOptions(sources) {
+      const container = document.getElementById('qualityOptions');
+      const qualityMenu = document.getElementById('qualityMenu');
+      
+      container.innerHTML = '';
+      
+      if (sources.length <= 1) {
+        qualityMenu.style.display = 'none';
+        return;
+      }
+      
+      qualityMenu.style.display = 'flex';
+      
+      sources.forEach(source => {
+        const item = document.createElement('div');
+        item.className = 'menu-item quality-option';
+        item.textContent = source.quality;
+        item.dataset.quality = source.quality;
+        item.dataset.url = source.videoUrl;
+        item.dataset.download = source.downloadUrl;
+        
+        if (source.quality === player.currentQuality) {
+          item.classList.add('active');
+        }
+        
+        item.onclick = () => changeQuality(source);
+        container.appendChild(item);
+      });
+    }
+
+    function changeQuality(source) {
+      if (!player.hlsInstance && !player.dashInstance) {
+        const currentTime = player.video.currentTime;
+        const wasPlaying = !player.video.paused;
+        
+        player.currentQuality = source.quality;
+        player.currentSource = source;
+        
+        player.video.src = source.videoUrl;
+        player.video.currentTime = currentTime;
+        
+        if (wasPlaying) {
+          player.video.play();
+        }
+        
+        document.getElementById('currentQuality').textContent = source.quality;
+        document.querySelectorAll('.quality-option').forEach(el => el.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        showToast(`Quality: ${source.quality}`);
+        hideSettings();
+      }
+    }
+
+    // ===== ASPECT RATIO =====
+    function changeAspectRatio(mode) {
+      player.video.className = mode;
+      player.aspectMode = mode;
+      document.getElementById('currentAspect').textContent = 
+        mode.charAt(0).toUpperCase() + mode.slice(1);
+      
+      document.querySelectorAll('.aspect-option').forEach(el => el.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      showToast(`Aspect: ${mode}`);
+      hideSettings();
+    }
+
+    // ===== PLAYBACK SPEED =====
+    function changeSpeed(speed) {
+      player.video.playbackRate = speed;
+      document.getElementById('currentSpeed').textContent = speed + 'x';
+      
+      document.querySelectorAll('.speed-option').forEach(el => el.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      showToast(`Speed: ${speed}x`);
+      hideSettings();
+    }
+
+    // ===== EPISODES =====
+    function renderEpisodes() {
+      const grid = document.getElementById('episodeGrid');
+      grid.innerHTML = '';
+      
+      player.episodes.forEach((ep, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'episode-btn';
+        btn.textContent = `EP ${ep.episode}`;
+        if (index === player.currentEpisodeIndex) {
+          btn.classList.add('active');
+        }
+        btn.onclick = () => {
+          loadEpisode(index);
+          toggleEpisodes();
+        };
+        grid.appendChild(btn);
+      });
+    }
+
+    function toggleEpisodes() {
+      const selector = document.getElementById('episodeSelector');
+      const isShowing = selector.classList.toggle('show');
+      
+      if (isShowing) {
+        hideSettings();
+        if (player.episodes.length > 0 && selector.children.length <= 1) {
+          renderEpisodes();
+        }
+      }
+    }
+
+    function updateNextButton() {
+      const nextBtn = document.getElementById('nextEpisodeBtn');
+      if (player.episodes.length > 0) {
+        nextBtn.style.display = 'block';
+        nextBtn.disabled = player.currentEpisodeIndex >= player.episodes.length - 1;
+        nextBtn.style.opacity = nextBtn.disabled ? '0.5' : '1';
+      } else {
+        nextBtn.style.display = 'none';
+      }
+    }
+
+    function playNextEpisode() {
+      if (player.currentEpisodeIndex < player.episodes.length - 1) {
+        loadEpisode(player.currentEpisodeIndex + 1);
+      }
+    }
+
+    // ===== RESUME PLAYBACK =====
+    function loadResumeData() {
+      const saved = localStorage.getItem('playerResume');
+      if (saved) {
+        try {
+          player.resumeData = JSON.parse(saved);
+        } catch (e) {
+          player.resumeData = {};
+        }
+      }
+    }
+
+    function getResumeTime() {
+      if (!player.currentEpisodeId || !player.resumeData[player.currentEpisodeId]) {
+        return 0;
+      }
+      
+      const savedData = player.resumeData[player.currentEpisodeId];
+      
+      if (player.data.type === 'series') {
+        if (savedData.episodeId === player.currentEpisode) {
+          return savedData.time;
+        }
+        return 0;
+      } else {
+        return savedData.time;
+      }
+    }
+	
+    function getLastWatchedEpisodeIndex(seriesId) {
+      if (!seriesId || !player.resumeData[seriesId]) {
+        return 0;
+      }
+      
+      const savedData = player.resumeData[seriesId];
+      
+      if (typeof savedData.episodeIndex === 'number') {
+        return savedData.episodeIndex;
+      }
+      
+      if (savedData.episodeId) {
+        const index = player.episodes.findIndex(ep => ep.id === savedData.episodeId);
+        return index >= 0 ? index : 0;
+      }
+      
+      return 0;
+    }	
+
+    function saveResumeTime() {
+      if (!player.currentEpisodeId || player.video.currentTime <= 5) return;
+      
+      if (player.data.type === 'series') {
+        player.resumeData[player.currentEpisodeId] = {
+          episodeId: player.currentEpisode,
+          episodeIndex: player.currentEpisodeIndex,
+          time: player.video.currentTime,
+          duration: player.video.duration,
+          timestamp: Date.now()
+        };
+      } else {
+        player.resumeData[player.currentEpisodeId] = {
+          time: player.video.currentTime,
+          duration: player.video.duration,
+          timestamp: Date.now()
+        };
+      }
+      
+      localStorage.setItem('playerResume', JSON.stringify(player.resumeData));
+    }
+
+    // ===== CONTROLS =====
+    function togglePlayPause() {
+      if (player.video.paused) {
+        player.video.play();
+      } else {
+        player.video.pause();
+      }
+    }
+
+    function seek(seconds) {
+      player.video.currentTime = Math.max(0, Math.min(player.video.currentTime + seconds, player.video.duration));
+      
+      if ((!player.video.paused && !player.video.ended) || player.isDoubleTapping || player.isKeyboardSeeking) {
+        clearTimeout(player.controlsTimeout);
+        hideControls();
+      }
+    }
+
+    function toggleMute() {
+      player.video.muted = !player.video.muted;
+      updateVolumeIcon();
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.querySelector('.video-wrapper').requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    function updateVolumeIcon() {
+      const icon = document.getElementById('volumeBtn').querySelector('i');
+      if (player.video.muted || player.video.volume === 0) {
+        icon.className = 'fas fa-volume-mute';
+      } else if (player.video.volume < 0.5) {
+        icon.className = 'fas fa-volume-down';
+      } else {
+        icon.className = 'fas fa-volume-up';
+      }
+    }
+
+    function updatePlayPauseIcon() {
+      const icon = document.getElementById('playPauseBtn').querySelector('i');
+      icon.className = player.video.paused ? 'fas fa-play' : 'fas fa-pause';
+    }
+
+    function updateProgress() {
+      const percent = (player.video.currentTime / player.video.duration) * 100;
+      document.getElementById('progressFilled').style.width = percent + '%';
+      
+      document.getElementById('currentTime').textContent = formatTime(player.video.currentTime);
+      document.getElementById('duration').textContent = formatTime(player.video.duration);
+      
+      if (player.video.currentTime % 30 < 0.5) {
+        saveResumeTime();
+      }
+    }
+
+    function updateBuffer() {
+      if (player.video.buffered.length > 0) {
+        const bufferedEnd = player.video.buffered.end(player.video.buffered.length - 1);
+        const percent = (bufferedEnd / player.video.duration) * 100;
+        document.getElementById('progressBuffer').style.width = percent + '%';
+      }
+    }
+
+    function formatTime(seconds) {
+      if (isNaN(seconds)) return '0:00';
+      
+      const hours = Math.floor(seconds / 3600);
+      const mins = Math.floor((seconds % 3600) / 60);
+      const secs = Math.floor(seconds % 60);
+      
+      if (hours > 0) {
+        return `${hours}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+      } else {
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+      }
+    }
+
+    // ===== AUTO HIDE CONTROLS =====
+    function showControls() {
+      if (player.isDoubleTapping || player.isKeyboardSeeking) {
+        return;
+      }
+      
+      document.getElementById('controls').classList.add('show');
+      document.getElementById('topControls').classList.add('show');
+      document.querySelector('.video-wrapper').classList.add('show-cursor');
+      
+      clearTimeout(player.controlsTimeout);
+      
+      if (!player.video.paused && !player.video.ended && player.video.currentTime > 0) {
+        player.controlsTimeout = setTimeout(() => {
+          hideControls();
+        }, 1000);
+      }
+    }
+
+    function hideControls() {
+      if (!player.video.paused && !player.video.ended) {
+        document.getElementById('controls').classList.remove('show');
+        document.getElementById('topControls').classList.remove('show');
+	    document.querySelector('.video-wrapper').classList.remove('show-cursor');
+      }
+    }
+
+    // ===== SETTINGS MENU =====
+    function toggleSettings() {
+      const menu = document.getElementById('settingsMenu');
+      menu.classList.toggle('show');
+    }
+
+    function hideSettings() {
+      document.getElementById('settingsMenu').classList.remove('show');
+      document.getElementById('qualityOptions').style.display = 'none';
+      document.getElementById('aspectOptions').style.display = 'none';
+      document.getElementById('speedOptions').style.display = 'none';
+    }
+
+    // ===== ACTIONS =====
+    function shareVideo() {
+      const url = window.location.href;
+      if (navigator.share) {
+        navigator.share({
+          title: player.data.title,
+          url: url
+        }).then(() => showToast('Shared successfully'))
+          .catch(() => showToast('Share failed'));
+      } else {
+        navigator.clipboard.writeText(url);
+        showToast('Link copied to clipboard');
+      }
+    }
+
+    function downloadVideo() {
+      if (!player.currentSource) {
+        showToast('No download source available');
+        return;
+      }
+      
+      const url = player.currentSource.downloadUrl || player.currentSource.videoUrl;
+      const format = detectVideoFormat(url);
+      
+      if (format === 'hls' || format === 'dash') {
+        showToast('Cannot download streaming formats directly');
+        return;
+      }
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = player.data.title + '.mp4';
+      a.click();
+      showToast('Download started');
+    }
+	
+    function copyLink() {
+      if (!player.currentSource) {
+        showToast('No link available');
+        return;
+      }
+      
+      const link = player.currentSource.downloadUrl || player.currentSource.videoUrl;
+      navigator.clipboard.writeText(link)
+        .then(() => showToast('Link copied to clipboard'))
+        .catch(() => showToast('Failed to copy link'));
+    }	
+
+    function castVideo() {
+      if (typeof cast === 'undefined') {
+        showToast('Cast not available');
+        return;
+      }
+      
+      const session = cast.framework.CastContext.getInstance().getCurrentSession();
+      if (session) {
+        loadMediaToCast(session);
+      } else {
+        cast.framework.CastContext.getInstance().requestSession()
+          .then(() => loadMediaToCast(cast.framework.CastContext.getInstance().getCurrentSession()))
+          .catch(() => showToast('Cast failed'));
+      }
+    }
+
+    function loadMediaToCast(session) {
+      const url = player.currentSource.videoUrl;
+      const format = detectVideoFormat(url);
+      
+      let contentType = 'video/mp4';
+      if (format === 'hls') {
+        contentType = 'application/x-mpegurl';
+      } else if (format === 'dash') {
+        contentType = 'application/dash+xml';
+      }
+      
+      const mediaInfo = new chrome.cast.media.MediaInfo(url, contentType);
+      mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
+      mediaInfo.metadata.title = player.data.title;
+      
+      const request = new chrome.cast.media.LoadRequest(mediaInfo);
+      session.loadMedia(request)
+        .then(() => showToast('Casting started'))
+        .catch(() => showToast('Cast failed'));
+    }
+
+    // ===== UI HELPERS =====
+    function showLoading() {
+      document.getElementById('loading').classList.add('show');
+    }
+
+    function hideLoading() {
+      document.getElementById('loading').classList.remove('show');
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function showHUD(icon, text) {
+      const hud = document.getElementById('hud');
+      const hudIcon = document.getElementById('hudIcon');
+      const hudText = document.getElementById('hudText');
+      
+      hudIcon.className = 'fas ' + icon;
+      hudText.textContent = text;
+      hud.classList.add('show');
+      
+      setTimeout(() => hud.classList.remove('show'), 1000);
+    }
+
+    // ===== EVENT LISTENERS =====
+    function setupEventListeners() {
+      player.video.addEventListener('play', () => {
+        player.isPlaying = true;
+        document.body.classList.add('video-loaded');
+        updatePlayPauseIcon();
+        showControls();
+      });
+	  
+      player.video.addEventListener('playing', () => {
+        player.isPlaying = true;
+        hideLoading();
+        
+        if (player.isDoubleTapping || player.isKeyboardSeeking) {
+          clearTimeout(player.controlsTimeout);
+          hideControls();
+          
+          setTimeout(() => {
+            player.isDoubleTapping = false;
+            player.isKeyboardSeeking = false;
+          }, 300);
+        } else {
+          showControls();
+        }
+      });
+
+      player.video.addEventListener('pause', () => {
+        player.isPlaying = false;
+        updatePlayPauseIcon();
+        saveResumeTime();
+        clearTimeout(player.controlsTimeout);
+        showControls();
+      });
+
+      player.video.addEventListener('timeupdate', updateProgress);
+      player.video.addEventListener('progress', updateBuffer);
+      player.video.addEventListener('volumechange', updateVolumeIcon);
+      player.video.addEventListener('ended', () => {
+        saveResumeTime();
+        player.isPlaying = false;
+        if (player.episodes.length > 0 && player.currentEpisodeIndex < player.episodes.length - 1) {
+          setTimeout(() => {
+            showToast('Playing next episode in 3 seconds...');
+            setTimeout(() => {
+              loadEpisode(player.currentEpisodeIndex + 1);
+            }, 3000);
+          }, 1000);
+        }
+      });
+
+      player.video.addEventListener('loadstart', showLoading);
+
+      player.video.addEventListener('canplay', () => {
+        hideLoading();
+        if (player.isDoubleTapping || player.isKeyboardSeeking) {
+          clearTimeout(player.controlsTimeout);
+          hideControls();
+        }
+      });
+
+      player.video.addEventListener('waiting', () => {
+        showLoading();
+        if (player.isDoubleTapping || player.isKeyboardSeeking) {
+          clearTimeout(player.controlsTimeout);
+          hideControls();
+        }
+      });
+
+      document.getElementById('playPauseBtn').onclick = togglePlayPause;
+      document.getElementById('rewindBtn').onclick = () => seek(-10);
+      document.getElementById('forwardBtn').onclick = () => seek(10);
+      document.getElementById('nextEpisodeBtn').onclick = playNextEpisode;
+      document.getElementById('volumeBtn').onclick = toggleMute;
+      document.getElementById('fullscreenBtn').onclick = toggleFullscreen;
+      document.getElementById('settingsBtn').onclick = toggleSettings;
+      document.getElementById('backBtn').onclick = () => window.history.back();
+	  document.getElementById('reloadBtn').onclick = () => window.location.reload();
+      document.getElementById('shareBtn').onclick = shareVideo;
+	  document.getElementById('linkBtn').onclick = copyLink;
+      document.getElementById('downloadBtn').onclick = downloadVideo;
+      document.getElementById('castBtn').onclick = castVideo;
+      document.getElementById('episodesBtn').onclick = toggleEpisodes;
+
+      document.getElementById('progressBar').onclick = (e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const percent = (e.clientX - rect.left) / rect.width;
+        player.video.currentTime = percent * player.video.duration;
+      };
+
+      document.getElementById('qualityMenu').onclick = () => {
+        const qualityOptions = document.getElementById('qualityOptions');
+        const aspectOptions = document.getElementById('aspectOptions');
+        const speedOptions = document.getElementById('speedOptions');
+        
+        aspectOptions.style.display = 'none';
+        speedOptions.style.display = 'none';
+        
+        qualityOptions.style.display = qualityOptions.style.display === 'none' ? 'block' : 'none';
+      };
+
+      document.getElementById('aspectMenu').onclick = () => {
+        const qualityOptions = document.getElementById('qualityOptions');
+        const aspectOptions = document.getElementById('aspectOptions');
+        const speedOptions = document.getElementById('speedOptions');
+        
+        qualityOptions.style.display = 'none';
+        speedOptions.style.display = 'none';
+        
+        aspectOptions.style.display = aspectOptions.style.display === 'none' ? 'block' : 'none';
+      };
+
+      document.getElementById('speedMenu').onclick = () => {
+        const qualityOptions = document.getElementById('qualityOptions');
+        const aspectOptions = document.getElementById('aspectOptions');
+        const speedOptions = document.getElementById('speedOptions');
+        
+        qualityOptions.style.display = 'none';
+        aspectOptions.style.display = 'none';
+        
+        speedOptions.style.display = speedOptions.style.display === 'none' ? 'block' : 'none';
+      };
+
+      document.querySelectorAll('.aspect-option').forEach(el => {
+        el.onclick = () => changeAspectRatio(el.dataset.mode);
+      });
+
+      document.querySelectorAll('.speed-option').forEach(el => {
+        el.onclick = () => changeSpeed(parseFloat(el.dataset.speed));
+      });
+
+      setupDoubleTap();
+      document.addEventListener('keydown', handleKeyboard);
+      setupTouchGestures();
+
+      const videoWrapper = document.querySelector('.video-wrapper');
+
+      let mouseMoveTimeout;
+      videoWrapper.addEventListener('mousemove', (e) => {
+        videoWrapper.classList.add('show-cursor');
+        showControls();
+        clearTimeout(mouseMoveTimeout);
+        
+        if (!player.video.paused && !player.video.ended) {
+          mouseMoveTimeout = setTimeout(() => {
+            hideControls();
+            videoWrapper.classList.remove('show-cursor');
+          }, 3000);
+        }
+      });
+
+      videoWrapper.addEventListener('mouseleave', () => {
+        videoWrapper.classList.remove('show-cursor');
+        
+        if (!player.video.paused && !player.video.ended) {
+          clearTimeout(player.controlsTimeout);
+          clearTimeout(mouseMoveTimeout);
+          hideControls();
+        }
+      });
+
+      videoWrapper.addEventListener('touchstart', (e) => {
+        if (!e.target.closest('.tap-zone')) {
+          showControls();
+        }
+      });
+
+      let clickTimeout;
+      player.video.addEventListener('click', (e) => {
+        if (e.target.closest('.controls') || e.target.closest('.tap-zone')) {
+          return;
+        }
+        
+        clearTimeout(clickTimeout);
+        clickTimeout = setTimeout(() => {
+          if (!player.video.paused) {
+            const controls = document.getElementById('controls');
+            
+            if (controls.classList.contains('show')) {
+              hideControls();
+              clearTimeout(player.controlsTimeout);
+            } else {
+              showControls();
+              clearTimeout(player.controlsTimeout);
+              player.controlsTimeout = setTimeout(() => {
+                hideControls();
+              }, 3000);
+            }
+          } else {
+            togglePlayPause();
+          }
+        }, 10);
+      });
+
+      let centerTapTime = 0;
+
+      videoWrapper.addEventListener('touchend', (e) => {
+        if (e.target.closest('.controls') || 
+            e.target.closest('.tap-zone') || 
+            e.target.closest('.top-controls') ||
+            e.target.closest('.settings-menu') ||
+            e.target.closest('.episode-selector') ||
+	        player.isPinching ||
+            player.isDoubleTapping) {
+          return;
+        }
+        
+        const currentTime = Date.now();
+        const timeSinceLastTap = currentTime - centerTapTime;
+        
+        if (timeSinceLastTap > 350) {
+          e.preventDefault();
+          
+          const tapX = e.changedTouches[0].clientX;
+          const screenWidth = window.innerWidth;
+          const leftZone = screenWidth * 0.3;
+          const rightZone = screenWidth * 0.7;
+          
+          if (tapX > leftZone && tapX < rightZone) {
+            togglePlayPause();
+          } else {
+            showControls();
+            if (!player.video.paused) {
+              clearTimeout(player.controlsTimeout);
+              player.controlsTimeout = setTimeout(() => {
+                hideControls();
+              }, 3000);
+            }
+          }
+        }
+        
+        centerTapTime = currentTime;
+      }, { passive: false });
+
+      document.addEventListener('click', (e) => {
+        const settingsMenu = document.getElementById('settingsMenu');
+        const episodeSelector = document.getElementById('episodeSelector');
+        
+        if (!e.target.closest('.settings-menu') && !e.target.closest('#settingsBtn')) {
+          hideSettings();
+        }
+        
+        if (!e.target.closest('.episode-selector') && !e.target.closest('#episodesBtn')) {
+          episodeSelector.classList.remove('show');
+        }
+      });
+
+      document.addEventListener('fullscreenchange', () => {
+        const icon = document.getElementById('fullscreenBtn').querySelector('i');
+        icon.className = document.fullscreenElement ? 'fas fa-compress' : 'fas fa-expand';
+      });
+    }
+
+    // ===== DOUBLE TAP TO SEEK =====
+    function setupDoubleTap() {
+      let lastTapTime = 0;
+      const doubleTapDelay = 300;
+
+      ['tapLeft', 'tapRight'].forEach(id => {
+        const zone = document.getElementById(id);
+        zone.addEventListener('touchend', (e) => {
+          const currentTime = Date.now();
+          if (currentTime - lastTapTime < doubleTapDelay) {
+            e.preventDefault();
+            player.isDoubleTapping = true;
+            
+            clearTimeout(player.controlsTimeout);
+            hideControls();
+            
+            const seekAmount = id === 'tapLeft' ? -10 : 10;
+            seek(seekAmount);
+          }
+          lastTapTime = currentTime;
+        });
+      });
+    }
+
+    // ===== TOUCH GESTURES =====
+    function setupTouchGestures() {
+      let touchStartY = 0;
+      let touchStartX = 0;
+      let isGesture = false;
+      const videoWrapper = document.querySelector('.video-wrapper');
+
+      videoWrapper.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+          touchStartY = e.touches[0].clientY;
+          touchStartX = e.touches[0].clientX;
+          isGesture = false;
+        } else {
+          touchStartY = 0;
+          touchStartX = 0;
+          isGesture = false;
+        }
+      });
+
+      videoWrapper.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 1 && touchStartY !== 0 && !player.isPinching) {
+          const deltaY = e.touches[0].clientY - touchStartY;
+          const deltaX = e.touches[0].clientX - touchStartX;
+          
+          if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 30) {
+            e.preventDefault();
+            isGesture = true;
+            const isRightSide = touchStartX > window.innerWidth / 2;
+            
+            if (isRightSide) {
+              const volumeChange = -deltaY / 300;
+              player.video.volume = Math.max(0, Math.min(1, player.video.volume + volumeChange));
+              showHUD('fa-volume-up', `${Math.round(player.video.volume * 100)}%`);
+            } else {
+              const brightnessChange = -deltaY / 300;
+			  const currentBrightness = parseFloat(player.video.style.filter.replace('brightness(', '').replace(')', '') || '1');
+			  const brightness = Math.max(0.3, Math.min(1, currentBrightness + brightnessChange));
+              player.video.style.filter = `brightness(${brightness})`;
+              showHUD('fa-sun', `${Math.round(brightness * 100)}%`);
+            }
+            
+            touchStartY = e.touches[0].clientY;
+          }
+        }
+      });
+
+      videoWrapper.addEventListener('touchend', () => {
+        touchStartY = 0;
+        touchStartX = 0;
+        isGesture = false;
+      });
+
+      let initialDistance = null;
+      
+      videoWrapper.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 2) {
+          initialDistance = getDistance(e.touches);
+		  player.isPinching = true;
+        }
+      });
+
+      videoWrapper.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 2 && initialDistance !== null) {
+          e.preventDefault();
+		  player.isPinching = true;
+          const currentDistance = getDistance(e.touches);
+          const diff = currentDistance - initialDistance;
+
+          if (Math.abs(diff) > 30) {
+            const mode = diff > 0 ? 'stretch' : 'fit';
+            changeAspectRatio(mode);
+            initialDistance = null;
+          }
+        }
+      });
+
+      videoWrapper.addEventListener('touchend', (e) => {
+        if (e.touches.length < 2) {
+          initialDistance = null;
+        }
+		
+		if (e.touches.length === 0) {
+			setTimeout(() => {
+			player.isPinching = false;
+		  }, 100);
+		}
+      });
+    }
+
+    function getDistance(touches) {
+      const dx = touches[0].clientX - touches[1].clientX;
+      const dy = touches[0].clientY - touches[1].clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    // ===== KEYBOARD SHORTCUTS =====
+    function handleKeyboard(e) {
+      switch(e.key) {
+        case ' ':
+        case 'k':
+		case '5':
+          e.preventDefault();
+          togglePlayPause();
+          break;
+        case 'ArrowLeft':
+        case '4':
+          e.preventDefault();
+          player.isKeyboardSeeking = true;
+          seek(-10);
+          break;
+        case 'ArrowRight':
+        case '6':
+          e.preventDefault();
+          player.isKeyboardSeeking = true;
+          seek(10);
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          player.video.volume = Math.min(1, player.video.volume + 0.1);
+          showHUD('fa-volume-up', `${Math.round(player.video.volume * 100)}%`);
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          player.video.volume = Math.max(0, player.video.volume - 0.1);
+          showHUD('fa-volume-down', `${Math.round(player.video.volume * 100)}%`);
+          break;
+        case 'm':
+          toggleMute();
+          break;
+        case 'f':
+		case '8':
+		case 'Enter':
+          toggleFullscreen();
+          break;
+        case 'd':
+          downloadVideo();
+          break;
+        case 'n':
+		case '9':
+          if (player.episodes.length > 0 && player.currentEpisodeIndex < player.episodes.length - 1) {
+            loadEpisode(player.currentEpisodeIndex + 1);
+          }
+          break;
+        case 'p':
+		case '7':
+          if (player.episodes.length > 0 && player.currentEpisodeIndex > 0) {
+            loadEpisode(player.currentEpisodeIndex - 1);
+          }
+          break;
+      }
+    }
+
+    // ===== CAST API INITIALIZATION =====
+    window['__onGCastApiAvailable'] = function(isAvailable) {
+      if (isAvailable) {
+        cast.framework.CastContext.getInstance().setOptions({
+          receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
+          autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED,
+        });
+      }
+    };
+
+    // ===== START APPLICATION =====
+    document.addEventListener('DOMContentLoaded', init);
+
+    window.addEventListener('beforeunload', () => {
+      saveResumeTime();
+      cleanupPlayers();
+    });
+  </script>
+</body>
+</html>
