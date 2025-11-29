@@ -1,5 +1,140 @@
 [
   {
+    "type": "dubbed",
+    "title": "The Take (2007)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/kbJ8bjRr0U2wIhomhllEGUQ9071.jpg",
+    "video": "https://s10.dubshare.one/The_Take_2007_Original_1080p_HD.mp4",
+    "details": {
+      "director": "Brad Furman",
+      "starring": "John Leguizamo, Tyrese Gibson",
+      "genres": "Action, Thriller, Drama, Mystery",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "5.4",
+      "lastUpdated": "29 November 2025",
+      "fileSize": "1.54 GB",
+      "streamURL": "https://s10.dubshare.one/The_Take_2007_Original_1080p_HD.mp4"
+    },
+    "id": "the-take-2007",
+    "mature": "",
+    "categories": [
+      "action",
+      "thriller",
+      "drama",
+      "mystery",
+      "john-leguizamo",
+      "tyrese-gibson"
+    ],
+    "alt": "https://s03.dubshare.one/The_Take_2007_Original_720p_HD.mp4",
+    "1080Url": "https://dub.onestream.watch/stream/video/102606",
+    "720Url": "https://dub.onestream.watch/stream/video/102610"
+  },
+  {
+    "type": "dubbed",
+    "title": "Predator Badlands (2025)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/ef2QSeBkrYhAdfsWGXmp0lvH0T1.jpg",
+    "video": "https://s06.dubshare.one/Predator_Badlands_2025_HDRip_Line_Audio_1080p_HD.mp4",
+    "details": {
+      "director": "Dan Trachtenberg",
+      "starring": "Elle Fanning, Dimitrius Schuster-Koloamatangi",
+      "genres": "Action, Science Fiction, Adventure",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "7.4",
+      "lastUpdated": "29 November 2025",
+      "fileSize": "1.52 GB",
+      "streamURL": "https://s06.dubshare.one/Predator_Badlands_2025_HDRip_Line_Audio_1080p_HD.mp4"
+    },
+    "id": "predator-badlands-2025",
+    "mature": "",
+    "categories": [
+      "action",
+      "science-fiction",
+      "adventure",
+      "elle-fanning",
+      "dimitrius-schuster-koloamatangi"
+    ],
+    "alt": "https://s07.dubshare.one/Predator_Badlands_2025_HDRip_Line_Audio_720p_HD.mp4",
+    "1080Url": "https://dub.onestream.watch/stream/video/102585",
+    "720Url": "https://dub.onestream.watch/stream/video/102589"
+  },
+  {
+    "type": "dubbed",
+    "title": "A Nice Indian Boy (2024)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/xfY2FZlnm5uaQbaWR9IYW41J1xG.jpg",
+    "video": "https://s08.dubshare.one/A_Nice_Indian_Boy_2024_Original_1080p_HD.mp4",
+    "details": {
+      "director": "Roshan Sethi",
+      "starring": "Karan Soni, Jonathan Groff",
+      "genres": "Romance, Comedy",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "7.3",
+      "lastUpdated": "29 November 2025",
+      "fileSize": "1.43 GB",
+      "streamURL": "https://s08.dubshare.one/A_Nice_Indian_Boy_2024_Original_1080p_HD.mp4"
+    },
+    "id": "a-nice-indian-boy-2024",
+    "mature": "",
+    "categories": [
+      "romance",
+      "comedy",
+      "karan-soni",
+      "jonathan-groff"
+    ],
+    "alt": "https://s06.dubshare.one/A_Nice_Indian_Boy_2024_Original_720p_HD.mp4",
+    "1080Url": "https://dub.onestream.watch/stream/video/102593",
+    "720Url": "https://dub.onestream.watch/stream/video/102597"
+  },
+  {
+    "type": "movie",
+    "title": "Rajini Gang (2025)",
+    "image": "https://www.themoviedb.org/t/p/w600_and_h900_face/grMIi3H6XrqJQTtJdkzmZtkoYL7.jpg",
+    "video": "https://dl3.hotshare.click/Rajini_Gang_2025_HQ_PreDVD_720p_HD.mp4",
+    "details": {
+      "director": "",
+      "starring": "",
+      "genres": "",
+      "quality": "PreDVD",
+      "language": "Tamil",
+      "movieRating": "",
+      "lastUpdated": "29 November 2025",
+      "fileSize": "1.49 GB",
+      "streamURL": "https://dl3.hotshare.click/Rajini_Gang_2025_HQ_PreDVD_720p_HD.mp4"
+    },
+    "id": "rajini-gang-2025",
+    "mature": "",
+    "categories": [],
+    "lookUrl": "https://play.onestream.watch/stream/page/94287"
+  },
+  {
+    "type": "movie",
+    "title": "Tere Ishk Mein (2025)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/7FsHlW9z7gDhDE4EXAE2WcXUVQj.jpg",
+    "video": "https://dl2.hotshare.cyou/Tere_Ishk_Mein_2025_HQ_PreDVD_720p_HD.mp4",
+    "details": {
+      "director": "Aanand L. Rai",
+      "starring": "Dhanush, Kriti Sanon",
+      "genres": "Romance, Drama, Action",
+      "quality": "PreDVD",
+      "language": "Tamil",
+      "movieRating": "0.0",
+      "lastUpdated": "29 November 2025",
+      "fileSize": "1.50 GB",
+      "streamURL": "https://dl2.hotshare.cyou/Tere_Ishk_Mein_2025_HQ_PreDVD_720p_HD.mp4"
+    },
+    "id": "tere-ishk-mein-2025",
+    "mature": "",
+    "categories": [
+      "romance",
+      "drama",
+      "action",
+      "dhanush",
+      "kriti-sanon"
+    ],
+    "lookUrl": "https://play.onestream.watch/stream/page/94279"
+  },
+  {
     "type": "movie",
     "title": "Aan Paavam Pollathathu (2025)",
     "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/5eZzBvETRK8uDz3mUK0Feio2T5C.jpg",
@@ -32613,7 +32748,7 @@
       "genres": "",
       "language": "Tamil",
       "movieRating": "",
-      "lastUpdated": "27 November 2025",
+      "lastUpdated": "28 November 2025",
       "Season": "S09"
     },
     "episodes": [
@@ -33102,6 +33237,15 @@
         "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_54___Day_53_.mp4",
         "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_54___Day_53_.mp4",
         "lookUrl": "https://play.onestream.watch/stream/page/94218"
+    },
+	{
+        "id": "bigg-boss-s9e55",
+        "season": 9,
+        "episode": 55,
+        "title": "Day 54 - 28 November 2025",
+        "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_55___Day_54_.mp4",
+        "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_55___Day_54_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/94280"
     }
     ]
   },
