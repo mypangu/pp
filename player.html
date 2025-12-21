@@ -446,8 +446,7 @@ body {
       }
 
       #rewindBtn,
-      #forwardBtn,
-      #castBtn {
+      #forwardBtn {
         display: none;
       }
     }
@@ -1442,10 +1441,15 @@ disable-paste='false'>
     function setupEventListeners() {
       player.video.addEventListener('play', () => {
         player.isPlaying = true;
-        document.body.classList.add('video-loaded');
+        //document.body.classList.add('video-loaded');
         updatePlayPauseIcon();
         showControls();
       });
+	  
+	  player.video.addEventListener('loadedmetadata', () => {
+		document.body.classList.add('video-loaded');
+		showControls();
+	  });
 	  
       player.video.addEventListener('playing', () => {
         player.isPlaying = true;
