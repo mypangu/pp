@@ -596,6 +596,8 @@ disable-paste='false'>
 	  isPinching: false,
 	  isDoubleTapping: false,
 	  isKeyboardSeeking: false,
+	  isDragging: false,
+	  isSeeking: false,
       hlsInstance: null,
       dashInstance: null
     };
@@ -1304,7 +1306,7 @@ function handleVideoLoaded(autoplay) {
       
       clearTimeout(player.controlsTimeout);
       
-      if (!player.video.paused && !player.video.ended && player.video.currentTime > 0) {
+      if (!player.video.paused && !player.video.ended && player.video.currentTime > 0 && !player.isSeeking) {
         player.controlsTimeout = setTimeout(() => {
           hideControls();
         }, 1000);
@@ -1312,7 +1314,7 @@ function handleVideoLoaded(autoplay) {
     }
 
     function hideControls() {
-      if (!player.video.paused && !player.video.ended) {
+      if (!player.video.paused && !player.video.ended && !player.isSeeking) {
         document.getElementById('controls').classList.remove('show');
         document.getElementById('topControls').classList.remove('show');
 	    document.querySelector('.video-wrapper').classList.remove('show-cursor');
@@ -1560,11 +1562,63 @@ function loadMediaToCast(session) {
       document.getElementById('castBtn').onclick = castVideo;
       document.getElementById('episodesBtn').onclick = toggleEpisodes;
 
-      document.getElementById('progressBar').onclick = (e) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        const percent = (e.clientX - rect.left) / rect.width;
-        player.video.currentTime = percent * player.video.duration;
-      };
+// Progress bar drag and seek
+const progressBar = document.getElementById('progressBar');
+
+progressBar.addEventListener('mousedown', (e) => {
+  player.isDragging = true;
+  player.isSeeking = true;
+  const rect = progressBar.getBoundingClientRect();
+  const percent = (e.clientX - rect.left) / rect.width;
+  player.video.currentTime = Math.max(0, Math.min(percent * player.video.duration, player.video.duration));
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (player.isDragging) {
+    e.preventDefault();
+    const rect = progressBar.getBoundingClientRect();
+    const percent = Math.max(0, Math.min((e.clientX - rect.left) / rect.width, 1));
+    player.video.currentTime = percent * player.video.duration;
+  }
+});
+
+document.addEventListener('mouseup', () => {
+  if (player.isDragging) {
+    player.isDragging = false;
+    setTimeout(() => {
+      player.isSeeking = false;
+    }, 100);
+  }
+});
+
+// Touch events for mobile
+progressBar.addEventListener('touchstart', (e) => {
+  player.isDragging = true;
+  player.isSeeking = true;
+  const touch = e.touches[0];
+  const rect = progressBar.getBoundingClientRect();
+  const percent = (touch.clientX - rect.left) / rect.width;
+  player.video.currentTime = Math.max(0, Math.min(percent * player.video.duration, player.video.duration));
+});
+
+document.addEventListener('touchmove', (e) => {
+  if (player.isDragging) {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const rect = progressBar.getBoundingClientRect();
+    const percent = Math.max(0, Math.min((touch.clientX - rect.left) / rect.width, 1));
+    player.video.currentTime = percent * player.video.duration;
+  }
+});
+
+document.addEventListener('touchend', () => {
+  if (player.isDragging) {
+    player.isDragging = false;
+    setTimeout(() => {
+      player.isSeeking = false;
+    }, 100);
+  }
+});
 
       document.getElementById('qualityMenu').onclick = () => {
         const qualityOptions = document.getElementById('qualityOptions');
