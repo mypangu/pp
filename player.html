@@ -136,6 +136,58 @@ body {
       width: 0%;
       transition: width 0.1s;
     }
+	
+.progress-filled.dragging {
+  transition: none;
+}
+
+.progress-bar.dragging {
+  height: 8px;
+  cursor: grabbing;
+}
+
+.progress-bar {
+  transition: height 0.2s;
+}
+
+.progress-handle {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 15px;
+  height: 15px;
+  background: #ff4500;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  box-shadow: 0 0 8px rgba(255, 69, 0, 0.5);
+}
+
+.progress-bar:hover .progress-handle,
+.progress-bar.dragging .progress-handle {
+  opacity: 1;
+}
+
+.seek-tooltip {
+  position: absolute;
+  bottom: 20px;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.seek-tooltip.show {
+  opacity: 1;
+}	
 
     .progress-buffer {
       position: absolute;
@@ -506,10 +558,13 @@ body {
       </div>
 
       <div class="controls" id="controls">
-        <div class="progress-bar" id="progressBar">
-          <div class="progress-buffer" id="progressBuffer"></div>
-          <div class="progress-filled" id="progressFilled"></div>
-        </div>
+<div class="progress-bar" id="progressBar">
+  <div class="progress-buffer" id="progressBuffer"></div>
+  <div class="progress-filled" id="progressFilled">
+    <div class="progress-handle" id="progressHandle"></div>
+  </div>
+  <div class="seek-tooltip" id="seekTooltip">0:00</div>
+</div>
         
         <div class="control-buttons">
           <button id="playPauseBtn" title="Play/Pause"><i class="fas fa-play"></i></button>
@@ -598,6 +653,7 @@ disable-paste='false'>
 	  isKeyboardSeeking: false,
 	  isDragging: false,
 	  isSeeking: false,
+	  wasPlayingBeforeSeeking: false,
       hlsInstance: null,
       dashInstance: null
     };
@@ -1260,17 +1316,21 @@ function handleVideoLoaded(autoplay) {
       icon.className = player.video.paused ? 'fas fa-play' : 'fas fa-pause';
     }
 
-    function updateProgress() {
-      const percent = (player.video.currentTime / player.video.duration) * 100;
-      document.getElementById('progressFilled').style.width = percent + '%';
-      
-      document.getElementById('currentTime').textContent = formatTime(player.video.currentTime);
-      document.getElementById('duration').textContent = formatTime(player.video.duration);
-      
-      if (player.video.currentTime % 30 < 0.5) {
-        saveResumeTime();
-      }
-    }
+function updateProgress() {
+  // Don't update progress bar while dragging
+  if (!player.isDragging) {
+    const percent = (player.video.currentTime / player.video.duration) * 100;
+    document.getElementById('progressFilled').style.width = percent + '%';
+    document.getElementById('progressHandle').style.left = percent + '%';
+  }
+  
+  document.getElementById('currentTime').textContent = formatTime(player.video.currentTime);
+  document.getElementById('duration').textContent = formatTime(player.video.duration);
+  
+  if (player.video.currentTime % 30 < 0.5) {
+    saveResumeTime();
+  }
+}
 
     function updateBuffer() {
       if (player.video.buffered.length > 0) {
@@ -1562,62 +1622,145 @@ function loadMediaToCast(session) {
       document.getElementById('castBtn').onclick = castVideo;
       document.getElementById('episodesBtn').onclick = toggleEpisodes;
 
-// Progress bar drag and seek
+// Enhanced Progress bar drag and seek with realistic feedback
 const progressBar = document.getElementById('progressBar');
+const progressFilled = document.getElementById('progressFilled');
+const progressHandle = document.getElementById('progressHandle');
+const seekTooltip = document.getElementById('seekTooltip');
 
-progressBar.addEventListener('mousedown', (e) => {
+function updateSeekPosition(clientX) {
+  const rect = progressBar.getBoundingClientRect();
+  const percent = Math.max(0, Math.min((clientX - rect.left) / rect.width, 1));
+  const time = percent * player.video.duration;
+  
+  // Update progress bar immediately
+  progressFilled.style.width = (percent * 100) + '%';
+  
+  // Update handle position
+  progressHandle.style.left = (percent * 100) + '%';
+  
+  // Update tooltip
+  seekTooltip.textContent = formatTime(time);
+  seekTooltip.style.left = (percent * 100) + '%';
+  
+  return time;
+}
+
+function startSeeking(clientX) {
   player.isDragging = true;
   player.isSeeking = true;
-  const rect = progressBar.getBoundingClientRect();
-  const percent = (e.clientX - rect.left) / rect.width;
-  player.video.currentTime = Math.max(0, Math.min(percent * player.video.duration, player.video.duration));
+  player.wasPlayingBeforeSeeking = !player.video.paused;
+  
+  // Pause video during seek for smooth experience
+  if (!player.video.paused) {
+    player.video.pause();
+  }
+  
+  progressBar.classList.add('dragging');
+  progressFilled.classList.add('dragging');
+  seekTooltip.classList.add('show');
+  
+  const time = updateSeekPosition(clientX);
+  player.video.currentTime = time;
+  
+  // Keep controls visible
+  clearTimeout(player.controlsTimeout);
+  showControls();
+}
+
+function continueSeeking(clientX) {
+  if (!player.isDragging) return;
+  
+  const time = updateSeekPosition(clientX);
+  player.video.currentTime = time;
+}
+
+function endSeeking() {
+  if (!player.isDragging) return;
+  
+  player.isDragging = false;
+  progressBar.classList.remove('dragging');
+  progressFilled.classList.remove('dragging');
+  seekTooltip.classList.remove('show');
+  
+  // Resume playback if it was playing before
+  if (player.wasPlayingBeforeSeeking) {
+    player.video.play().then(() => {
+      setTimeout(() => {
+        player.isSeeking = false;
+        player.wasPlayingBeforeSeeking = false;
+      }, 100);
+    });
+  } else {
+    setTimeout(() => {
+      player.isSeeking = false;
+      player.wasPlayingBeforeSeeking = false;
+    }, 100);
+  }
+}
+
+// Mouse events
+progressBar.addEventListener('mousedown', (e) => {
+  e.preventDefault();
+  startSeeking(e.clientX);
+});
+
+progressBar.addEventListener('mouseenter', (e) => {
+  if (!player.isDragging) {
+    seekTooltip.classList.add('show');
+  }
+});
+
+progressBar.addEventListener('mousemove', (e) => {
+  if (!player.isDragging) {
+    // Show preview on hover
+    const rect = progressBar.getBoundingClientRect();
+    const percent = Math.max(0, Math.min((e.clientX - rect.left) / rect.width, 1));
+    const time = percent * player.video.duration;
+    seekTooltip.textContent = formatTime(time);
+    seekTooltip.style.left = (percent * 100) + '%';
+  }
+});
+
+progressBar.addEventListener('mouseleave', () => {
+  if (!player.isDragging) {
+    seekTooltip.classList.remove('show');
+  }
 });
 
 document.addEventListener('mousemove', (e) => {
   if (player.isDragging) {
     e.preventDefault();
-    const rect = progressBar.getBoundingClientRect();
-    const percent = Math.max(0, Math.min((e.clientX - rect.left) / rect.width, 1));
-    player.video.currentTime = percent * player.video.duration;
+    continueSeeking(e.clientX);
   }
 });
 
 document.addEventListener('mouseup', () => {
-  if (player.isDragging) {
-    player.isDragging = false;
-    setTimeout(() => {
-      player.isSeeking = false;
-    }, 100);
-  }
+  endSeeking();
 });
 
 // Touch events for mobile
 progressBar.addEventListener('touchstart', (e) => {
-  player.isDragging = true;
-  player.isSeeking = true;
+  e.preventDefault();
   const touch = e.touches[0];
-  const rect = progressBar.getBoundingClientRect();
-  const percent = (touch.clientX - rect.left) / rect.width;
-  player.video.currentTime = Math.max(0, Math.min(percent * player.video.duration, player.video.duration));
+  startSeeking(touch.clientX);
 });
 
 document.addEventListener('touchmove', (e) => {
   if (player.isDragging) {
     e.preventDefault();
     const touch = e.touches[0];
-    const rect = progressBar.getBoundingClientRect();
-    const percent = Math.max(0, Math.min((touch.clientX - rect.left) / rect.width, 1));
-    player.video.currentTime = percent * player.video.duration;
+    continueSeeking(touch.clientX);
   }
+}, { passive: false });
+
+document.addEventListener('touchend', (e) => {
+  endSeeking();
 });
 
-document.addEventListener('touchend', () => {
-  if (player.isDragging) {
-    player.isDragging = false;
-    setTimeout(() => {
-      player.isSeeking = false;
-    }, 100);
-  }
+// Prevent context menu on progress bar
+progressBar.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
 });
 
       document.getElementById('qualityMenu').onclick = () => {
