@@ -1,6 +1,569 @@
 [
   {
     "type": "movie",
+    "title": "Sirai (2025)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/mltVJD7mBayiw1BubwUL0cx6T1c.jpg",
+    "video": "https://s04.hotshare.link/Sirai_2025_HQ_PreDVD_720p_HD.mp4",
+    "details": {
+      "director": "Suresh Rajakumari",
+      "starring": "Vikram Prabhu, Lk akshay kumar",
+      "genres": "Drama, Romance",
+      "quality": "PreDVD",
+      "language": "Tamil",
+      "movieRating": "0.0",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "1.49 GB",
+      "streamURL": "https://s04.hotshare.link/Sirai_2025_HQ_PreDVD_720p_HD.mp4"
+    },
+    "id": "sirai-2025",
+    "mature": "",
+    "categories": [
+      "drama",
+      "romance",
+      "vikram-prabhu",
+      "lk-akshay-kumar"
+    ],
+    "lookUrl": "https://play.onestream.watch/stream/page/95102"
+  },
+  {
+    "type": "movie",
+    "title": "Kanthan Malai (2025)",
+    "image": "https://moviesda15.com/uploads/posters/kanthan-malai-2025.webp",
+    "video": "https://dl4.biggshare.xyz/Moviesda.Mobi_-_Kanthan_Malai_2025_Original_1080p_HD.mp4",
+    "details": {
+      "director": "",
+      "starring": "",
+      "genres": "",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "1.01 GB",
+      "streamURL": "https://dl4.biggshare.xyz/Moviesda.Mobi_-_Kanthan_Malai_2025_Original_1080p_HD.mp4"
+    },
+    "id": "kanthan-malai-2025",
+    "mature": "",
+    "categories": [],
+    "alt": "https://dl4.biggshare.xyz/Moviesda.Mobi_-_Kanthan_Malai_2025_Original_720p_HD.mp4",
+    "1080Url": "https://play.onestream.watch/stream/page/95002",
+    "720Url": "https://play.onestream.watch/stream/page/95006"
+  },
+  {
+    "type": "movie",
+    "title": "Rajini Gang (2025)",
+    "image": "https://m.media-amazon.com/images/M/MV5BMzVkNmM1MTktZWRhMy00ZGY2LWFlMjEtNGNkZjQ5MmJjMTFkXkEyXkFqcGc@._V1_QL75_UX380_CR0,44,380,562_.jpg",
+    "video": "https://s01.hotshare.link/Moviesda.Mobi_-_Rajini_Gang_2025_Original_1080p_HD.mp4",
+    "details": {
+      "director": "",
+      "starring": "",
+      "genres": "",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "1.38 GB",
+      "streamURL": "https://s01.hotshare.link/Moviesda.Mobi_-_Rajini_Gang_2025_Original_1080p_HD.mp4"
+    },
+    "id": "rajini-gang-2025",
+    "mature": "",
+    "categories": [],
+    "alt": "https://s09.hotshare.link/Moviesda.Mobi_-_Rajini_Gang_2025_Original_720p_HD.mp4",
+    "1080Url": "https://play.onestream.watch/stream/page/94975",
+    "720Url": "https://play.onestream.watch/stream/page/94980"
+  },
+  {
+    "type": "movie",
+    "title": "Maadan Kodai Vizha (2025)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/4WlEM39rC5glXBuGsm5ApqXjbzd.jpg",
+    "video": "https://dl5.biggshare.xyz/Moviesda.Mobi_-_Maadan_Kodai_Vizha_2025_Original_1080p_HD.mp4",
+    "details": {
+      "director": "R.Thangapandi",
+      "starring": "Gokul Gowtham, Sharumiishaa",
+      "genres": "Drama",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "0.0",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "1.43 GB",
+      "streamURL": "https://dl5.biggshare.xyz/Moviesda.Mobi_-_Maadan_Kodai_Vizha_2025_Original_1080p_HD.mp4"
+    },
+    "id": "maadan-kodai-vizha-2025",
+    "mature": "",
+    "categories": [
+      "drama",
+      "gokul-gowtham",
+      "sharumiishaa"
+    ],
+    "alt": "https://dl7.biggshare.xyz/Moviesda.Mobi_-_Maadan_Kodai_Vizha_2025_Original_720p_HD.mp4",
+    "1080Url": "https://play.onestream.watch/stream/page/94985",
+    "720Url": "https://play.onestream.watch/stream/page/94988"
+  },
+  {
+    "type": "movie",
+    "title": "Poomara Kathu (2024)",
+    "image": "https://moviesda15.com/uploads/posters/poomara-kathu-2024.webp",
+    "video": "https://dl1.biggshare.xyz/Moviesda.Mobi_-_Poomara_Kathu_2024_Original_1080p_HD.mp4",
+    "details": {
+      "director": "",
+      "starring": "",
+      "genres": "",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "2.07 GB",
+      "streamURL": "https://dl1.biggshare.xyz/Moviesda.Mobi_-_Poomara_Kathu_2024_Original_1080p_HD.mp4"
+    },
+    "id": "poomara-kathu-2024",
+    "mature": "",
+    "categories": [],
+    "alt": "https://dl4.biggshare.xyz/Moviesda.Mobi_-_Poomara_Kathu_2024_Original_720p_HD.mp4",
+    "1080Url": "https://play.onestream.watch/stream/page/94994",
+    "720Url": "https://play.onestream.watch/stream/page/94998"
+  },
+  {
+    "type": "movie",
+    "title": "Marina (2012)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/AonblxdmTf6oYbX1KRJNvesl3St.jpg",
+    "video": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Marina%20(2012)/Marina%20(Original)/Marina%20(1080p%20HD)/Moviesda.Mobi%20-%20Marina%202012%20Original%201080p%20HD.mp4?h=26764042f623a3f6adc44fce1a6754169da1f075&e=1767599339",
+    "details": {
+      "director": "Pandiraj",
+      "starring": "Sivakarthikeyan, Oviya Helen",
+      "genres": "Comedy, Drama",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "5.4",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "1.61 GB",
+      "streamURL": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Marina%20(2012)/Marina%20(Original)/Marina%20(1080p%20HD)/Moviesda.Mobi%20-%20Marina%202012%20Original%201080p%20HD.mp4?h=26764042f623a3f6adc44fce1a6754169da1f075&e=1767599339"
+    },
+    "id": "marina-2012",
+    "mature": "",
+    "categories": [
+      "comedy",
+      "drama",
+      "sivakarthikeyan",
+      "oviya-helen"
+    ],
+    "alt": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Marina%20(2012)/Marina%20(Original)/Marina%20(720p%20HD)/Moviesda.Mobi%20-%20Marina%202012%20Original%20720p%20HD.mp4?h=23de05d3c4123e31deb5f7328511de12ae69871a&e=1767599348",
+    "1080Url": "https://play.onestream.watch/stream/page/95010",
+    "720Url": "https://play.onestream.watch/stream/page/95015"
+  },
+  {
+    "type": "movie",
+    "title": "Middle Class (2025)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/3cn1eQq4xhax9OBLxfyraCizGAp.jpg",
+    "video": "https://s02.hotshare.link/Moviesda.Mobi_-_Middle_Class_2025_Original_1080p_HD.mp4",
+    "details": {
+      "director": "Kishore Muthuramalingam",
+      "starring": "Munishkanth, Vijayalakshmi Agathiyan",
+      "genres": "Comedy, Drama",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "0.0",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "1.47 GB",
+      "streamURL": "https://s02.hotshare.link/Moviesda.Mobi_-_Middle_Class_2025_Original_1080p_HD.mp4"
+    },
+    "id": "middle-class-2025",
+    "mature": "",
+    "categories": [
+      "comedy",
+      "drama",
+      "munishkanth",
+      "vijayalakshmi-agathiyan"
+    ],
+    "alt": "https://s10.hotshare.link/Moviesda.Mobi_-_Middle_Class_2025_Original_720p_HD.mp4",
+    "1080Url": "https://play.onestream.watch/stream/page/95029",
+    "720Url": "https://play.onestream.watch/stream/page/95034"
+  },
+  {
+    "type": "movie",
+    "title": "Evano Oruvan (2007)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/sHeWDDwkhojWJ3Lma8sqjWYU8wz.jpg",
+    "video": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Evano%20Oruvan%20(2007)/Evano%20Oruvan%20(Original)/Evano%20Oruvan%20(1080p%20HD)/Moviesda.Mobi%20-%20Evano%20Oruvan%202007%20Original%201080p%20HD.mp4?h=3042a031e9c7d1fa6832ab825283744af55cbf52&e=1767599348",
+    "details": {
+      "director": "Nishikant Kamat",
+      "starring": "R. Madhavan, Sangeetha Krish",
+      "genres": "Drama",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "8.0",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "1.67 GB",
+      "streamURL": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Evano%20Oruvan%20(2007)/Evano%20Oruvan%20(Original)/Evano%20Oruvan%20(1080p%20HD)/Moviesda.Mobi%20-%20Evano%20Oruvan%202007%20Original%201080p%20HD.mp4?h=3042a031e9c7d1fa6832ab825283744af55cbf52&e=1767599348"
+    },
+    "id": "evano-oruvan-2007",
+    "mature": "",
+    "categories": [
+      "drama",
+      "r-madhavan",
+      "sangeetha-krish"
+    ],
+    "alt": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Evano%20Oruvan%20(2007)/Evano%20Oruvan%20(Original)/Evano%20Oruvan%20(720p%20HD)/Moviesda.Mobi%20-%20Evano%20Oruvan%202007%20Original%20720p%20HD.mp4?h=cd181d4dade20f95663d53fc6116c1acf6aed4a6&e=1767599349",
+    "1080Url": "https://play.onestream.watch/stream/page/95019",
+    "720Url": "https://play.onestream.watch/stream/page/95024"
+  },
+  {
+    "type": "movie",
+    "title": "Michael Madana Kama Rajan (1990)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/bBW5bd2nWfAmapelcxXMqCDTwbV.jpg",
+    "video": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Michael%20Madana%20Kama%20Rajan%20(1990)/Michael%20Madana%20Kama%20Rajan%20(Original)/Michael%20Madana%20Kama%20Rajan%20(1080p%20HD)/Moviesda.Mobi%20-%20Michael%20Madana%20Kama%20Rajan%201990%20Original%201080p%20HD.mp4?h=e4efb437e87ea88bfe8e3e1d4f70f35d8fa0b51f&e=1767599351",
+    "details": {
+      "director": "Singeetam Srinivasa Rao",
+      "starring": "Kamal Haasan, Khushboo",
+      "genres": "Comedy",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "7.2",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "1.63 GB",
+      "streamURL": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Michael%20Madana%20Kama%20Rajan%20(1990)/Michael%20Madana%20Kama%20Rajan%20(Original)/Michael%20Madana%20Kama%20Rajan%20(1080p%20HD)/Moviesda.Mobi%20-%20Michael%20Madana%20Kama%20Rajan%201990%20Original%201080p%20HD.mp4?h=e4efb437e87ea88bfe8e3e1d4f70f35d8fa0b51f&e=1767599351"
+    },
+    "id": "michael-madana-kama-rajan-1990",
+    "mature": "",
+    "categories": [
+      "comedy",
+      "kamal-haasan",
+      "khushboo"
+    ],
+    "alt": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Michael%20Madana%20Kama%20Rajan%20(1990)/Michael%20Madana%20Kama%20Rajan%20(Original)/Michael%20Madana%20Kama%20Rajan%20(720p%20HD)/Moviesda.Mobi%20-%20Michael%20Madana%20Kama%20Rajan%201990%20Original%20720p%20HD.mp4?h=77999a87973a9e453b5e41b9eb757803999aae68&e=1767599353",
+    "1080Url": "https://play.onestream.watch/stream/page/95038",
+    "720Url": "https://play.onestream.watch/stream/page/95043"
+  },
+  {
+    "type": "movie",
+    "title": "Azhagiya Tamil Magan (2007)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/mft5HEwgoUz9Ve393y0ruXlV6Pc.jpg",
+    "video": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Azhagiya%20Tamil%20Magan%20(2007)/Azhagiya%20Tamil%20Magan%20(Original)/Azhagiya%20Tamil%20Magan%20(1080p%20HD)/Moviesda.Mobi%20-%20Azhagiya%20Tamil%20Magan%202007%20Original%201080p%20HD.mp4?h=08855e4b8755706d257aac6079d4e9eb578b58fb&e=1767599354",
+    "details": {
+      "director": "Bharathan",
+      "starring": "Vijay, Shriya Saran",
+      "genres": "Action, Drama",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "5.1",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "1.74 GB",
+      "streamURL": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Azhagiya%20Tamil%20Magan%20(2007)/Azhagiya%20Tamil%20Magan%20(Original)/Azhagiya%20Tamil%20Magan%20(1080p%20HD)/Moviesda.Mobi%20-%20Azhagiya%20Tamil%20Magan%202007%20Original%201080p%20HD.mp4?h=08855e4b8755706d257aac6079d4e9eb578b58fb&e=1767599354"
+    },
+    "id": "azhagiya-tamil-magan-2007",
+    "mature": "",
+    "categories": [
+      "action",
+      "drama",
+      "vijay",
+      "shriya-saran"
+    ],
+    "alt": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Azhagiya%20Tamil%20Magan%20(2007)/Azhagiya%20Tamil%20Magan%20(Original)/Azhagiya%20Tamil%20Magan%20(720p%20HD)/Moviesda.Mobi%20-%20Azhagiya%20Tamil%20Magan%202007%20Original%20720p%20HD.mp4?h=13900dfe7879a8b24dfe576b436ef1165a6bdeb0&e=1767599357",
+    "1080Url": "https://play.onestream.watch/stream/page/95047",
+    "720Url": "https://play.onestream.watch/stream/page/95052"
+  },
+  {
+    "type": "movie",
+    "title": "Vritta (2025)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/oNPao9volH0jAA1jULlQ6hCOmAe.jpg",
+    "video": "https://dl4.biggshare.xyz/Moviesda.Mobi_-_Vritta_2025_Original_1080p_HD.mp4",
+    "details": {
+      "director": "Likith kumar",
+      "starring": "Maahir Mohiuddin, Harini Sundararajan",
+      "genres": "Mystery, Thriller",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "0.0",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "1.47 GB",
+      "streamURL": "https://dl4.biggshare.xyz/Moviesda.Mobi_-_Vritta_2025_Original_1080p_HD.mp4"
+    },
+    "id": "vritta-2025",
+    "mature": "",
+    "categories": [
+      "mystery",
+      "thriller",
+      "maahir-mohiuddin",
+      "harini-sundararajan"
+    ],
+    "alt": "https://s02.hotshare.link/Moviesda.Mobi_-_Vritta_2025_Original_720p_HD.mp4",
+    "1080Url": "https://play.onestream.watch/stream/page/95056",
+    "720Url": "https://play.onestream.watch/stream/page/95061"
+  },
+  {
+    "type": "movie",
+    "title": "Andhra King Taluka (2025)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/m3h8XR2yygahDTrQn3cLppZvvam.jpg",
+    "video": "https://dl5.biggshare.xyz/Moviesda.Mobi_-_Andhra_King_Taluka_2025_Original_1080p_HD.mp4",
+    "details": {
+      "director": "Mahesh Babu P.",
+      "starring": "Ram Pothineni, Upendra",
+      "genres": "Action, Drama, Romance, Family",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "6.7",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "1.63 GB",
+      "streamURL": "https://dl5.biggshare.xyz/Moviesda.Mobi_-_Andhra_King_Taluka_2025_Original_1080p_HD.mp4"
+    },
+    "id": "andhra-king-taluka-2025",
+    "mature": "",
+    "categories": [
+      "action",
+      "drama",
+      "romance",
+      "family",
+      "ram-pothineni",
+      "upendra"
+    ],
+    "alt": "https://dl9.biggshare.xyz/Moviesda.Mobi_-_Andhra_King_Taluka_2025_Original_720p_HD.mp4",
+    "1080Url": "https://play.onestream.watch/stream/page/95068",
+    "720Url": "https://play.onestream.watch/stream/page/95071"
+  },
+  {
+    "type": "movie",
+    "title": "Revolver Rita (2025)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/rraIOi4GUAjrCZMz8TsFmtMuidW.jpg",
+    "video": "https://s08.hotshare.link/Moviesda.Mobi_-_Revolver_Rita_2025_Original_1080p_HD.mp4",
+    "details": {
+      "director": "K. Chandru",
+      "starring": "Keerthy Suresh, Redin Kingsley",
+      "genres": "Comedy, Action, Crime",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "0.0",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "1.67 GB",
+      "streamURL": "https://s08.hotshare.link/Moviesda.Mobi_-_Revolver_Rita_2025_Original_1080p_HD.mp4"
+    },
+    "id": "revolver-rita-2025",
+    "mature": "",
+    "categories": [
+      "comedy",
+      "action",
+      "crime",
+      "keerthy-suresh",
+      "redin-kingsley"
+    ],
+    "alt": "https://s02.hotshare.link/Moviesda.Mobi_-_Revolver_Rita_2025_Original_720p_HD.mp4",
+    "1080Url": "https://play.onestream.watch/stream/page/95076",
+    "720Url": "https://play.onestream.watch/stream/page/95081"
+  },
+  {
+    "type": "movie",
+    "title": "Love You Muddu (2025)",
+    "image": "https://www.themoviedb.org/t/p/w600_and_h900_face/wWfasv0Bi0tOQPdvJWbAhXyqSzH.jpg",
+    "video": "https://s09.hotshare.link/Moviesda.Mobi_-_Love_You_Muddu_2025_Original_1080p_HD.mp4",
+    "details": {
+      "director": "",
+      "starring": "",
+      "genres": "",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "1.58 GB",
+      "streamURL": "https://s09.hotshare.link/Moviesda.Mobi_-_Love_You_Muddu_2025_Original_1080p_HD.mp4"
+    },
+    "id": "love-you-muddu-2025",
+    "mature": "",
+    "categories": [],
+    "alt": "https://dl5.biggshare.xyz/Moviesda.Mobi_-_Love_You_Muddu_2025_Original_720p_HD.mp4",
+    "1080Url": "https://play.onestream.watch/stream/page/95086",
+    "720Url": "https://play.onestream.watch/stream/page/95091"
+  },
+  {
+    "type": "dubbed",
+    "title": "Canvas (2017)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/f1EfvwRWl16zv1C6M8mpwfS9i1F.jpg",
+    "video": "https://s09.dubshare.one/Canvas_2017_Original_1080p_HD.mp4",
+    "details": {
+      "director": "",
+      "starring": "",
+      "genres": "",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "0.0",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "1.67 GB",
+      "streamURL": "https://s09.dubshare.one/Canvas_2017_Original_1080p_HD.mp4"
+    },
+    "id": "canvas-2017",
+    "mature": "",
+    "categories": [],
+    "alt": "https://s02.dubshare.one/Canvas_2017_Original_720p_HD.mp4",
+    "1080Url": "https://dub.onestream.watch/stream/video/103183",
+    "720Url": "https://dub.onestream.watch/stream/video/103187"
+  },
+  {
+    "type": "dubbed",
+    "title": "The Legend of Zu (2019)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/yOJHNzsq7wdlkb0jTuIuUHNLsGA.jpg",
+    "video": "https://s06.dubshare.one/The_Legend_of_Zu_2019_Original_1080p_HD.mp4",
+    "details": {
+      "director": "Zhu Lingfeng",
+      "starring": "Peng Yusi, Norman Tsui",
+      "genres": "",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "2.0",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "1.18 GB",
+      "streamURL": "https://s06.dubshare.one/The_Legend_of_Zu_2019_Original_1080p_HD.mp4"
+    },
+    "id": "the-legend-of-zu-2019",
+    "mature": "",
+    "categories": [
+      "peng-yusi",
+      "norman-tsui"
+    ],
+    "alt": "https://s05.dubshare.one/The_Legend_of_Zu_2019_Original_720p_HD.mp4",
+    "1080Url": "https://dub.onestream.watch/stream/video/103191",
+    "720Url": "https://dub.onestream.watch/stream/video/103195"
+  },
+  {
+    "type": "dubbed",
+    "title": "Together (2025)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/m52XidzKx94bKlToZfEXUnL3pdy.jpg",
+    "video": "https://s07.dubshare.one/Together_2025_Original_1080p_HD.mp4",
+    "details": {
+      "director": "Michael Shanks",
+      "starring": "Dave Franco, Alison Brie",
+      "genres": "Horror, Romance",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "7.1",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "1.49 GB",
+      "streamURL": "https://s07.dubshare.one/Together_2025_Original_1080p_HD.mp4"
+    },
+    "id": "together-2025",
+    "mature": "",
+    "categories": [
+      "horror",
+      "romance",
+      "dave-franco",
+      "alison-brie"
+    ],
+    "alt": "https://s03.dubshare.one/Together_2025_Original_720p_HD.mp4",
+    "1080Url": "https://dub.onestream.watch/stream/video/103199",
+    "720Url": "https://dub.onestream.watch/stream/video/103203"
+  },
+  {
+    "type": "dubbed",
+    "title": "Ape Vs Mecha Ape (2023)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/dJaIw8OgACelojyV6YuVsOhtTLO.jpg",
+    "video": "https://s09.dubshare.one/Ape_Vs_Mecha_Ape_2023_Original_1080p_HD.mp4",
+    "details": {
+      "director": "Marc Gottlieb",
+      "starring": "Tom Arnold, Anna Telfer",
+      "genres": "Action, Science Fiction",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "5.8",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "1.53 GB",
+      "streamURL": "https://s09.dubshare.one/Ape_Vs_Mecha_Ape_2023_Original_1080p_HD.mp4"
+    },
+    "id": "ape-vs-mecha-ape-2023",
+    "mature": "",
+    "categories": [
+      "action",
+      "science-fiction",
+      "tom-arnold",
+      "anna-telfer"
+    ],
+    "alt": "https://s07.dubshare.one/Ape_Vs_Mecha_Ape_2023_Original_720p_HD.mp4",
+    "1080Url": "https://dub.onestream.watch/stream/video/103207",
+    "720Url": "https://dub.onestream.watch/stream/video/103211"
+  },
+  {
+    "type": "dubbed",
+    "title": "The Polar Express (2004)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/eOoCzH0MqeGr2taUZO4SwG416PF.jpg",
+    "video": "https://s06.dubshare.one/The_Polar_Express_2004_Original_1080p_HD.mp4",
+    "details": {
+      "director": "Robert Zemeckis",
+      "starring": "Tom Hanks, Leslie Zemeckis",
+      "genres": "Animation, Adventure, Family, Fantasy",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "6.7",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "1.42 GB",
+      "streamURL": "https://s06.dubshare.one/The_Polar_Express_2004_Original_1080p_HD.mp4"
+    },
+    "id": "the-polar-express-2004",
+    "mature": "",
+    "categories": [
+      "animation",
+      "adventure",
+      "family",
+      "fantasy",
+      "tom-hanks",
+      "leslie-zemeckis"
+    ],
+    "alt": "https://s04.dubshare.one/The_Polar_Express_2004_Original_720p_HD.mp4",
+    "1080Url": "https://dub.onestream.watch/stream/video/103214",
+    "720Url": "https://dub.onestream.watch/stream/video/103218"
+  },
+  {
+    "type": "dubbed",
+    "title": "A Big Bold Beautiful Journey (2025)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/uMAkmQlKthQpTMiyPAKOYK3JnMs.jpg",
+    "video": "https://s04.dubshare.one/A_Big_Bold_Beautiful_Journey_2025_Original_1080p_HD.mp4",
+    "details": {
+      "director": "Kogonada",
+      "starring": "Colin Farrell, Margot Robbie",
+      "genres": "Romance, Fantasy, Drama",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "6.3",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "1.67 GB",
+      "streamURL": "https://s04.dubshare.one/A_Big_Bold_Beautiful_Journey_2025_Original_1080p_HD.mp4"
+    },
+    "id": "a-big-bold-beautiful-journey-2025",
+    "mature": "",
+    "categories": [
+      "romance",
+      "fantasy",
+      "drama",
+      "colin-farrell",
+      "margot-robbie"
+    ],
+    "alt": "https://s03.dubshare.one/A_Big_Bold_Beautiful_Journey_2025_Original_720p_HD.mp4",
+    "1080Url": "https://dub.onestream.watch/stream/video/103222",
+    "720Url": "https://dub.onestream.watch/stream/video/103226"
+  },
+  {
+    "type": "dubbed",
+    "title": "Shang-Chi and the Legend of the Ten Rings (2021)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/d08HqqeBQSwN8i8MEvpsZ8Cb438.jpg",
+    "video": "https://s09.dubshare.one/Shang-Chi_and_the_Legend_of_the_Ten_Rings_2021_Original_1080p_HD.mp4",
+    "details": {
+      "director": "Destin Daniel Cretton",
+      "starring": "Simu Liu, Tony Leung Chiu-wai",
+      "genres": "Action, Adventure, Fantasy",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "7.5",
+      "lastUpdated": "26 December 2025",
+      "fileSize": "1.70 GB",
+      "streamURL": "https://s09.dubshare.one/Shang-Chi_and_the_Legend_of_the_Ten_Rings_2021_Original_1080p_HD.mp4"
+    },
+    "id": "shang-chi-and-the-legend-of-the-ten-rings-2021",
+    "mature": "",
+    "categories": [
+      "action",
+      "adventure",
+      "fantasy",
+      "simu-liu",
+      "tony-leung-chiu-wai"
+    ],
+    "alt": "https://s02.dubshare.one/Shang-Chi_and_the_Legend_of_the_Ten_Rings_2021_Original_720p_HD.mp4",
+    "1080Url": "https://dub.onestream.watch/stream/video/103229",
+    "720Url": "https://dub.onestream.watch/stream/video/103233"
+  },  
+  {
+    "type": "movie",
     "title": "Kombuseevi (2025)",
     "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/dHopJETvP974dxkowWbmrr42EKD.jpg",
     "video": "https://s01.hotshare.link/Kombuseevi_2025_HQ_PreDVD_720p_HD.mp4",
@@ -36639,7 +37202,7 @@
     "genres": "",
     "language": "Tamil",
     "movieRating": "",
-    "lastUpdated": "19 December 2025",
+    "lastUpdated": "25 December 2025",
     "Season": "S01"
   },
   "episodes": [
@@ -36777,6 +37340,24 @@
         "videoUrl": "https://big3.uptoweb.link/Moviesda.Mobi_-_Nadu_Center_2025_Season_01__Epi_15_.mp4",
         "streamURL": "https://big3.uptoweb.link/Moviesda.Mobi_-_Nadu_Center_2025_Season_01__Epi_15_.mp4",
         "lookUrl": "https://play.onestream.watch/stream/page/94812"
+      },
+	  {
+        "id": "nadu-center-s1e16",
+        "season": 1,
+        "episode": 16,
+        "title": "Episode 16",
+        "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Nadu_Center_2025_Season_01__Epi_16_.mp4",
+        "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Nadu_Center_2025_Season_01__Epi_16_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95063"
+      },
+      {
+        "id": "nadu-center-s1e17",
+        "season": 1,
+        "episode": 17,
+        "title": "Episode 17",
+        "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Nadu_Center_2025_Season_01__Epi_17_.mp4",
+        "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Nadu_Center_2025_Season_01__Epi_17_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95064"
       }
   ]
 },
@@ -38489,7 +39070,7 @@
       "genres": "",
       "language": "Tamil",
       "movieRating": "",
-      "lastUpdated": "20 December 2025",
+      "lastUpdated": "25 December 2025",
       "Season": "S09"
     },
     "episodes": [
@@ -39185,6 +39766,51 @@
         "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_77___Day_76_.mp4",
         "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_77___Day_76_.mp4",
         "lookUrl": "https://play.onestream.watch/stream/page/94972"
+      },
+	  {
+        "id": "bigg-boss-s9e78",
+        "season": 9,
+        "episode": 78,
+        "title": "Day 77 - 21 December 2025",
+        "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_78___Day_77_.mp4",
+        "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_78___Day_77_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/94981"
+      },
+      {
+        "id": "bigg-boss-s9e79",
+        "season": 9,
+        "episode": 79,
+        "title": "Day 78 - 22 December 2025",
+        "videoUrl": "https://big3.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_79___Day_78_.mp4",
+        "streamURL": "https://big3.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_79___Day_78_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95025"
+      },
+      {
+        "id": "bigg-boss-s9e80",
+        "season": 9,
+        "episode": 80,
+        "title": "Day 79 - 23 December 2025",
+        "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_80___Day_79_.mp4",
+        "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_80___Day_79_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95026"
+      },
+      {
+        "id": "bigg-boss-s9e81",
+        "season": 9,
+        "episode": 81,
+        "title": "Day 80 - 24 December 2025",
+        "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_81___Day_80_.mp4",
+        "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_81___Day_80_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95062"
+      },
+      {
+        "id": "bigg-boss-s9e82",
+        "season": 9,
+        "episode": 82,
+        "title": "Day 81 - 25 December 2025",
+        "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_82___Day_81_.mp4",
+        "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_82___Day_81_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95082"
       }
     ]
   },
@@ -40561,7 +41187,7 @@
       "genres": "",
       "language": "Tamil",
       "movieRating": "",
-      "lastUpdated": "21 December 2025",
+      "lastUpdated": "25 December 2025",
       "Season": "S01"
     },
     "episodes": [
@@ -41068,6 +41694,42 @@
         "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_56_.mp4",
         "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_56_.mp4",
         "lookUrl": "https://play.onestream.watch/stream/page/94942"
+      },
+	  {
+        "id": "police-police-s1e57",
+        "season": 1,
+        "episode": 57,
+        "title": "Episode 57",
+        "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_57_.mp4",
+        "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_57_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95092"
+      },
+      {
+        "id": "police-police-s1e58",
+        "season": 1,
+        "episode": 58,
+        "title": "Episode 58",
+        "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_58_.mp4",
+        "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_58_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95093"
+      },
+      {
+        "id": "police-police-s1e59",
+        "season": 1,
+        "episode": 59,
+        "title": "Episode 59",
+        "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_59_.mp4",
+        "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_59_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95094"
+      },
+      {
+        "id": "police-police-s1e60",
+        "season": 1,
+        "episode": 60,
+        "title": "Episode 60",
+        "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_60_.mp4",
+        "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_60_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95095"
       }
     ]
   },
@@ -41402,7 +42064,7 @@
       "genres": "",
       "language": "Tamil",
       "movieRating": "",
-      "lastUpdated": "21 December 2025",
+      "lastUpdated": "25 December 2025",
       "quality": "S01"
     },
     "episodes": [
@@ -41945,6 +42607,42 @@
         "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Rambo_in_love_2025_Season_01__Epi_60_.mp4",
         "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Rambo_in_love_2025_Season_01__Epi_60_.mp4",
         "lookUrl": "https://play.onestream.watch/stream/page/94946"
+      },
+	  {
+        "id": "rambo-in-love-s1e61",
+        "season": 1,
+        "episode": 61,
+        "title": "Episode 61",
+        "videoUrl": "https://big3.uptoweb.link/Moviesda.Mobi_-_Rambo_in_love_2025_Season_01__Epi_61_.mp4",
+        "streamURL": "https://big3.uptoweb.link/Moviesda.Mobi_-_Rambo_in_love_2025_Season_01__Epi_61_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95103"
+      },
+      {
+        "id": "rambo-in-love-s1e62",
+        "season": 1,
+        "episode": 62,
+        "title": "Episode 62",
+        "videoUrl": "https://big3.uptoweb.link/Moviesda.Mobi_-_Rambo_in_love_2025_Season_01__Epi_62_.mp4",
+        "streamURL": "https://big3.uptoweb.link/Moviesda.Mobi_-_Rambo_in_love_2025_Season_01__Epi_62_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95104"
+      },
+      {
+        "id": "rambo-in-love-s1e63",
+        "season": 1,
+        "episode": 63,
+        "title": "Episode 63",
+        "videoUrl": "https://big3.uptoweb.link/Moviesda.Mobi_-_Rambo_in_love_2025_Season_01__Epi_63_.mp4",
+        "streamURL": "https://big3.uptoweb.link/Moviesda.Mobi_-_Rambo_in_love_2025_Season_01__Epi_63_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95105"
+      },
+      {
+        "id": "rambo-in-love-s1e64",
+        "season": 1,
+        "episode": 64,
+        "title": "Episode 64",
+        "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Rambo_in_love_2025_Season_01__Epi_64_.mp4",
+        "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Rambo_in_love_2025_Season_01__Epi_64_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95106"
       }
     ]
   },
