@@ -1,6 +1,318 @@
 [
   {
     "type": "movie",
+    "title": "45 (2026)",
+    "image": "https://m.media-amazon.com/images/M/MV5BMGU1OGMxMDktZjMyMy00OTU0LTk3NzgtMWJiYThlMWE2NTkzXkEyXkFqcGc@._V1_QL75_UY562_CR35,0,380,562_.jpg",
+    "video": "https://dl4.biggshare.xyz/45_2026_HQ_PreDVD_720p_HD.mp4",
+    "details": {
+      "director": "",
+      "starring": "",
+      "genres": "",
+      "quality": "PreDVD",
+      "language": "Tamil",
+      "movieRating": "",
+      "lastUpdated": "04 January 2026",
+      "fileSize": "1.49 GB",
+      "streamURL": "https://dl4.biggshare.xyz/45_2026_HQ_PreDVD_720p_HD.mp4"
+    },
+    "id": "45-2026",
+    "mature": "",
+    "categories": [],
+    "lookUrl": "https://play.onestream.watch/stream/page/95244"
+  },
+  {
+    "type": "movie",
+    "title": "Mark (2025)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/jthl112MmTox6tj0vtiahhkOhKJ.jpg",
+    "video": "https://s01.hotshare.link/Mark_2025_HQ_PreDVD_720p_HD.mp4",
+    "details": {
+      "director": "Kim Si-woo",
+      "starring": "Jeon Moo-song, Cho Eun-sook",
+      "genres": "Drama",
+      "quality": "PreDVD",
+      "language": "Tamil",
+      "movieRating": "5.0",
+      "lastUpdated": "04 January 2026",
+      "fileSize": "1.31 GB",
+      "streamURL": "https://s01.hotshare.link/Mark_2025_HQ_PreDVD_720p_HD.mp4"
+    },
+    "id": "mark-2025",
+    "mature": "",
+    "categories": [
+      "drama",
+      "jeon-moo-song",
+      "cho-eun-sook"
+    ],
+    "lookUrl": "https://play.onestream.watch/stream/page/95237"
+  },
+  {
+    "type": "movie",
+    "title": "Dear Radhi (2026)",
+    "image": "https://m.media-amazon.com/images/M/MV5BZDBiOTBmYjctNzY5Mi00ZjAxLWJmZGUtZDk1ZDljZmNjNzhhXkEyXkFqcGc@._V1_QL75_UY562_CR35,0,380,562_.jpg",
+    "video": "https://s07.hotshare.link/Dear_Radhi_2026_HQ_PreDVD_720p_HD.mp4",
+    "details": {
+      "director": "",
+      "starring": "",
+      "genres": "",
+      "quality": "PreDVD",
+      "language": "Tamil",
+      "movieRating": "",
+      "lastUpdated": "04 January 2026",
+      "fileSize": "1.49 GB",
+      "streamURL": "https://s07.hotshare.link/Dear_Radhi_2026_HQ_PreDVD_720p_HD.mp4"
+    },
+    "id": "dear-radhi-2026",
+    "mature": "",
+    "categories": [],
+    "lookUrl": "https://play.onestream.watch/stream/page/95252"
+  },
+  {
+    "type": "movie",
+    "title": "Deva (2005)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/qgsHuHXlQDEqZ5EQ7I9jiXuH0Fv.jpg",
+    "video": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Deva%20(2005)/Deva%20(Original)/Deva%20(1080p%20HD)/Moviesda.Mobi%20-%20Deva%202005%20Original%201080p%20HD.mp4?h=f0dc855f92e3c1793cb14a563f78dffad68df260&e=1768363220",
+    "details": {
+      "director": "Bhupati Pandyan",
+      "starring": "Dhanush, Sridevi Vijayakumar",
+      "genres": "Drama, Romance",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "5.7",
+      "lastUpdated": "04 January 2026",
+      "fileSize": "1.74 GB",
+      "streamURL": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Deva%20(2005)/Deva%20(Original)/Deva%20(1080p%20HD)/Moviesda.Mobi%20-%20Deva%202005%20Original%201080p%20HD.mp4?h=f0dc855f92e3c1793cb14a563f78dffad68df260&e=1768363220"
+    },
+    "id": "deva-2005",
+    "mature": "",
+    "categories": [
+      "drama",
+      "romance",
+      "dhanush",
+      "sridevi-vijayakumar"
+    ],
+    "alt": "https://cdn4.uptodl.ch/files/Tamil%20HD%20Mobile%20Movies/Deva%20(2005)/Deva%20(Original)/Deva%20(720p%20HD)/Moviesda.Mobi%20-%20Deva%202005%20Original%20720p%20HD.mp4?h=d0c705a80b11fd45cdcebcb14748d152014c962a&e=1768363220",
+    "1080Url": "https://play.onestream.watch/stream/page/95217",
+    "720Url": "https://play.onestream.watch/stream/page/95222"
+  },
+  {
+    "type": "movie",
+    "title": "Drive (2025)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/oVGF9rIuALQS4LIAzzzNG042VP1.jpg",
+    "video": "https://dl10.biggshare.xyz/Moviesda.Mobi_-_Drive_2025_Original_1080p_HD.mp4",
+    "details": {
+      "director": "Tyler Redmond",
+      "starring": "Lily Roebeck, Fredrick Pokai",
+      "genres": "Drama",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "0.0",
+      "lastUpdated": "04 January 2026",
+      "fileSize": "1.20 GB",
+      "streamURL": "https://dl10.biggshare.xyz/Moviesda.Mobi_-_Drive_2025_Original_1080p_HD.mp4"
+    },
+    "id": "drive-2025",
+    "mature": "",
+    "categories": [
+      "drama",
+      "lily-roebeck",
+      "fredrick-pokai"
+    ],
+    "alt": "https://dl5.biggshare.xyz/Moviesda.Mobi_-_Drive_2025_Original_720p_HD.mp4",
+    "1080Url": "https://play.onestream.watch/stream/page/95199",
+    "720Url": "https://play.onestream.watch/stream/page/95197"
+  },
+  {
+    "type": "movie",
+    "title": "Eko (2025)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/tXdFEmtqLm8tewIErDJgnbTS9qs.jpg",
+    "video": "https://s05.hotshare.link/Moviesda.Mobi_-_Eko_2025_Original_1080p_HD.mp4",
+    "details": {
+      "director": "Dinjith Ayyathan",
+      "starring": "Sandeep Pradeep, Vineeth Radhakrishnan",
+      "genres": "Drama, Mystery",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "7.9",
+      "lastUpdated": "04 January 2026",
+      "fileSize": "1.51 GB",
+      "streamURL": "https://s05.hotshare.link/Moviesda.Mobi_-_Eko_2025_Original_1080p_HD.mp4"
+    },
+    "id": "eko-2025",
+    "mature": "",
+    "categories": [
+      "drama",
+      "mystery",
+      "sandeep-pradeep",
+      "vineeth-radhakrishnan"
+    ],
+    "alt": "https://s09.hotshare.link/Moviesda.Mobi_-_Eko_2025_Original_720p_HD.mp4",
+    "1080Url": "https://play.onestream.watch/stream/page/95207",
+    "720Url": "https://play.onestream.watch/stream/page/95212"
+  },
+  {
+    "type": "movie",
+    "title": "Kumki 2 (2025)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/wBz0uP5urY0JqNERnCCTtSVB0HK.jpg",
+    "video": "https://s09.hotshare.link/Moviesda.Mobi_-_Kumki_2_2025_Original_1080p_HD.mp4",
+    "details": {
+      "director": "Prabhu Solomon",
+      "starring": "Mathiazhagan, Shrita Rao",
+      "genres": "Drama, Adventure",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "0.0",
+      "lastUpdated": "04 January 2026",
+      "fileSize": "1.47 GB",
+      "streamURL": "https://s09.hotshare.link/Moviesda.Mobi_-_Kumki_2_2025_Original_1080p_HD.mp4"
+    },
+    "id": "kumki-2-2025",
+    "mature": "",
+    "categories": [
+      "drama",
+      "adventure",
+      "mathiazhagan",
+      "shrita-rao"
+    ],
+    "alt": "https://s07.hotshare.link/Moviesda.Mobi_-_Kumki_2_2025_Original_720p_HD.mp4",
+    "1080Url": "https://play.onestream.watch/stream/page/95182",
+    "720Url": "https://play.onestream.watch/stream/page/95187"
+  },
+  {
+    "type": "movie",
+    "title": "Raja Pokkisham Thota Bavi (2025)",
+    "image": "https://media.ragalahari.com/posters/2021/thota-bhaavi-poster.jpg",
+    "video": "https://dl4.biggshare.xyz/Moviesda.Mobi_-_Raja_Pokkisham_Thota_Bavi_2025_Original_1080p_HD.mp4",
+    "details": {
+      "director": "",
+      "starring": "",
+      "genres": "",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "",
+      "lastUpdated": "04 January 2026",
+      "fileSize": "2.07 GB",
+      "streamURL": "https://dl4.biggshare.xyz/Moviesda.Mobi_-_Raja_Pokkisham_Thota_Bavi_2025_Original_1080p_HD.mp4"
+    },
+    "id": "raja-pokkisham-thota-bavi-2025",
+    "mature": "",
+    "categories": [],
+    "alt": "https://s04.hotshare.link/Moviesda.Mobi_-_Raja_Pokkisham_Thota_Bavi_2025_Original_720p_HD.mp4",
+    "1080Url": "https://play.onestream.watch/stream/page/95226",
+    "720Url": "https://play.onestream.watch/stream/page/95230"
+  },
+  {
+    "type": "dubbed",
+    "title": "Eye for an Eye 2 (2024)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/mkfznkTshGBp88SFQQAGsr3R62z.jpg",
+    "video": "https://s03.dubshare.one/Eye_for_an_Eye_2_2024_Original_1080p_HD.mp4",
+    "details": {
+      "director": "Yang Bingjia",
+      "starring": "Xie Miao, Yang Enyou",
+      "genres": "Action, Drama",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "6.4",
+      "lastUpdated": "04 January 2026",
+      "fileSize": "1.37 GB",
+      "streamURL": "https://s03.dubshare.one/Eye_for_an_Eye_2_2024_Original_1080p_HD.mp4"
+    },
+    "id": "eye-for-an-eye-2-2024",
+    "mature": "",
+    "categories": [
+      "action",
+      "drama",
+      "xie-miao",
+      "yang-enyou"
+    ],
+    "alt": "https://s08.dubshare.one/Eye_for_an_Eye_2_2024_Original_720p_HD.mp4",
+    "1080Url": "https://dub.onestream.watch/stream/video/103487",
+    "720Url": "https://dub.onestream.watch/stream/video/103491"
+  },
+  {
+    "type": "dubbed",
+    "title": "Motives (2004)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/sqGiAqnPgW6XUv7oYRiahKnCxXo.jpg",
+    "video": "https://s08.dubshare.one/Motives_2004_Original_1080p_HD.mp4",
+    "details": {
+      "director": "Craig Ross Jr.",
+      "starring": "Vivica A. Fox, Shemar Moore",
+      "genres": "Drama, Thriller, Mystery, Romance",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "5.1",
+      "lastUpdated": "04 January 2026",
+      "fileSize": "1.34 GB",
+      "streamURL": "https://s08.dubshare.one/Motives_2004_Original_1080p_HD.mp4"
+    },
+    "id": "motives-2004",
+    "mature": "",
+    "categories": [
+      "drama",
+      "thriller",
+      "mystery",
+      "romance",
+      "vivica-a-fox",
+      "shemar-moore"
+    ],
+    "alt": "https://s08.dubshare.one/Motives_2004_Original_720p_HD.mp4",
+    "1080Url": "https://dub.onestream.watch/stream/video/103506",
+    "720Url": "https://dub.onestream.watch/stream/video/103507"
+  },
+  {
+    "type": "dubbed",
+    "title": "The Bloody Blade of King Lanling (2021)",
+    "image": "https://m.media-amazon.com/images/M/MV5BNTVhMzUyZTQtZjZmNS00NTAyLWE0NzAtZjdiMzg3NDU2MTk1XkEyXkFqcGc@._V1_QL75_UY562_CR20,0,380,562_.jpg",
+    "video": "https://s07.dubshare.one/The_Bloody_Blade_of_King_Lanling_2021_Original_1080p_HD.mp4",
+    "details": {
+      "director": "",
+      "starring": "",
+      "genres": "",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "",
+      "lastUpdated": "04 January 2026",
+      "fileSize": "1.03 GB",
+      "streamURL": "https://s07.dubshare.one/The_Bloody_Blade_of_King_Lanling_2021_Original_1080p_HD.mp4"
+    },
+    "id": "the-bloody-blade-of-king-lanling-2021",
+    "mature": "",
+    "categories": [],
+    "alt": "https://s07.dubshare.one/The_Bloody_Blade_of_King_Lanling_2021_Original_720p_HD.mp4",
+    "1080Url": "https://dub.onestream.watch/stream/video/103500",
+    "720Url": "https://dub.onestream.watch/stream/video/103504"
+  },
+  {
+    "type": "dubbed",
+    "title": "The Demon Hunter (2025)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/v3Mo77Qjp6pctpD4eJaNT6kFRSB.jpg",
+    "video": "https://s04.dubshare.one/The_Demon_Hunter_2025_Original_1080p_HD.mp4",
+    "details": {
+      "director": "Lim Dae-hee",
+      "starring": "Ma Dong-seok, Seohyun",
+      "genres": "Action, Fantasy, Horror, Thriller",
+      "quality": "1080p",
+      "language": "Tamil",
+      "movieRating": "6.8",
+      "lastUpdated": "04 January 2026",
+      "fileSize": "1.61 GB",
+      "streamURL": "https://s04.dubshare.one/The_Demon_Hunter_2025_Original_1080p_HD.mp4"
+    },
+    "id": "the-demon-hunter-2025",
+    "mature": "",
+    "categories": [
+      "action",
+      "fantasy",
+      "horror",
+      "thriller",
+      "ma-dong-seok",
+      "seohyun"
+    ],
+    "alt": "https://s08.dubshare.one/The_Demon_Hunter_2025_Original_720p_HD.mp4",
+    "1080Url": "https://dub.onestream.watch/stream/video/103469",
+    "720Url": "https://dub.onestream.watch/stream/video/103473"
+  },  
+  {
+    "type": "movie",
     "title": "Yellow (2025)",
     "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/gAIPCJAJlbAozSzW3PKi7OU2ueH.jpg",
     "video": "https://dl2.biggshare.xyz/Moviesda.Mobi_-_Yellow_2025_Original_1080p_HD.mp4",
@@ -4032,6 +4344,101 @@
   },
   {
     "type": "series",
+    "id": "runaway-s01",
+    "title": "Run Away Season 1 (2026)",
+    "image": "https://image.tmdb.org/t/p/w600_and_h900_bestv2/btmvtGsVZZUvJoWGGtzPaBOGEgr.jpg",
+    "details": {
+      "director": "",
+      "starring": "James Nesbitt, Ruth Jones",
+      "genres": "Drama, Mystery",
+      "language": "Tamil",
+      "movieRating": "7.1",
+      "lastUpdated": "04 January 2026",
+      "Season": "S01"
+    },
+    "categories": [
+      "drama",
+      "mystery",
+      "james-nesbitt",
+      "ruth-jones"
+    ],
+    "episodes": [
+      {
+        "id": "run-away-s1e1",
+        "season": 1,
+        "episode": 1,
+        "title": "Episode 1",
+        "videoUrl": "https://s03.dubshare.one/isaiDub.me_-_Run_Away_2026_Season_01_Epi_01_.mp4",
+        "streamURL": "https://s03.dubshare.one/isaiDub.me_-_Run_Away_2026_Season_01_Epi_01_.mp4",
+        "lookUrl": "https://dub.onestream.watch/stream/video/103476"
+      },
+      {
+        "id": "run-away-s1e2",
+        "season": 1,
+        "episode": 2,
+        "title": "Episode 2",
+        "videoUrl": "https://s03.dubshare.one/isaiDub.me_-_Run_Away_2026_Season_01_Epi_02_.mp4",
+        "streamURL": "https://s03.dubshare.one/isaiDub.me_-_Run_Away_2026_Season_01_Epi_02_.mp4",
+        "lookUrl": "https://dub.onestream.watch/stream/video/103477"
+      },
+      {
+        "id": "run-away-s1e3",
+        "season": 1,
+        "episode": 3,
+        "title": "Episode 3",
+        "videoUrl": "https://s03.dubshare.one/isaiDub.me_-_Run_Away_2026_Season_01_Epi_03_.mp4",
+        "streamURL": "https://s03.dubshare.one/isaiDub.me_-_Run_Away_2026_Season_01_Epi_03_.mp4",
+        "lookUrl": "https://dub.onestream.watch/stream/video/103478"
+      },
+      {
+        "id": "run-away-s1e4",
+        "season": 1,
+        "episode": 4,
+        "title": "Episode 4",
+        "videoUrl": "https://s03.dubshare.one/isaiDub.me_-_Run_Away_2026_Season_01_Epi_04_.mp4",
+        "streamURL": "https://s03.dubshare.one/isaiDub.me_-_Run_Away_2026_Season_01_Epi_04_.mp4",
+        "lookUrl": "https://dub.onestream.watch/stream/video/103479"
+      },
+      {
+        "id": "run-away-s1e5",
+        "season": 1,
+        "episode": 5,
+        "title": "Episode 5",
+        "videoUrl": "https://s01.dubshare.one/isaiDub.me_-_Run_Away_2026_Season_01_Epi_05_.mp4",
+        "streamURL": "https://s01.dubshare.one/isaiDub.me_-_Run_Away_2026_Season_01_Epi_05_.mp4",
+        "lookUrl": "https://dub.onestream.watch/stream/video/103480"
+      },
+      {
+        "id": "run-away-s1e6",
+        "season": 1,
+        "episode": 6,
+        "title": "Episode 6",
+        "videoUrl": "https://s03.dubshare.one/isaiDub.me_-_Run_Away_2026_Season_01_Epi_06_.mp4",
+        "streamURL": "https://s03.dubshare.one/isaiDub.me_-_Run_Away_2026_Season_01_Epi_06_.mp4",
+        "lookUrl": "https://dub.onestream.watch/stream/video/103481"
+      },
+      {
+        "id": "run-away-s1e7",
+        "season": 1,
+        "episode": 7,
+        "title": "Episode 7",
+        "videoUrl": "https://s02.dubshare.one/isaiDub.me_-_Run_Away_2026_Season_01_Epi_07_.mp4",
+        "streamURL": "https://s02.dubshare.one/isaiDub.me_-_Run_Away_2026_Season_01_Epi_07_.mp4",
+        "lookUrl": "https://dub.onestream.watch/stream/video/103482"
+      },
+      {
+        "id": "run-away-s1e8",
+        "season": 1,
+        "episode": 8,
+        "title": "Episode 8",
+        "videoUrl": "https://s02.dubshare.one/isaiDub.me_-_Run_Away_2026_Season_01_Epi_08_.mp4",
+        "streamURL": "https://s02.dubshare.one/isaiDub.me_-_Run_Away_2026_Season_01_Epi_08_.mp4",
+        "lookUrl": "https://dub.onestream.watch/stream/video/103483"
+      }
+    ]
+  },  
+  {
+    "type": "series",
     "id": "lbwlovebeyondwicket-s01",
     "title": "LBW Love Beyond Wicket Season 1 (2025)",
     "image": "https://m.media-amazon.com/images/M/MV5BYjYxZjRmZDktYWJkYi00M2M0LWFmZDQtNTgxMzFmY2JjODk1XkEyXkFqcGc@._V1_QL75_UX380_CR0,31,380,562_.jpg",
@@ -6539,7 +6946,7 @@
       "genres": "Comedy",
       "language": "Tamil",
       "movieRating": "0.0",
-      "lastUpdated": "30 December 2025",
+      "lastUpdated": "03 January 2026",
       "Season": "S01"
     },
     "categories": [
@@ -6619,6 +7026,15 @@
         "videoUrl": "https://s03.dubshare.one/isaiDub.me_-_Surely_Tomorrow_2025_Season_01_Epi_08_.mp4",
         "streamURL": "https://s03.dubshare.one/isaiDub.me_-_Surely_Tomorrow_2025_Season_01_Epi_08_.mp4",
         "lookUrl": "https://dub.onestream.watch/stream/video/103372"
+      },
+	  {
+        "id": "surely-tomorrow-s1e9",
+        "season": 1,
+        "episode": 9,
+        "title": "Episode 9",
+        "videoUrl": "https://s01.dubshare.one/isaiDub.me_-_Surely_Tomorrow_2025_Season_01_Epi_09_.mp4",
+        "streamURL": "https://s01.dubshare.one/isaiDub.me_-_Surely_Tomorrow_2025_Season_01_Epi_09_.mp4",
+        "lookUrl": "https://dub.onestream.watch/stream/video/103508"
       }
     ]
   },
@@ -6805,7 +7221,7 @@
       "genres": "Crime",
       "language": "Tamil",
       "movieRating": "0.0",
-      "lastUpdated": "30 December 2025",
+      "lastUpdated": "03 January 2026",
       "Season": "S01"
     },
     "categories": [
@@ -6912,6 +7328,33 @@
         "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Dhoolpet_Police_Station_2025_Season_01__Epi_11_.mp4",
         "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Dhoolpet_Police_Station_2025_Season_01__Epi_11_.mp4",
         "lookUrl": "https://play.onestream.watch/stream/page/95117"
+      },
+	  {
+        "id": "dhoolpet-police-station-s1e12",
+        "season": 1,
+        "episode": 12,
+        "title": "Episode 12",
+        "videoUrl": "https://big3.uptoweb.link/Moviesda.Mobi_-_Dhoolpet_Police_Station_2025_Season_01__Epi_12_.mp4",
+        "streamURL": "https://big3.uptoweb.link/Moviesda.Mobi_-_Dhoolpet_Police_Station_2025_Season_01__Epi_12_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95201"
+      },
+      {
+        "id": "dhoolpet-police-station-s1e13",
+        "season": 1,
+        "episode": 13,
+        "title": "Episode 13",
+        "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Dhoolpet_Police_Station_2025_Season_01__Epi_13_.mp4",
+        "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Dhoolpet_Police_Station_2025_Season_01__Epi_13_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95202"
+      },
+      {
+        "id": "dhoolpet-police-station-s1e14",
+        "season": 1,
+        "episode": 14,
+        "title": "Episode 14",
+        "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Dhoolpet_Police_Station_2025_Season_01__Epi_14_.mp4",
+        "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Dhoolpet_Police_Station_2025_Season_01__Epi_14_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95203"
       }
     ]
   },
@@ -40525,7 +40968,7 @@
       "genres": "",
       "language": "Tamil",
       "movieRating": "",
-      "lastUpdated": "31 December 2025",
+      "lastUpdated": "03 January 2026",
       "Season": "S09"
     },
     "episodes": [
@@ -41311,6 +41754,33 @@
         "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_88___Day_87_.mp4",
         "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_88___Day_87_.mp4",
         "lookUrl": "https://play.onestream.watch/stream/page/95172"
+      },
+	  {
+        "id": "bigg-boss-s9e89",
+        "season": 9,
+        "episode": 89,
+        "title": "Day 88 - 01 January 2026",
+        "videoUrl": "https://big3.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_89___Day_88_.mp4",
+        "streamURL": "https://big3.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_89___Day_88_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95179"
+      },
+      {
+        "id": "bigg-boss-s9e90",
+        "season": 9,
+        "episode": 90,
+        "title": "Day 89 - 02 January 2026",
+        "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_90___Day_89_.mp4",
+        "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_90___Day_89_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95213"
+      },
+      {
+        "id": "bigg-boss-s9e91",
+        "season": 9,
+        "episode": 91,
+        "title": "Day 90 - 03 January 2026",
+        "videoUrl": "https://big3.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_91___Day_90_.mp4",
+        "streamURL": "https://big3.uptoweb.link/Moviesda.Mobi_-_Bigg_Boss_2025_Season_09__Epi_91___Day_90_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95245"
       }
     ]
   },
@@ -42687,7 +43157,7 @@
       "genres": "",
       "language": "Tamil",
       "movieRating": "",
-      "lastUpdated": "25 December 2025",
+      "lastUpdated": "03 January 2026",
       "Season": "S01"
     },
     "episodes": [
@@ -43230,6 +43700,42 @@
         "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_60_.mp4",
         "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_60_.mp4",
         "lookUrl": "https://play.onestream.watch/stream/page/95095"
+      },
+	  {
+        "id": "police-police-s1e61",
+        "season": 1,
+        "episode": 61,
+        "title": "Episode 61",
+        "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_61_.mp4",
+        "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_61_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95188"
+      },
+      {
+        "id": "police-police-s1e62",
+        "season": 1,
+        "episode": 62,
+        "title": "Episode 62",
+        "videoUrl": "https://big2.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_62_.mp4",
+        "streamURL": "https://big2.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_62_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95189"
+      },
+      {
+        "id": "police-police-s1e63",
+        "season": 1,
+        "episode": 63,
+        "title": "Episode 63",
+        "videoUrl": "https://big1.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_63_.mp4",
+        "streamURL": "https://big1.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_63_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95190"
+      },
+      {
+        "id": "police-police-s1e64",
+        "season": 1,
+        "episode": 64,
+        "title": "Episode 64",
+        "videoUrl": "https://big3.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_64_.mp4",
+        "streamURL": "https://big3.uptoweb.link/Moviesda.Mobi_-_Police_Police_2025_Season_01__Epi_64_.mp4",
+        "lookUrl": "https://play.onestream.watch/stream/page/95191"
       }
     ]
   },
