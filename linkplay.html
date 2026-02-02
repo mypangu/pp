@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Advanced Video Player - PanguPlay</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- HLS and DASH Support -->
+  <!-- HLS Support -->
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-  <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
+  <!-- DASH Support with Shaka Player for better DRM -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.compiled.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -866,7 +867,7 @@
     <!-- Tabs -->
     <div class="tabs-container">
       <button class="tab-btn active" data-tab="media">Media</button>
-	  <button class="tab-btn" data-tab="hls">HLS</button>
+      <button class="tab-btn" data-tab="hls">HLS</button>
       <button class="tab-btn" data-tab="dash">DASH</button>
     </div>
 
@@ -920,17 +921,17 @@
           <div class="form-group">
             <label>License Source</label>
             <select class="form-select" id="clearkeySource">
-              <option value="url">License URL</option>
               <option value="keys">Direct Keys</option>
+              <option value="url">License URL</option>
             </select>
           </div>
-          <div id="clearkeyUrlGroup">
+          <div id="clearkeyUrlGroup"  style="display: none;">
             <div class="form-group">
               <label>License URL</label>
               <input type="text" class="form-input" id="clearkeyUrl" placeholder="https://clearkey.example.com/license?keyid=...&key=...">
             </div>
           </div>
-          <div id="clearkeyKeysGroup" style="display: none;">
+          <div id="clearkeyKeysGroup">
             <div class="form-row">
               <div class="form-group">
                 <label>Key ID</label>
@@ -1134,7 +1135,7 @@
 const player = {
   video: null,
   hlsInstance: null,
-  dashInstance: null,
+  shakaInstance: null,
   currentType: null,
   currentUrl: null,
   currentCookie: null,
@@ -1157,9 +1158,46 @@ function parseUrlParams() {
   const type = params.get('type');
   const drmScheme = params.get('drmScheme');
   const drmLicense = params.get('drmLicense');
-  const cookie = params.get('cookie');
+  let cookie = params.get('cookie');
+
+  console.log('=== URL Parameter Parsing ===');
+  console.log('Page URL:', window.location.href);
+  console.log('link param:', link);
+  console.log('type param:', type);
+  console.log('drmScheme param:', drmScheme);
+  console.log('drmLicense param:', drmLicense);
+  console.log('cookie param:', cookie);
 
   if (!link) return null;
+
+  // Extract cookie parameters from the link URL if cookie param not provided
+  if (!cookie && link.includes('?')) {
+    try {
+      const linkUrl = new URL(link);
+      const linkParams = linkUrl.searchParams;
+      
+      console.log('Extracting cookies from link URL...');
+      
+      // Check for common cookie parameter names
+      const cookieParams = [];
+      for (const [key, value] of linkParams.entries()) {
+        console.log(`Link param: ${key}=${value}`);
+        // Common cookie/auth parameter patterns
+        if (key.startsWith('__') || key.includes('hdnea') || key.includes('token') || 
+            key.includes('auth') || key.includes('signature') || key.includes('hmac')) {
+          cookieParams.push(`${key}=${value}`);
+          console.log(`Identified as cookie param: ${key}`);
+        }
+      }
+      
+      if (cookieParams.length > 0) {
+        cookie = cookieParams.join('&');
+        console.log('Extracted cookie:', cookie);
+      }
+    } catch (e) {
+      console.log('Could not parse link URL for cookies:', e);
+    }
+  }
 
   const config = {
     url: link,
@@ -1170,38 +1208,63 @@ function parseUrlParams() {
 
   // Parse DRM if present
   if (drmScheme && drmLicense) {
-    if (drmScheme === 'clearkey') {
+    console.log('Parsing DRM configuration...');
+    console.log('drmScheme:', drmScheme);
+    console.log('drmLicense:', drmLicense);
+    
+    if (drmScheme.toLowerCase() === 'clearkey') {
       // Check if drmLicense is keyid:key format
-      if (drmLicense.includes(':')) {
-        const [keyId, key] = drmLicense.split(':');
-        config.drm = {
-          scheme: 'clearkey',
-          keyId: keyId.trim(),
-          key: key.trim()
-        };
+      if (drmLicense.includes(':') && !drmLicense.startsWith('http')) {
+        const parts = drmLicense.split(':');
+        console.log('Split parts:', parts);
+        
+        if (parts.length === 2) {
+          config.drm = {
+            scheme: 'clearkey',
+            keyId: parts[0].trim(),
+            key: parts[1].trim()
+          };
+          console.log('Parsed as direct keys:', config.drm);
+        }
       } else {
         // Assume it's a license URL
         config.drm = {
           scheme: 'clearkey',
           licenseUrl: drmLicense
         };
+        console.log('Parsed as license URL:', config.drm);
       }
-    } else if (drmScheme === 'widevine') {
+    } else if (drmScheme.toLowerCase() === 'widevine') {
       config.drm = {
         scheme: 'widevine',
         licenseUrl: drmLicense
       };
+      console.log('Parsed as Widevine:', config.drm);
     }
   }
 
+  console.log('Final config:', config);
   return config;
 }
 
 function detectType(url) {
   const urlLower = url.toLowerCase();
-  if (urlLower.includes('.m3u8')) return 'm3u8';
-  if (urlLower.includes('.mpd')) return 'mpd';
-  if (urlLower.match(/\.(mp4|mov|mkv|webm|avi)/)) return 'mp4';
+  console.log('Detecting type for URL:', url);
+  
+  if (urlLower.includes('.m3u8')) {
+    console.log('Detected type: m3u8');
+    return 'm3u8';
+  }
+  if (urlLower.includes('.mpd')) {
+    console.log('Detected type: mpd');
+    return 'mpd';
+  }
+  if (urlLower.match(/\.(mp4|mov|mkv|webm|avi)/)) {
+    console.log('Detected type: mp4');
+    return 'mp4';
+  }
+  
+  console.log('Detected type: mp4 (default)');
   return 'mp4'; // default
 }
 
@@ -1406,128 +1469,169 @@ function loadHLS(config) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// LOAD DASH
+// LOAD DASH (Using Shaka Player for better DRM support)
 // ═══════════════════════════════════════════════════════════════════════
 async function loadDASH(config) {
-  let url = config.url;
-  
-  // Append cookie to URL if provided
-  if (config.cookie) {
-    const separator = url.includes('?') ? '&' : '?';
-    url = url + separator + config.cookie;
-  }
+  try {
+    console.log('=== DASH Loading Configuration ===');
+    console.log('URL:', config.url);
+    console.log('Cookie:', config.cookie);
+    console.log('DRM Config:', config.drm);
+    
+    // Install Shaka polyfills
+    shaka.polyfill.installAll();
+    
+    // Check browser support
+    if (!shaka.Player.isBrowserSupported()) {
+      hideLoading();
+      alert('Your browser does not support DASH playback');
+      return;
+    }
 
-  player.dashInstance = dashjs.MediaPlayer().create();
-
-  // Configure request modifier for cookies - append to all requests
-  if (config.cookie) {
-    player.dashInstance.extend('RequestModifier', function() {
-      return {
-        modifyRequestHeader: function(xhr) {
-          return xhr;
-        },
-        modifyRequestURL: function(requestUrl) {
-          // Append cookie to all segment and manifest requests
-          if (!requestUrl.includes(config.cookie)) {
-            const separator = requestUrl.includes('?') ? '&' : '?';
-            return requestUrl + separator + config.cookie;
-          }
-          return requestUrl;
-        }
-      };
-    }, true);
-  }
-
-  // Configure DRM if present
-  if (config.drm) {
-    if (config.drm.scheme === 'clearkey') {
-      try {
-        let keys;
-        if (config.drm.licenseUrl) {
-          // Fetch keys from URL
-          keys = await fetchClearKeyLicense(config.drm.licenseUrl);
-        } else if (config.drm.keyId && config.drm.key) {
-          // Use provided keys
-          keys = {
-            keys: [{
-              kty: 'oct',
-              kid: base64urlEncode(hexToBytes(config.drm.keyId)),
-              k: base64urlEncode(hexToBytes(config.drm.key))
-            }],
-            type: 'temporary'
-          };
-        }
-
-        if (keys) {
-          player.dashInstance.setProtectionData({
-            'org.w3.clearkey': {
-              clearkeys: keys
-            }
-          });
-        }
-      } catch (err) {
-        console.error('ClearKey setup error:', err);
+    // Create Shaka player instance
+    player.shakaInstance = new shaka.Player(player.video);
+    
+    // Error handling
+    player.shakaInstance.addEventListener('error', (event) => {
+      const error = event.detail;
+      console.error('Shaka Error:', error);
+      console.error('Error code:', error.code);
+      console.error('Error category:', error.category);
+      console.error('Error data:', error.data);
+      // Only show critical errors
+      if (error.severity === shaka.util.Error.Severity.CRITICAL) {
         hideLoading();
-        alert('DRM error: ' + err.message);
-        return;
+        alert(`DASH Error: ${error.message || 'Playback failed'} (Code: ${error.code})`);
       }
-    } else if (config.drm.scheme === 'widevine') {
-      player.dashInstance.setProtectionData({
-        'com.widevine.alpha': {
-          serverURL: config.drm.licenseUrl
+    });
+
+    // Configure DRM if present
+    if (config.drm) {
+      if (config.drm.scheme === 'clearkey') {
+        const clearKeys = {};
+        
+        if (config.drm.licenseUrl) {
+          console.log('Fetching license from URL:', config.drm.licenseUrl);
+          // Fetch keys from URL
+          try {
+            const response = await fetch(config.drm.licenseUrl);
+            const data = await response.json();
+            console.log('License response:', data);
+            
+            // Parse JSON response and convert to hex format
+            if (data.keys && Array.isArray(data.keys)) {
+              data.keys.forEach(keyObj => {
+                console.log('Converting key:', keyObj);
+                const kid = base64urlToHex(keyObj.kid);
+                const k = base64urlToHex(keyObj.k);
+                clearKeys[kid] = k;
+                console.log(`Converted: kid=${kid}, k=${k}`);
+              });
+            }
+          } catch (err) {
+            console.error('License fetch error:', err);
+            hideLoading();
+            alert('Failed to fetch DRM license: ' + err.message);
+            return;
+          }
+        } else if (config.drm.keyId && config.drm.key) {
+          // Use provided keys - they're already in hex format, use directly
+          console.log('Using direct hex keys');
+          console.log('Key ID (hex):', config.drm.keyId);
+          console.log('Key (hex):', config.drm.key);
+          clearKeys[config.drm.keyId.toLowerCase()] = config.drm.key.toLowerCase();
         }
+
+        console.log('Final ClearKey configuration:', clearKeys);
+        
+        player.shakaInstance.configure({
+          drm: {
+            clearKeys: clearKeys
+          }
+        });
+      } else if (config.drm.scheme === 'widevine') {
+        console.log('Configuring Widevine with license URL:', config.drm.licenseUrl);
+        player.shakaInstance.configure({
+          drm: {
+            servers: {
+              'com.widevine.alpha': config.drm.licenseUrl
+            }
+          }
+        });
+      }
+    }
+
+    // Configure request filters for cookies
+    if (config.cookie) {
+      console.log('Registering request filter for cookies');
+      player.shakaInstance.getNetworkingEngine().registerRequestFilter((type, request) => {
+        // Append cookie to HTTP/HTTPS requests only (skip data URIs)
+        request.uris = request.uris.map(uri => {
+          // Skip data URIs, blob URIs, and URIs that already have the cookie
+          if (uri.startsWith('data:') || uri.startsWith('blob:') || uri.includes(config.cookie)) {
+            return uri;
+          }
+          
+          // Only modify HTTP/HTTPS URIs
+          if (uri.startsWith('http://') || uri.startsWith('https://')) {
+            const separator = uri.includes('?') ? '&' : '?';
+            const newUri = uri + separator + config.cookie;
+            console.log('Modified request URI:', newUri);
+            return newUri;
+          }
+          
+          return uri;
+        });
       });
     }
-  }
 
-  player.dashInstance.initialize(player.video, url, false);
-
-  player.dashInstance.on(dashjs.MediaPlayer.events.STREAM_INITIALIZED, () => {
+    console.log('Loading manifest...');
+    // Load the manifest
+    await player.shakaInstance.load(config.url);
+    
+    console.log('Manifest loaded successfully');
     hideLoading();
     player.video.play().catch(e => console.log('Autoplay prevented:', e));
     
-    // Use timeout to ensure tracks are ready
+    // Populate menus after load
     setTimeout(() => {
-      populateQualityMenuDash();
-      populateAudioMenuDash();
-      populateSubtitleMenuDash();
+      populateQualityMenuShaka();
+      populateAudioMenuShaka();
+      populateSubtitleMenuShaka();
     }, 500);
-  });
+    
+  } catch (err) {
+    console.error('DASH loading error:', err);
+    console.error('Error stack:', err.stack);
+    hideLoading();
+    alert('Failed to load DASH stream: ' + (err.message || 'Unknown error'));
+  }
+}
 
-  // Only show critical errors
-  player.dashInstance.on(dashjs.MediaPlayer.events.ERROR, (e) => {
-    console.error('DASH Error:', e);
-    // Only alert for fatal playback errors, not DRM selection attempts
-    if (e.error && e.error.code === dashjs.MediaPlayer.errors.DOWNLOAD_ERROR_ID_MANIFEST_CODE) {
-      hideLoading();
-      alert('Error loading DASH manifest');
+// Helper function to convert base64url to hex (only for license URL responses)
+function base64urlToHex(base64url) {
+  try {
+    // Add padding if needed
+    let base64 = base64url.replace(/-/g, '+').replace(/_/g, '/');
+    while (base64.length % 4) {
+      base64 += '=';
     }
-  });
-}
-
-// Fetch ClearKey license from URL
-async function fetchClearKeyLicense(url) {
-  const response = await fetch(url);
-  if (!response.ok) throw new Error('License fetch failed');
-  return await response.json();
-}
-
-// Helper functions for ClearKey
-function hexToBytes(hex) {
-  const bytes = [];
-  for (let i = 0; i < hex.length; i += 2) {
-    bytes.push(parseInt(hex.substr(i, 2), 16));
+    
+    // Decode base64 to bytes
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    
+    // Convert bytes to hex
+    return Array.from(bytes)
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+  } catch (err) {
+    console.error('base64urlToHex conversion failed for:', base64url, err);
+    throw err;
   }
-  return new Uint8Array(bytes);
-}
-
-function base64urlEncode(buffer) {
-  let binary = '';
-  const bytes = new Uint8Array(buffer);
-  for (let i = 0; i < bytes.byteLength; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 }
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -1606,52 +1710,68 @@ function updateQualitySelection(index) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// POPULATE QUALITY MENU (DASH)
+// POPULATE QUALITY MENU (Shaka Player)
 // ═══════════════════════════════════════════════════════════════════════
-function populateQualityMenuDash() {
-  if (!player.dashInstance) return;
+function populateQualityMenuShaka() {
+  if (!player.shakaInstance) return;
 
   const list = document.getElementById('qualityList');
   list.innerHTML = '';
 
   try {
-    const bitrateList = player.dashInstance.getBitrateInfoListFor('video');
-    if (!bitrateList || bitrateList.length === 0) {
-      console.log('No quality levels available yet');
+    const tracks = player.shakaInstance.getVariantTracks();
+    if (!tracks || tracks.length === 0) {
+      console.log('No quality tracks available yet');
       return;
     }
+
+    // Get unique video qualities (some tracks may have same quality with different audio)
+    const qualities = [];
+    const seenHeights = new Set();
+    
+    tracks.forEach(track => {
+      if (track.height && !seenHeights.has(track.height)) {
+        seenHeights.add(track.height);
+        qualities.push({
+          height: track.height,
+          bandwidth: track.bandwidth,
+          track: track
+        });
+      }
+    });
+
+    // Sort by quality (highest first)
+    qualities.sort((a, b) => b.height - a.height);
 
     // Add Auto option
     const autoItem = document.createElement('div');
     autoItem.className = 'submenu-item active';
     autoItem.innerHTML = 'Auto <i class="fas fa-check check"></i>';
     autoItem.addEventListener('click', () => {
-      player.dashInstance.updateSettings({
-        streaming: {
-          abr: { autoSwitchBitrate: { video: true } }
-        }
-      });
-      updateQualitySelectionDash(-1);
+      player.shakaInstance.configure({ abr: { enabled: true } });
+      updateQualitySelectionShaka(-1);
       document.getElementById('qualityValue').textContent = 'Auto';
       closeSubmenu();
     });
     list.appendChild(autoItem);
 
     // Add quality levels
-    bitrateList.forEach((bitrate, index) => {
+    qualities.forEach((quality, index) => {
       const item = document.createElement('div');
       item.className = 'submenu-item';
-      const quality = bitrate.height || Math.round(bitrate.bitrate / 1000) + 'kbps';
-      item.innerHTML = `${quality}p <i class="fas fa-check check"></i>`;
+      item.innerHTML = `${quality.height}p <i class="fas fa-check check"></i>`;
       item.addEventListener('click', () => {
-        player.dashInstance.updateSettings({
-          streaming: {
-            abr: { autoSwitchBitrate: { video: false } }
-          }
-        });
-        player.dashInstance.setQualityFor('video', index);
-        updateQualitySelectionDash(index);
-        document.getElementById('qualityValue').textContent = quality + 'p';
+        // Disable ABR and select specific variant
+        player.shakaInstance.configure({ abr: { enabled: false } });
+        
+        // Select all variants with this height
+        const variantsToSelect = tracks.filter(t => t.height === quality.height);
+        if (variantsToSelect.length > 0) {
+          player.shakaInstance.selectVariantTrack(variantsToSelect[0], true);
+        }
+        
+        updateQualitySelectionShaka(index);
+        document.getElementById('qualityValue').textContent = quality.height + 'p';
         closeSubmenu();
       });
       list.appendChild(item);
@@ -1661,7 +1781,7 @@ function populateQualityMenuDash() {
   }
 }
 
-function updateQualitySelectionDash(index) {
+function updateQualitySelectionShaka(index) {
   const items = document.querySelectorAll('#qualityList .submenu-item');
   items.forEach((item, i) => {
     if (i === index + 1) {
@@ -1732,39 +1852,51 @@ function updateAudioSelection(index) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// POPULATE AUDIO MENU (DASH)
+// POPULATE AUDIO MENU (Shaka Player)
 // ═══════════════════════════════════════════════════════════════════════
-function populateAudioMenuDash() {
-  if (!player.dashInstance) return;
+function populateAudioMenuShaka() {
+  if (!player.shakaInstance) return;
 
   const list = document.getElementById('audioList');
   list.innerHTML = '';
 
-  const tracks = player.dashInstance.getTracksFor('audio');
-  if (!tracks || tracks.length === 0) return;
+  try {
+    const tracks = player.shakaInstance.getAudioLanguagesAndRoles();
+    if (!tracks || tracks.length === 0) {
+      console.log('No audio tracks available');
+      return;
+    }
 
-  const currentTrack = player.dashInstance.getCurrentTrackFor('audio');
+    const currentTrack = player.shakaInstance.getVariantTracks().find(t => t.active);
 
-  tracks.forEach((track, index) => {
-    const item = document.createElement('div');
-    item.className = 'submenu-item';
-    if (currentTrack && track.index === currentTrack.index) item.classList.add('active');
-    item.innerHTML = `${track.lang || 'Track ' + (index + 1)} <i class="fas fa-check check"></i>`;
-    item.addEventListener('click', () => {
-      player.dashInstance.setCurrentTrack(track);
-      updateAudioSelectionDash(track.index);
-      document.getElementById('audioValue').textContent = track.lang || 'Track ' + (index + 1);
-      closeSubmenu();
+    tracks.forEach((track, index) => {
+      const item = document.createElement('div');
+      item.className = 'submenu-item';
+      
+      const isActive = currentTrack && currentTrack.language === track.language;
+      if (isActive) item.classList.add('active');
+      
+      const label = track.language || 'Track ' + (index + 1);
+      item.innerHTML = `${label} <i class="fas fa-check check"></i>`;
+      
+      item.addEventListener('click', () => {
+        player.shakaInstance.selectAudioLanguage(track.language);
+        updateAudioSelectionShaka(index);
+        document.getElementById('audioValue').textContent = label;
+        closeSubmenu();
+      });
+      
+      list.appendChild(item);
     });
-    list.appendChild(item);
-  });
+  } catch (err) {
+    console.error('Error populating audio menu:', err);
+  }
 }
 
-function updateAudioSelectionDash(trackIndex) {
+function updateAudioSelectionShaka(index) {
   const items = document.querySelectorAll('#audioList .submenu-item');
   items.forEach((item, i) => {
-    const track = player.dashInstance.getTracksFor('audio')[i];
-    if (track && track.index === trackIndex) {
+    if (i === index) {
       item.classList.add('active');
     } else {
       item.classList.remove('active');
@@ -1827,60 +1959,65 @@ function updateSubtitleSelection(index) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// POPULATE SUBTITLE MENU (DASH)
+// POPULATE SUBTITLE MENU (Shaka Player)
 // ═══════════════════════════════════════════════════════════════════════
-function populateSubtitleMenuDash() {
-  if (!player.dashInstance) return;
+function populateSubtitleMenuShaka() {
+  if (!player.shakaInstance) return;
 
   const list = document.getElementById('subtitleList');
   list.innerHTML = '';
 
-  const tracks = player.dashInstance.getTracksFor('text');
-  if (!tracks || tracks.length === 0) return;
+  try {
+    const tracks = player.shakaInstance.getTextTracks();
+    if (!tracks || tracks.length === 0) {
+      console.log('No subtitle tracks available');
+      return;
+    }
 
-  const currentTrack = player.dashInstance.getCurrentTrackFor('text');
+    const currentTrack = player.shakaInstance.getTextTracks().find(t => t.active);
 
-  // Add "Off" option
-  const offItem = document.createElement('div');
-  offItem.className = 'submenu-item';
-  if (!currentTrack) offItem.classList.add('active');
-  offItem.innerHTML = 'Off <i class="fas fa-check check"></i>';
-  offItem.addEventListener('click', () => {
-    player.dashInstance.setTextTrack(-1);
-    updateSubtitleSelectionDash(null);
-    document.getElementById('subtitleValue').textContent = 'Off';
-    closeSubmenu();
-  });
-  list.appendChild(offItem);
-
-  // Add subtitle tracks
-  tracks.forEach((track, index) => {
-    const item = document.createElement('div');
-    item.className = 'submenu-item';
-    if (currentTrack && track.index === currentTrack.index) item.classList.add('active');
-    item.innerHTML = `${track.lang || 'Track ' + (index + 1)} <i class="fas fa-check check"></i>`;
-    item.addEventListener('click', () => {
-      player.dashInstance.setTextTrack(track.index);
-      updateSubtitleSelectionDash(track.index);
-      document.getElementById('subtitleValue').textContent = track.lang || 'Track ' + (index + 1);
+    // Add "Off" option
+    const offItem = document.createElement('div');
+    offItem.className = 'submenu-item';
+    if (!currentTrack) offItem.classList.add('active');
+    offItem.innerHTML = 'Off <i class="fas fa-check check"></i>';
+    offItem.addEventListener('click', () => {
+      player.shakaInstance.setTextTrackVisibility(false);
+      updateSubtitleSelectionShaka(-1);
+      document.getElementById('subtitleValue').textContent = 'Off';
       closeSubmenu();
     });
-    list.appendChild(item);
-  });
+    list.appendChild(offItem);
+
+    // Add subtitle tracks
+    tracks.forEach((track, index) => {
+      const item = document.createElement('div');
+      item.className = 'submenu-item';
+      if (currentTrack && track.id === currentTrack.id) item.classList.add('active');
+      
+      const label = track.language || 'Track ' + (index + 1);
+      item.innerHTML = `${label} <i class="fas fa-check check"></i>`;
+      
+      item.addEventListener('click', () => {
+        player.shakaInstance.selectTextTrack(track);
+        player.shakaInstance.setTextTrackVisibility(true);
+        updateSubtitleSelectionShaka(index);
+        document.getElementById('subtitleValue').textContent = label;
+        closeSubmenu();
+      });
+      
+      list.appendChild(item);
+    });
+  } catch (err) {
+    console.error('Error populating subtitle menu:', err);
+  }
 }
 
-function updateSubtitleSelectionDash(trackIndex) {
+function updateSubtitleSelectionShaka(index) {
   const items = document.querySelectorAll('#subtitleList .submenu-item');
   items.forEach((item, i) => {
-    if (trackIndex === null && i === 0) {
+    if (i === index + 1) {
       item.classList.add('active');
-    } else if (trackIndex !== null) {
-      const track = player.dashInstance.getTracksFor('text')[i - 1];
-      if (track && track.index === trackIndex) {
-        item.classList.add('active');
-      } else {
-        item.classList.remove('active');
-      }
     } else {
       item.classList.remove('active');
     }
@@ -2115,9 +2252,9 @@ function cleanupPlayers() {
     player.hlsInstance.destroy();
     player.hlsInstance = null;
   }
-  if (player.dashInstance) {
-    player.dashInstance.reset();
-    player.dashInstance = null;
+  if (player.shakaInstance) {
+    player.shakaInstance.destroy().catch(e => console.log('Shaka cleanup error:', e));
+    player.shakaInstance = null;
   }
   if (player.video) {
     player.video.pause();
@@ -2137,6 +2274,12 @@ function setupProgressBar() {
 
   function updateSeekPosition(clientX) {
     const rect = progressBar.getBoundingClientRect();
+	const width = rect.width;
+	
+	if (!width || width === 0 || !isFinite(v.duration)) {
+		return v.currentTime; // return current time if invalid
+	}
+	
     const percent = Math.max(0, Math.min((clientX - rect.left) / rect.width, 1));
     const time = percent * v.duration;
     progressFilled.style.width = (percent * 100) + '%';
@@ -2158,7 +2301,10 @@ function setupProgressBar() {
 
   function continueSeeking(clientX) {
     if (!player.isDragging) return;
-    v.currentTime = updateSeekPosition(clientX);
+    const newTime = updateSeekPosition(clientX);
+	if (isFinite(newTime)) {
+		v.currentTime = newTime;
+	}
   }
 
   function endSeeking() {
@@ -2184,7 +2330,10 @@ function setupProgressBar() {
       e.preventDefault();
       const rect = progressBar.getBoundingClientRect();
       const percent = Math.max(0, Math.min((e.clientX - rect.left) / rect.width, 1));
-      v.currentTime = percent * v.duration;
+      const newTime = percent * v.duration;
+	  if (isFinite(newTime)) {
+		v.currentTime = newTime;
+	  }
     }
   });
   progressBar.addEventListener('mouseenter', () => { if (!player.isDragging) seekTooltip.classList.add('show'); });
