@@ -610,6 +610,17 @@
       white-space: nowrap;
       user-select: none;
     }
+	
+	.time-display.live {
+  color: #ff0000;
+  font-weight: bold;
+  animation: liveBlink 1.5s ease-in-out infinite;
+}
+
+@keyframes liveBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
 
     .spacer { flex: 1; }
 
@@ -1146,7 +1157,8 @@ const player = {
   isPinching: false,
   isDoubleTapping: false,
   isKeyboardSeeking: false,
-  drmConfig: null
+  drmConfig: null,
+  isLiveStream: false
 };
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -1407,6 +1419,21 @@ function initPlayer(config) {
 
   setupPlayerEvents();
   setupControls();
+  
+  // Detect and handle live streams
+  player.video.addEventListener('durationchange', () => {
+    const isLive = !isFinite(player.video.duration) || player.video.duration > 86400;
+    player.isLiveStream = isLive;
+    
+    // Hide/show seek buttons
+    document.getElementById('seekBackBtn').style.display = isLive ? 'none' : 'flex';
+    document.getElementById('seekForwardBtn').style.display = isLive ? 'none' : 'flex';
+    
+    // Show LIVE indicator instead of time
+    if (isLive) {
+      document.getElementById('timeDisplay').textContent = 'LIVE';
+    }
+  });
 }
 
 function extractFilename(url) {
@@ -2063,17 +2090,30 @@ function setupPlayerEvents() {
 
 function updateProgress() {
   const v = player.video;
+  const timeDisplay = document.getElementById('timeDisplay');
+  
+  // For live streams, just show "LIVE" with blinking effect
+  if (player.isLiveStream) {
+    timeDisplay.textContent = '🔴 LIVE';
+    timeDisplay.classList.add('live');
+    return;
+  }
+  
+  // Remove live class for non-live streams
+  timeDisplay.classList.remove('live');
+  
   const percent = (v.currentTime / v.duration) * 100;
   document.getElementById('progressFilled').style.width = percent + '%';
-  document.getElementById('timeDisplay').textContent = 
-    formatTime(v.currentTime) + ' / ' + formatTime(v.duration);
+  timeDisplay.textContent = formatTime(v.currentTime) + ' / ' + formatTime(v.duration);
 }
 
 function formatTime(seconds) {
-  if (isNaN(seconds)) return '0:00';
+  if (isNaN(seconds) || !isFinite(seconds)) return '0:00';
+  
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
   const s = Math.floor(seconds % 60);
+  
   if (h > 0) {
     return h + ':' + (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
   }
@@ -2432,6 +2472,9 @@ function setupDoubleTap() {
   let lastTapTime = 0;
   ['tapLeft', 'tapRight'].forEach(id => {
     document.getElementById(id).addEventListener('touchend', (e) => {
+      // Skip for live streams
+      if (player.isLiveStream) return;
+      
       const now = Date.now();
       if (now - lastTapTime < 300) {
         e.preventDefault();
@@ -2519,10 +2562,16 @@ function handleKeyboard(e) {
   switch (e.key) {
     case ' ': case 'k': case '5':
       e.preventDefault(); togglePlayPause(); break;
-    case 'ArrowLeft': case '4':
-      e.preventDefault(); player.isKeyboardSeeking = true; seek(-10); break;
+	case 'ArrowLeft': case '4':
+      if (!player.isLiveStream) {
+        e.preventDefault(); player.isKeyboardSeeking = true; seek(-10);
+      }
+      break;
     case 'ArrowRight': case '6':
-      e.preventDefault(); player.isKeyboardSeeking = true; seek(10); break;
+      if (!player.isLiveStream) {
+        e.preventDefault(); player.isKeyboardSeeking = true; seek(10);
+      }
+      break;
     case 'ArrowUp':
       e.preventDefault();
       player.video.volume = Math.min(1, player.video.volume + 0.1);
