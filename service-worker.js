@@ -1,5 +1,5 @@
 // panguplay PWA Service Worker
-const CACHE_NAME = "0302260300";
+const CACHE_NAME = "0302260400";
 const urlsToCache = [
   "/",
   "/index.html",
@@ -56,8 +56,9 @@ self.addEventListener('activate', event => {
 self.addEventListener("fetch", event => {
   // Skip cross-origin requests and video files
   if (!event.request.url.startsWith(self.location.origin) ||
-      event.request.url.match(/\.(mp4|webm|m3u8)$/)) {
-    return;
+    event.request.url.match(/\.(mp4|webm|m3u8|mpd)/) ||
+    event.request.url.includes('linkplay.html')) {
+	 return;
   }
 
   // CDN resources: cache-first
