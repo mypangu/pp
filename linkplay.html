@@ -2654,6 +2654,13 @@ window.addEventListener('load', () => {
 
 // cleanup on page leave
 window.addEventListener('beforeunload', cleanupPlayers);
+
+// Service Worker Registration (optional - only if accessed directly)
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
+    .then(() => console.log('SW registered'))
+    .catch(err => console.log('SW registration failed:', err));
+}
 </script>
 </body>
 </html>
