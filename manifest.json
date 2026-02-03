@@ -51,10 +51,10 @@
       "url": "/dubbed.html"
     },
     {
-      "name": "720p",
-      "short_name": "720p",
-      "description": "Browse 720p content",
-      "url": "/720p.html"
+      "name": "Link Play",
+      "short_name": "linkplay",
+      "description": "Play Any StreamLink",
+      "url": "/linkplay.html"
     }
   ],
   "screenshots": [
