@@ -1159,6 +1159,11 @@ function parseUrlParams() {
   const drmScheme = params.get('drmScheme');
   const drmLicense = params.get('drmLicense');
   let cookie = params.get('cookie');
+  
+    const title = params.get('title');
+  if (title) {
+    document.getElementById('videoTitle').textContent = decodeURIComponent(title);
+  }
 
   console.log('=== URL Parameter Parsing ===');
   console.log('Page URL:', window.location.href);
@@ -1203,7 +1208,8 @@ function parseUrlParams() {
     url: link,
     type: type || detectType(link),
     cookie: cookie || null,
-    drm: null
+    drm: null,
+	title: title ? decodeURIComponent(title) : null
   };
 
   // Parse DRM if present
@@ -1383,9 +1389,11 @@ function initPlayer(config) {
 
   cleanupPlayers();
 
-  // Set video title
-  const title = extractFilename(config.url);
-  document.getElementById('videoTitle').textContent = title;
+  // Set video title (only if not already set from URL param)
+  if (!config.title) {
+    const title = extractFilename(config.url);
+    document.getElementById('videoTitle').textContent = title;
+  }
 
   showLoading();
 
