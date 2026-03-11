@@ -686,33 +686,35 @@ disable-paste='false'>
       player.video.load();
     }
 
-    // ===== WORKER URL BUILDER =====
-    function fetchFromWorker(lookUrl) {
+    // ===== WORKER FETCH LOGIC =====
+    async function fetchFromWorker(lookUrl) {
       try {
-        const parsed = new URL(lookUrl);
-        const id = parsed.pathname.split('/').filter(Boolean).pop();
-
-        let type = null;
-        if (parsed.hostname.includes('play.onestream.watch')) {
-          type = 'play';
-        } else if (parsed.hostname.includes('dub.onestream.watch')) {
-          type = 'dub';
-        }
-
-        if (!type || !id) {
-          console.warn('fetchFromWorker: unrecognised URL pattern, skipping worker:', lookUrl);
-          return null;
-        }
-
-        const workerUrl = `https://panguott.panguplay.workers.dev/${type}/${id}`;
+        const workerUrl = `https://md.porus-in2012.workers.dev/?target=${encodeURIComponent(lookUrl)}`;
         console.log('Worker URL:', workerUrl);
-
-        return {
-          videoUrl: workerUrl,
-          downloadUrl: workerUrl
-        };
+        
+        const response = await fetch(workerUrl);
+        console.log('Worker response status:', response.status);
+        
+        if (!response.ok) {
+          console.error('Worker response not OK:', response.status, response.statusText);
+          throw new Error(`Worker fetch failed: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Worker response data:', data);
+        
+        if (data && data.video) {
+          console.log('Worker returned video URL:', data.video);
+          return {
+            videoUrl: data.video,
+            downloadUrl: data.link || data.video
+          };
+        }
+        
+        console.warn('Worker response missing video field');
+        return null;
       } catch (error) {
-        console.error('fetchFromWorker error:', error.message, error);
+        console.error('Worker fetch error:', error.message, error);
         return null;
       }
     }
@@ -770,10 +772,10 @@ disable-paste='false'>
           document.getElementById('episodesBtn').style.display = 'block';
           
           const lastWatchedIndex = getLastWatchedEpisodeIndex(data.id);
-          loadEpisode(lastWatchedIndex);
+          await loadEpisode(lastWatchedIndex);
         } else {
           player.currentEpisodeId = id;
-          loadMovieSources(data);
+          await loadMovieSources(data);
         }
       } catch (error) {
         console.error('Load error:', error);
@@ -783,11 +785,11 @@ disable-paste='false'>
       }
     }
 
-    function loadMovieSources(data) {
+    async function loadMovieSources(data) {
       const sources = [];
       
       if (data.lookUrl) {
-        const result = fetchFromWorker(data.lookUrl);
+        const result = await fetchFromWorker(data.lookUrl);
         if (result) {
           sources.push({ quality: '1080p', ...result });
         } else if (data.video) {
@@ -795,12 +797,12 @@ disable-paste='false'>
         }
       } else {
         if (data['1080Url']) {
-          const result = fetchFromWorker(data['1080Url']);
+          const result = await fetchFromWorker(data['1080Url']);
           if (result) sources.push({ quality: '1080p', ...result });
         }
         
         if (data['720Url']) {
-          const result = fetchFromWorker(data['720Url']);
+          const result = await fetchFromWorker(data['720Url']);
           if (result) sources.push({ quality: '720p', ...result });
         }
 
@@ -819,7 +821,7 @@ disable-paste='false'>
       }
     }
 
-    function loadEpisode(index) {
+    async function loadEpisode(index) {
       if (!player.episodes[index]) return;
       
       showLoading();
@@ -834,7 +836,7 @@ disable-paste='false'>
 
       let source = null;
       if (episode.lookUrl) {
-        source = fetchFromWorker(episode.lookUrl);
+        source = await fetchFromWorker(episode.lookUrl);
       }
       
       if (!source && episode.videoUrl) {
@@ -1421,8 +1423,11 @@ function updateProgress() {
         return;
       }
       
-      window.open(url, '_blank');
-      showToast('Opening download in new tab');
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = player.data.title + '.mp4';
+      a.click();
+      showToast('Download started');
     }
 	
     function copyLink() {
