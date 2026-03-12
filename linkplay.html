@@ -1717,7 +1717,9 @@ function loadHLS(config) {
       player.video.play().catch(e => console.log('Autoplay prevented:', e));
       populateQualityMenu();
       populateAudioMenu();
-	  setTimeout(() => populateSubtitleMenu(), 300);
+	  player.hlsInstance.once(Hls.Events.SUBTITLE_TRACKS_UPDATED, () => {
+	  populateSubtitleMenu();
+	  });
     });
 
     player.hlsInstance.on(Hls.Events.ERROR, (event, data) => {
@@ -3044,6 +3046,8 @@ function loadSubtitleStyles() {
       Object.assign(subtitleStyle, parsed);
     }
   } catch(e) {}
+  
+  saveSubtitleStyles();
   applySubtitleStyles();
   syncSubtitleStyleUI();
 }
@@ -3194,18 +3198,18 @@ function activateSubtitleOverlay(textTrack) {
     const cues = textTrack.activeCues;
     if (!cues || cues.length === 0) { el.innerHTML = ''; return; }
 
-    const lines = [];
-    for (let i = 0; i < cues.length; i++) {
-      const cleaned = cleanVttCue(cues[i].text || '');
-      if (cleaned) {
-        // Split on newlines within a single cue
-        cleaned.split('\n').forEach(line => {
-          const l = line.trim();
-          if (l) lines.push(l);
-        });
-      }
-    }
-    el.innerHTML = lines.join('<br>');
+const lines = [];
+for (let i = 0; i < cues.length; i++) {
+  const cleaned = cleanVttCue(cues[i].text || '');
+  if (cleaned) {
+    cleaned.split('\n').forEach(line => {
+      const l = line.trim();
+      // Filter out lines that are only dashes/spaces (speaker indicators with no text)
+      if (l && !/^[-–—\s]+$/.test(l)) lines.push(l);
+    });
+  }
+}
+el.innerHTML = lines.join('<br>');
   };
 
   // Use timeupdate polling — far more reliable with hls.js than cuechange
