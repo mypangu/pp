@@ -818,6 +818,141 @@
         font-size: 14px;
       }
     }
+	
+/* ── Subtitle Style Panel ── */
+.subtitle-style-panel {
+  position: fixed;
+  bottom: 80px;
+  right: 16px;
+  width: 260px;
+  background: rgba(20,20,20,0.97);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 0 0 8px 0;
+  display: none;
+  z-index: 103;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+}
+
+.subtitle-style-panel.show { display: block; }
+
+.subtitle-style-panel .submenu-header {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 4px;
+}
+
+.style-section {
+  padding: 10px 16px 4px;
+}
+
+.style-section-label {
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.style-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.style-option-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 2px solid #333;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.style-option-btn:hover { border-color: #555; }
+.style-option-btn.active { border-color: #ff4500; background: rgba(255,69,0,0.15); color: #ff4500; }
+
+.color-swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 2px solid #333;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.color-swatch.active { border-color: #ff4500; }
+
+@media (max-width: 768px) {
+  .subtitle-style-panel { right: 8px; bottom: 70px; width: 230px; }
+}
+
+/* ── Custom Subtitle Overlay ── */
+#subtitleOverlay {
+  position: absolute;
+  width: 80%;
+  text-align: center;
+  z-index: 20;
+  pointer-events: none;
+}
+
+#subtitleText {
+  display: inline-block;
+  max-width: 100%;
+  padding: 4px 10px;
+  border-radius: 4px;
+  line-height: 1.5;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+/* Slider styling */
+.style-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.style-slider-label {
+  font-size: 11px;
+  color: #aaa;
+  min-width: 12px;
+}
+.style-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: #333;
+  outline: none;
+  cursor: pointer;
+}
+.style-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ff4500;
+  cursor: pointer;
+}
+.style-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ff4500;
+  cursor: pointer;
+  border: none;
+}
+.style-slider-value {
+  font-size: 11px;
+  color: #ff4500;
+  min-width: 28px;
+  text-align: right;
+}
+	
   </style>
 </head>
 <body>
@@ -942,18 +1077,12 @@
               <input type="text" class="form-input" id="clearkeyUrl" placeholder="https://clearkey.example.com/license?keyid=...&key=...">
             </div>
           </div>
-          <div id="clearkeyKeysGroup">
-            <div class="form-row">
-              <div class="form-group">
-                <label>Key ID</label>
-                <input type="text" class="form-input" id="clearkeyKeyId" placeholder="0123456789abcdef0123456789abcdef">
-              </div>
-              <div class="form-group">
-                <label>Key</label>
-                <input type="text" class="form-input" id="clearkeyKey" placeholder="fedcba9876543210fedcba9876543210">
-              </div>
-            </div>
-          </div>
+<div id="clearkeyKeysGroup">
+  <div class="form-group">
+    <label>Key ID : Key</label>
+    <input type="text" class="form-input" id="clearkeyKeyPair" placeholder="0123456789abcdef0123456789abcdef:fedcba9876543210fedcba9876543210">
+  </div>
+</div>
         </div>
 
         <!-- Widevine Inputs -->
@@ -981,6 +1110,9 @@
   <div id="videoWrapper">
     <!-- Video Element -->
     <video id="videoPlayer" playsinline></video>
+	
+	<!-- Custom Subtitle Overlay -->
+	<div id="subtitleOverlay"><span id="subtitleText"></span></div>
 
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
@@ -1091,16 +1223,119 @@
       <div id="audioList"></div>
     </div>
 
-    <!-- Subtitle Submenu -->
-    <div class="settings-submenu" id="subtitleSubmenu">
-      <div class="submenu-header">
-        <button class="submenu-back" onclick="closeSubmenu()">
-          <i class="fas fa-arrow-left"></i>
-        </button>
-        Subtitles
-      </div>
-      <div id="subtitleList"></div>
+<!-- Subtitle Submenu -->
+<div class="settings-submenu" id="subtitleSubmenu">
+  <div class="submenu-header">
+    <button class="submenu-back" onclick="closeSubmenu()">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+    <span style="flex:1">Subtitles</span>
+    <button class="submenu-back" onclick="openSubtitleStylePanel()" title="Style">
+      <i class="fas fa-paint-brush" style="font-size:14px; color:#ff4500;"></i>
+    </button>
+  </div>
+  <div id="subtitleList"></div>
+</div>
+	
+<!-- Subtitle Style Panel -->
+<div class="subtitle-style-panel" id="subtitleStylePanel">
+  <div class="submenu-header">
+    <button class="submenu-back" onclick="closeSubtitleStylePanel()">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+    Subtitle Style
+  </div>
+
+<div class="style-section">
+  <div class="style-section-label">Vertical Position</div>
+  <div class="style-slider-row">
+    <span class="style-slider-label">▲</span>
+    <input type="range" class="style-slider" id="subtitleVSlider" min="0" max="95" value="85">
+    <span class="style-slider-label">▼</span>
+    <span class="style-slider-value" id="subtitleVVal">85%</span>
+  </div>
+  <div class="style-section-label" style="margin-top:8px">Horizontal Position</div>
+  <div class="style-slider-row">
+    <span class="style-slider-label">◀</span>
+    <input type="range" class="style-slider" id="subtitleHSlider" min="10" max="90" value="50">
+    <span class="style-slider-label">▶</span>
+    <span class="style-slider-value" id="subtitleHVal">50%</span>
+  </div>
+</div>
+
+<div class="style-section">
+  <div class="style-section-label">Font Size</div>
+  <div class="style-slider-row">
+    <span class="style-slider-label" style="font-size:10px">A</span>
+    <input type="range" class="style-slider" id="subtitleSizeSlider" min="12" max="56" value="20">
+    <span class="style-slider-label" style="font-size:16px">A</span>
+    <span class="style-slider-value" id="subtitleSizeVal">20px</span>
+  </div>
+</div>
+
+<div class="style-section">
+  <div class="style-section-label">Font</div>
+  <div class="style-options" id="subtitleFontOptions">
+    <button class="style-option-btn active" data-font="Arial, sans-serif">Arial</button>
+    <button class="style-option-btn" data-font="Georgia, serif">Georgia</button>
+    <button class="style-option-btn" data-font="'Trebuchet MS', sans-serif">Trebuchet</button>
+    <button class="style-option-btn" data-font="'Courier New', monospace">Mono</button>
+    <button class="style-option-btn" data-font="Impact, sans-serif">Impact</button>
+    <button class="style-option-btn" data-font="'Comic Sans MS', 'Comic Sans', cursive" style="font-family:'Comic Sans MS',cursive">Comic</button>
+    <button class="style-option-btn" data-font="Verdana, sans-serif">Verdana</button>
+    <button class="style-option-btn" data-font="'Times New Roman', serif">Times</button>
+  </div>
+</div>
+
+  <div class="style-section">
+    <div class="style-section-label">Text Color</div>
+    <div class="style-options" id="subtitleColorOptions">
+      <div class="color-swatch active" data-color="#ffffff" style="background:#ffffff" title="White"></div>
+      <div class="color-swatch" data-color="#ffff00" style="background:#ffff00" title="Yellow"></div>
+      <div class="color-swatch" data-color="#00ffff" style="background:#00ffff" title="Cyan"></div>
+      <div class="color-swatch" data-color="#90ee90" style="background:#90ee90" title="Green"></div>
+      <div class="color-swatch" data-color="#ffb6c1" style="background:#ffb6c1" title="Pink"></div>
+      <div class="color-swatch" data-color="#ffa500" style="background:#ffa500" title="Orange"></div>
     </div>
+  </div>
+
+  <div class="style-section">
+    <div class="style-section-label">Background</div>
+    <div class="style-options" id="subtitleBgOptions">
+      <button class="style-option-btn active" data-bg="rgba(0,0,0,0.75)">Dark</button>
+      <button class="style-option-btn" data-bg="rgba(0,0,0,0.4)">Dim</button>
+      <button class="style-option-btn" data-bg="rgba(0,0,0,0)">None</button>
+      <button class="style-option-btn" data-bg="rgba(255,255,255,0.15)">Light</button>
+    </div>
+  </div>
+
+  <div class="style-section">
+    <div class="style-section-label">Opacity</div>
+    <div class="style-options" id="subtitleOpacityOptions">
+      <button class="style-option-btn" data-opacity="0.6">60%</button>
+      <button class="style-option-btn" data-opacity="0.8">80%</button>
+      <button class="style-option-btn active" data-opacity="1">100%</button>
+    </div>
+  </div>
+
+<div class="style-section">
+  <div class="style-section-label">Text Style</div>
+  <div class="style-options" id="subtitleStyleOptions">
+    <button class="style-option-btn active" data-textstyle="normal">Normal</button>
+    <button class="style-option-btn" data-textstyle="bold">Bold</button>
+    <button class="style-option-btn" data-textstyle="italic">Italic</button>
+    <button class="style-option-btn" data-textstyle="bold-italic">B+I</button>
+  </div>
+</div>
+
+  <div class="style-section">
+    <div class="style-section-label">Shadow</div>
+    <div class="style-options" id="subtitleShadowOptions">
+      <button class="style-option-btn active" data-shadow="1px 1px 3px #000, -1px -1px 3px #000">On</button>
+      <button class="style-option-btn" data-shadow="none">Off</button>
+    </div>
+  </div>
+</div>
 
     <!-- Speed Submenu -->
     <div class="settings-submenu" id="speedSubmenu">
@@ -1158,7 +1393,9 @@ const player = {
   isDoubleTapping: false,
   isKeyboardSeeking: false,
   drmConfig: null,
-  isLiveStream: false
+  isLiveStream: false,
+  activeCueTrack: null,       
+  cueChangeHandler: null 
 };
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -1359,11 +1596,13 @@ document.getElementById('watchBtn').addEventListener('click', () => {
           drm = { scheme: 'clearkey', licenseUrl };
         }
       } else {
-        const keyId = document.getElementById('clearkeyKeyId').value.trim();
-        const key = document.getElementById('clearkeyKey').value.trim();
-        if (keyId && key) {
-          drm = { scheme: 'clearkey', keyId, key };
-        }
+const keyPair = document.getElementById('clearkeyKeyPair').value.trim();
+if (keyPair.includes(':')) {
+  const [keyId, key] = keyPair.split(':').map(s => s.trim());
+  if (keyId && key) {
+    drm = { scheme: 'clearkey', keyId, key };
+  }
+}
       }
     } else if (drmScheme === 'widevine') {
       const licenseUrl = document.getElementById('widevineLicenseUrl').value.trim();
@@ -1478,6 +1717,7 @@ function loadHLS(config) {
       player.video.play().catch(e => console.log('Autoplay prevented:', e));
       populateQualityMenu();
       populateAudioMenu();
+	  setTimeout(() => populateSubtitleMenu(), 300);
     });
 
     player.hlsInstance.on(Hls.Events.ERROR, (event, data) => {
@@ -1722,11 +1962,12 @@ function populateQualityMenu() {
   levels.forEach((level, index) => {
     const item = document.createElement('div');
     item.className = 'submenu-item';
-    item.innerHTML = `${level.height}p <i class="fas fa-check check"></i>`;
+    const label = level.name || (level.height ? level.height + 'p' : 'Level ' + index);
+	item.innerHTML = `${label} <i class="fas fa-check check"></i>`;
     item.addEventListener('click', () => {
       player.hlsInstance.currentLevel = index;
       updateQualitySelection(index);
-      document.getElementById('qualityValue').textContent = level.height + 'p';
+      document.getElementById('qualityValue').textContent = label;
       closeSubmenu();
     });
     list.appendChild(item);
@@ -1946,24 +2187,123 @@ function populateSubtitleMenu() {
   const list = document.getElementById('subtitleList');
   list.innerHTML = '';
 
+  // ── HLS path ──
+  if (player.hlsInstance) {
+    const subtitleTracks = player.hlsInstance.subtitleTracks;
+    if (!subtitleTracks || subtitleTracks.length === 0) return;
+
+    const offItem = document.createElement('div');
+    offItem.className = 'submenu-item active';
+    offItem.innerHTML = 'Off <i class="fas fa-check check"></i>';
+    offItem.addEventListener('click', () => {
+      player.hlsInstance.subtitleTrack = -1;
+	  clearSubtitleOverlay();
+      updateSubtitleSelection(-1);
+      document.getElementById('subtitleValue').textContent = 'Off';
+      closeSubmenu();
+    });
+    list.appendChild(offItem);
+
+    subtitleTracks.forEach((track, index) => {
+      const item = document.createElement('div');
+      item.className = 'submenu-item';
+      const label = track.name || track.lang || 'Track ' + (index + 1);
+      item.innerHTML = `${label} <i class="fas fa-check check"></i>`;
+item.addEventListener('click', () => {
+  player.hlsInstance.subtitleDisplay = false;
+  player.hlsInstance.subtitleTrack = index;
+
+  // Wait for hls.js to create and load the textTrack (500ms is safe)
+  setTimeout(() => {
+    const hlsTrack = player.hlsInstance.subtitleTracks[index];
+    const textTracks = player.video.textTracks;
+    let found = null;
+
+    // Strategy 1: exact label match
+    for (let t = 0; t < textTracks.length; t++) {
+      if (hlsTrack && textTracks[t].label === hlsTrack.name) {
+        found = textTracks[t]; break;
+      }
+    }
+    // Strategy 2: language match among subtitle/caption kind
+    if (!found && hlsTrack && hlsTrack.lang) {
+      for (let t = 0; t < textTracks.length; t++) {
+        if ((textTracks[t].kind === 'subtitles' || textTracks[t].kind === 'captions')
+            && textTracks[t].language === hlsTrack.lang) {
+          found = textTracks[t]; break;
+        }
+      }
+    }
+    // Strategy 3: nth subtitle/caption track by index
+    if (!found) {
+      const subs = Array.from(textTracks).filter(t =>
+        t.kind === 'subtitles' || t.kind === 'captions'
+      );
+      found = subs[index] || subs[0];
+    }
+
+    if (found) {
+      activateSubtitleOverlay(found);
+    } else {
+      console.warn('No matching textTrack found for index', index);
+    }
+  }, 500);
+
+  updateSubtitleSelection(index);
+  document.getElementById('subtitleValue').textContent = label;
+  closeSubmenu();
+});
+      list.appendChild(item);
+    });
+	
+    // Auto-activate default track
+    const currentIdx = player.hlsInstance.subtitleTrack;
+    if (currentIdx >= 0) {
+      player.hlsInstance.subtitleDisplay = false;
+      setTimeout(() => {
+        const hlsTrack = player.hlsInstance.subtitleTracks[currentIdx];
+        const textTracks = player.video.textTracks;
+        let found = null;
+        for (let t = 0; t < textTracks.length; t++) {
+          if (hlsTrack && textTracks[t].label === hlsTrack.name) { found = textTracks[t]; break; }
+        }
+        if (!found && hlsTrack && hlsTrack.lang) {
+          for (let t = 0; t < textTracks.length; t++) {
+            if ((textTracks[t].kind === 'subtitles' || textTracks[t].kind === 'captions')
+                && textTracks[t].language === hlsTrack.lang) { found = textTracks[t]; break; }
+          }
+        }
+        if (!found) {
+          const subs = Array.from(textTracks).filter(t => t.kind === 'subtitles' || t.kind === 'captions');
+          found = subs[currentIdx] || subs[0];
+        }
+        if (found) {
+          activateSubtitleOverlay(found);
+          updateSubtitleSelection(currentIdx);
+          const label = hlsTrack ? (hlsTrack.name || hlsTrack.lang || 'Track ' + (currentIdx + 1)) : 'Track ' + (currentIdx + 1);
+          document.getElementById('subtitleValue').textContent = label;
+        }
+      }, 500);
+    }	
+	
+    return; // done for HLS
+  }
+
+  // ── Native/MP4 path (original code) ──
   const tracks = player.video.textTracks;
   if (tracks.length === 0) return;
 
-  // Add "Off" option
   const offItem = document.createElement('div');
   offItem.className = 'submenu-item active';
   offItem.innerHTML = 'Off <i class="fas fa-check check"></i>';
   offItem.addEventListener('click', () => {
-    for (let i = 0; i < tracks.length; i++) {
-      tracks[i].mode = 'hidden';
-    }
+    for (let i = 0; i < tracks.length; i++) tracks[i].mode = 'hidden';
     updateSubtitleSelection(-1);
     document.getElementById('subtitleValue').textContent = 'Off';
     closeSubmenu();
   });
   list.appendChild(offItem);
 
-  // Add subtitle tracks
   for (let i = 0; i < tracks.length; i++) {
     const track = tracks[i];
     const item = document.createElement('div');
@@ -1971,9 +2311,7 @@ function populateSubtitleMenu() {
     if (track.mode === 'showing') item.classList.add('active');
     item.innerHTML = `${track.label || 'Track ' + (i + 1)} <i class="fas fa-check check"></i>`;
     item.addEventListener('click', () => {
-      for (let j = 0; j < tracks.length; j++) {
-        tracks[j].mode = (j === i) ? 'showing' : 'hidden';
-      }
+      for (let j = 0; j < tracks.length; j++) tracks[j].mode = (j === i) ? 'showing' : 'hidden';
       updateSubtitleSelection(i);
       document.getElementById('subtitleValue').textContent = track.label || 'Track ' + (i + 1);
       closeSubmenu();
@@ -2336,54 +2674,70 @@ function setupProgressBar() {
     return time;
   }
 
-  function startSeeking(clientX) {
-    player.isDragging = true;
-    player.isSeeking = true;
-    player.wasPlayingBeforeSeeking = !v.paused;
+function startSeeking(clientX) {
+  player.isDragging = true;
+  player.isSeeking = true;
+  player.wasDragged = false;
+  player.lastSeekX = clientX;          
+  player.wasPlayingBeforeSeeking = !v.paused;
+  progressBar.classList.add('dragging');
+  progressFilled.classList.add('dragging');
+  seekTooltip.classList.add('show');
+  updateSeekPosition(clientX);
+}
+
+function continueSeeking(clientX) {
+  if (!player.isDragging) return;
+  player.lastSeekX = clientX;          
+  if (!player.wasDragged) {
+    player.wasDragged = true;
     v.pause();
-    progressBar.classList.add('dragging');
-    progressFilled.classList.add('dragging');
-    seekTooltip.classList.add('show');
-    updateSeekPosition(clientX);
   }
+  const newTime = updateSeekPosition(clientX);
+  if (isFinite(newTime)) v.currentTime = newTime;
+}
 
-  function continueSeeking(clientX) {
-    if (!player.isDragging) return;
-    const newTime = updateSeekPosition(clientX);
-	if (isFinite(newTime)) {
-		v.currentTime = newTime;
-	}
-  }
+function endSeeking() {
+  if (!player.isDragging) return;
 
-  function endSeeking() {
-    if (!player.isDragging) return;
-    player.isDragging = false;
-    progressBar.classList.remove('dragging');
-    progressFilled.classList.remove('dragging');
-    seekTooltip.classList.remove('show');
-    if (player.wasPlayingBeforeSeeking) {
-      v.play().then(() => {
-        setTimeout(() => { player.isSeeking = false; player.wasPlayingBeforeSeeking = false; }, 100);
-      });
-    } else {
-      setTimeout(() => { player.isSeeking = false; player.wasPlayingBeforeSeeking = false; }, 100);
+  const rect = progressBar.getBoundingClientRect();
+  // If it was a tap (not a drag), do the seek now
+  if (!player.wasDragged) {
+    const lastX = player.lastSeekX;
+    if (lastX !== undefined && isFinite(v.duration)) {
+      const percent = Math.max(0, Math.min((lastX - rect.left) / rect.width, 1));
+      v.currentTime = percent * v.duration;
     }
   }
+
+  player.isDragging = false;
+  progressBar.classList.remove('dragging');
+  progressFilled.classList.remove('dragging');
+  seekTooltip.classList.remove('show');
+
+  if (player.wasDragged && player.wasPlayingBeforeSeeking) {
+    v.play().catch(() => {});
+  }
+  player.wasDragged = false;
+  player.isSeeking = false;
+  player.wasPlayingBeforeSeeking = false;
+  player.lastSeekX = undefined;
+}
 
   // mouse
   progressBar.addEventListener('mousedown',  (e) => { e.preventDefault(); startSeeking(e.clientX); });
-  progressBar.addEventListener('click', (e) => {
-    // Allow direct click to seek
-    if (!player.isDragging) {
-      e.preventDefault();
-      const rect = progressBar.getBoundingClientRect();
-      const percent = Math.max(0, Math.min((e.clientX - rect.left) / rect.width, 1));
-      const newTime = percent * v.duration;
-	  if (isFinite(newTime)) {
-		v.currentTime = newTime;
-	  }
+progressBar.addEventListener('click', (e) => {
+  if (!player.isDragging) {
+    e.preventDefault();
+    const rect = progressBar.getBoundingClientRect();
+    const percent = Math.max(0, Math.min((e.clientX - rect.left) / rect.width, 1));
+    const newTime = percent * v.duration;
+    if (isFinite(newTime)) {
+      v.currentTime = newTime;
+      // No need to resume — video was never paused for a click
     }
-  });
+  }
+});
   progressBar.addEventListener('mouseenter', () => { if (!player.isDragging) seekTooltip.classList.add('show'); });
   progressBar.addEventListener('mousemove',  (e) => {
     if (!player.isDragging) {
@@ -2447,6 +2801,7 @@ function setupProgressBar() {
   videoWrapper.addEventListener('touchend', (e) => {
     if (e.target.closest('.controls') || e.target.closest('.tap-zone') ||
         e.target.closest('.top-controls') || e.target.closest('.settings-menu') ||
+		e.target.closest('.settings-submenu') || e.target.closest('.subtitle-style-panel') ||
         player.isPinching || player.isDoubleTapping) return;
     const now = Date.now();
     if (now - centerTapTime > 350) {
@@ -2645,6 +3000,8 @@ document.addEventListener('click', function(e) {
 // AUTO-PLAY FROM URL PARAMS
 // ═══════════════════════════════════════════════════════════════════════
 window.addEventListener('load', () => {
+  loadSubtitleStyles();    
+  setupSubtitleStylePanel();
   const urlConfig = parseUrlParams();
   if (urlConfig) {
     document.getElementById('inputScreen').classList.add('hidden');
@@ -2660,6 +3017,233 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
     .then(() => console.log('SW registered'))
     .catch(err => console.log('SW registration failed:', err));
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// SUBTITLE STYLING
+// ═══════════════════════════════════════════════════════════════════════
+const SUBTITLE_STYLE_KEY = 'panguplay_subtitle_style';
+
+const subtitleStyle = {
+  size:      20,        // ← now a number (px), not a percentage string
+  color:     '#ffffff',
+  bg:        'rgba(0,0,0,0.75)',
+  font:      'Arial, sans-serif',
+  shadow:    '1px 1px 3px #000, -1px -1px 3px #000',
+  vOffset:   85,
+  hOffset:   50,
+  opacity:   '1',
+  textstyle: 'normal'
+};
+
+function loadSubtitleStyles() {
+  try {
+    const saved = localStorage.getItem(SUBTITLE_STYLE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      Object.assign(subtitleStyle, parsed);
+    }
+  } catch(e) {}
+  applySubtitleStyles();
+  syncSubtitleStyleUI();
+}
+
+function saveSubtitleStyles() {
+  try {
+    localStorage.setItem(SUBTITLE_STYLE_KEY, JSON.stringify(subtitleStyle));
+  } catch(e) {}
+}
+
+function syncSubtitleStyleUI() {
+  const vs = document.getElementById('subtitleVSlider');
+  const hs = document.getElementById('subtitleHSlider');
+  if (vs) { vs.value = subtitleStyle.vOffset ?? 85; document.getElementById('subtitleVVal').textContent = vs.value + '%'; }
+  if (hs) { hs.value = subtitleStyle.hOffset ?? 50; document.getElementById('subtitleHVal').textContent = hs.value + '%'; }
+
+  const sync = (selector, prop) => {
+    document.querySelectorAll(selector).forEach(btn => {
+      btn.classList.toggle('active', btn.dataset[prop] === String(subtitleStyle[prop]));
+    });
+  };
+
+const ss = document.getElementById('subtitleSizeSlider');
+if (ss) { ss.value = subtitleStyle.size || 20; document.getElementById('subtitleSizeVal').textContent = ss.value + 'px'; }
+  sync('#subtitleFontOptions .style-option-btn',    'font');
+  sync('#subtitleBgOptions .style-option-btn',      'bg');
+  sync('#subtitleOpacityOptions .style-option-btn', 'opacity');
+  sync('#subtitleStyleOptions .style-option-btn',   'textstyle');
+  sync('#subtitleShadowOptions .style-option-btn',  'shadow');
+
+  document.querySelectorAll('#subtitleColorOptions .color-swatch').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.color === subtitleStyle.color);
+  });
+}
+
+function openSubtitleStylePanel() {
+  document.getElementById('subtitleSubmenu').classList.remove('show');
+  document.getElementById('subtitleStylePanel').classList.add('show');
+}
+
+function closeSubtitleStylePanel() {
+  document.getElementById('subtitleStylePanel').classList.remove('show');
+  document.getElementById('subtitleSubmenu').classList.add('show');
+}
+
+function setupSubtitleStylePanel() {
+  const bind = (selector, prop) => {
+    document.querySelectorAll(selector).forEach(btn => {
+      btn.addEventListener('click', () => {
+        subtitleStyle[prop] = btn.dataset[prop];
+        applySubtitleStyles();
+        saveSubtitleStyles();
+        syncSubtitleStyleUI();
+      });
+    });
+  };
+
+const sizeSlider = document.getElementById('subtitleSizeSlider');
+if (sizeSlider) {
+  sizeSlider.value = subtitleStyle.size || 20;
+  document.getElementById('subtitleSizeVal').textContent = sizeSlider.value + 'px';
+  sizeSlider.addEventListener('input', () => {
+    subtitleStyle.size = parseInt(sizeSlider.value);
+    document.getElementById('subtitleSizeVal').textContent = sizeSlider.value + 'px';
+    applySubtitleStyles(); saveSubtitleStyles();
+  });
+}
+  bind('#subtitleFontOptions .style-option-btn',    'font');
+  bind('#subtitleBgOptions .style-option-btn',      'bg');
+  bind('#subtitleOpacityOptions .style-option-btn', 'opacity');
+  bind('#subtitleStyleOptions .style-option-btn',   'textstyle');
+  bind('#subtitleShadowOptions .style-option-btn',  'shadow');
+
+  document.querySelectorAll('#subtitleColorOptions .color-swatch').forEach(btn => {
+    btn.addEventListener('click', () => {
+      subtitleStyle.color = btn.dataset.color;
+      applySubtitleStyles(); saveSubtitleStyles(); syncSubtitleStyleUI();
+    });
+  });
+
+  const vSlider = document.getElementById('subtitleVSlider');
+  const hSlider = document.getElementById('subtitleHSlider');
+  if (vSlider) {
+    vSlider.value = subtitleStyle.vOffset ?? 85;
+    document.getElementById('subtitleVVal').textContent = vSlider.value + '%';
+    vSlider.addEventListener('input', () => {
+      subtitleStyle.vOffset = parseInt(vSlider.value);
+      document.getElementById('subtitleVVal').textContent = vSlider.value + '%';
+      applySubtitleStyles(); saveSubtitleStyles();
+    });
+  }
+  if (hSlider) {
+    hSlider.value = subtitleStyle.hOffset ?? 50;
+    document.getElementById('subtitleHVal').textContent = hSlider.value + '%';
+    hSlider.addEventListener('input', () => {
+      subtitleStyle.hOffset = parseInt(hSlider.value);
+      document.getElementById('subtitleHVal').textContent = hSlider.value + '%';
+      applySubtitleStyles(); saveSubtitleStyles();
+    });
+  }
+}
+
+// Close subtitle style panel when controls hide
+// Patch into existing hideControls()
+const _origHideControls = hideControls;
+hideControls = function() {
+  _origHideControls();
+  document.getElementById('subtitleStylePanel').classList.remove('show');
+};
+
+// ═══════════════════════════════════════════════════════════════════════
+// CUSTOM SUBTITLE OVERLAY ENGINE
+// ═══════════════════════════════════════════════════════════════════════
+function cleanVttCue(raw) {
+  return raw
+    // Remove WebVTT timestamp tags like <00:01:02.000>
+    .replace(/<\d{1,2}:\d{2}[:.]\d{2,3}>/g, '')
+    // Remove <v Name> voice tags
+    .replace(/<v[^>]*>/gi, '').replace(/<\/v>/gi, '')
+    // Remove <c.an8> positioning class tags
+    .replace(/<c[^>]*>/gi, '').replace(/<\/c>/gi, '')
+    // Remove ruby/rt annotation
+    .replace(/<rt>[^<]*<\/rt>/gi, '')
+    .replace(/<\/?ruby>/gi, '')
+    // Remove lang tags
+    .replace(/<lang[^>]*>/gi, '').replace(/<\/lang>/gi, '')
+    // Remove bold/italic markers (keep text content)
+    .replace(/<\/?[bi]>/gi, '')
+    // Remove any other remaining tags
+    .replace(/<[^>]+>/g, '')
+    // Decode common HTML entities
+    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&nbsp;/g, ' ').replace(/&#39;/g, "'").replace(/&quot;/g, '"')
+    .trim();
+}
+
+function activateSubtitleOverlay(textTrack) {
+  clearSubtitleOverlay();
+  if (!textTrack) return;
+
+  textTrack.mode = 'hidden'; // silently load cues, we render ourselves
+
+  player.activeCueTrack = textTrack;
+
+  player.cueChangeHandler = () => {
+    const el = document.getElementById('subtitleText');
+    if (!el) return;
+    const cues = textTrack.activeCues;
+    if (!cues || cues.length === 0) { el.innerHTML = ''; return; }
+
+    const lines = [];
+    for (let i = 0; i < cues.length; i++) {
+      const cleaned = cleanVttCue(cues[i].text || '');
+      if (cleaned) {
+        // Split on newlines within a single cue
+        cleaned.split('\n').forEach(line => {
+          const l = line.trim();
+          if (l) lines.push(l);
+        });
+      }
+    }
+    el.innerHTML = lines.join('<br>');
+  };
+
+  // Use timeupdate polling — far more reliable with hls.js than cuechange
+  player.video.addEventListener('timeupdate', player.cueChangeHandler);
+}
+
+function clearSubtitleOverlay() {
+  if (player.cueChangeHandler && player.video) {
+    player.video.removeEventListener('timeupdate', player.cueChangeHandler);
+  }
+  player.activeCueTrack = null;
+  player.cueChangeHandler = null;
+  const el = document.getElementById('subtitleText');
+  if (el) el.innerHTML = '';
+}
+
+function applySubtitleStyles() {
+  const el = document.getElementById('subtitleText');
+  const overlay = document.getElementById('subtitleOverlay');
+  if (!el || !overlay) return;
+
+  el.style.fontSize = (subtitleStyle.size || 20) + 'px';
+  el.style.color      = subtitleStyle.color;
+  el.style.backgroundColor = subtitleStyle.bg;
+  el.style.fontFamily = subtitleStyle.font;
+  el.style.textShadow = subtitleStyle.shadow;
+  el.style.opacity    = subtitleStyle.opacity || '1';
+const ts = subtitleStyle.textstyle || 'normal';
+el.style.fontWeight = ts.includes('bold') ? 'bold' : 'normal';
+el.style.fontStyle  = ts.includes('italic') ? 'italic' : 'normal';
+  el.style.borderRadius = '4px';
+  el.style.padding    = '4px 10px';
+
+  // Position
+overlay.style.top = (subtitleStyle.vOffset ?? 85) + '%';
+overlay.style.left = (subtitleStyle.hOffset ?? 50) + '%';
+overlay.style.transform = 'translate(-50%, 0)';
+overlay.style.bottom = 'auto';
 }
 </script>
 </body>
