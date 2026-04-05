@@ -1,5 +1,5 @@
 // panguplay PWA Service Worker
-const CACHE_NAME = "0604260400";
+const CACHE_NAME = "0604260427";
 const urlsToCache = [
   "/",
   "/index.html",
@@ -23,8 +23,7 @@ const urlsToCache = [
   "https://cdnjs.cloudflare.com/ajax/libs/Swiper/9.4.1/swiper-bundle.min.css",
   "https://cdnjs.cloudflare.com/ajax/libs/Swiper/9.4.1/swiper-bundle.min.js",
   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
-  "https://cdnjs.cloudflare.com/ajax/libs/plyr/3.7.8/plyr.min.css",
-  "https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"
+  "https://cdnjs.cloudflare.com/ajax/libs/plyr/3.7.8/plyr.min.css"
   // Add more assets as needed
 ];
 
@@ -33,8 +32,13 @@ self.addEventListener("install", event => {
   self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      console.log('Caching app shell and assets');
-      return cache.addAll(urlsToCache);
+      return Promise.allSettled(
+        urlsToCache.map(url =>
+          cache.add(url).catch(err => {
+            console.warn('[SW] Failed to cache:', url, err);
+          })
+        )
+      );
     })
   );
 });
