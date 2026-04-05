@@ -693,9 +693,9 @@ disable-paste='false'>
         const id = parsed.pathname.split('/').filter(Boolean).pop();
 
         let type = null;
-        if (parsed.hostname.includes('play.onestream.watch')) {
+        if (parsed.hostname.includes('play.onestream.today')) {
           type = 'play';
-        } else if (parsed.hostname.includes('dub.onestream.watch')) {
+        } else if (parsed.hostname.includes('dub.onestream.today')) {
           type = 'dub';
         }
 
