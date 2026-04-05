@@ -1,8 +1,9 @@
 // panguplay PWA Service Worker
-const CACHE_NAME = "0504262359";
+const CACHE_NAME = "0604260352";
 const urlsToCache = [
   "/",
   "/index.html",
+  "/cookie-vault-sdk.js",
   "/movies.html",
   "/shows.html",
   "/dubbed.html",

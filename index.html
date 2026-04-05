@@ -394,6 +394,10 @@ footer { text-align: center; padding: 20px; font-size: 14px; background: #1f1f1f
     .mobile-menu a[selected] {
       background: #2a2a2a;
     }
+	
+#cv-fab {
+  bottom: 80px !important;
+}	
 </style>
 </head>
 
@@ -529,7 +533,7 @@ footer { text-align: center; padding: 20px; font-size: 14px; background: #1f1f1f
   &copy; 2025 PanguPlay
 </footer>
 
-<div id="gestureZone" style="position: fixed; top: 0; left: 0; height: 100%; width: 30px; z-index: 3000;"></div>
+<div id="gestureZone" style="position: fixed; top: 0; left: 0; height: 100%; width: 30px; z-index: 2147483647;"></div>
 
 <!-- Scripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/9.4.1/swiper-bundle.min.js"></script>
@@ -135999,8 +136003,8 @@ function toggleMenu() {
   const backdrop = document.getElementById("mobileBackdrop");
   menu.classList.add("open");
   backdrop.style.display = "block";
-  const navLinks = document.getElementById('navLinks');
-    navLinks.classList.toggle('active');
+  //const navLinks = document.getElementById('navLinks');
+    //navLinks.classList.toggle('active');
 }
 
 function closeMenu() {
