@@ -1,5 +1,5 @@
 // panguplay PWA Service Worker
-const CACHE_NAME = "0604260439";
+const CACHE_NAME = "1806260420";
 const urlsToCache = [
   "/",
   "/index.html",
@@ -7,11 +7,6 @@ const urlsToCache = [
   "/movies.html",
   "/shows.html",
   "/dubbed.html",
-  "/player.html",
-  "/720p.html",
-  "/test.html",
-  "/linkplay.html",
-  "/request.html",
   "/images/twitter-image.jpg",
   "/images/og-image.jpg",
   "/favicon.png",
@@ -63,7 +58,8 @@ self.addEventListener("fetch", event => {
   // Skip cross-origin requests and video files
   if (!event.request.url.startsWith(self.location.origin) ||
     event.request.url.match(/\.(mp4|webm|m3u8|mpd)/) ||
-    event.request.url.includes('linkplay.html')) {
+    event.request.url.includes('linkplay.html')) ||
+    event.request.url.includes('player.html')) {
 	 return;
   }
 

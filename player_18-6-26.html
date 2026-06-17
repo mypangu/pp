@@ -949,12 +949,7 @@ disable-paste='false'>
     // ===== HANDLE VIDEO LOADED =====
 function handleVideoLoaded(autoplay) {
   document.body.classList.add('video-loaded');
-  
-  // Always show controls immediately when video is ready
-  clearTimeout(player.controlsTimeout);
-  document.getElementById('controls').classList.add('show');
-  document.getElementById('topControls').classList.add('show');
-  document.querySelector('.video-wrapper').classList.add('show-cursor');
+  showControls();
   
   const resumeTime = getResumeTime();
   if (resumeTime > 0 && resumeTime < player.video.duration - 30) {
@@ -965,23 +960,15 @@ function handleVideoLoaded(autoplay) {
   if (autoplay) {
     player.video.play().then(() => {
       document.body.classList.add('video-loaded');
-      // After autoplay begins, keep controls visible for 3s so user sees them
-      clearTimeout(player.controlsTimeout);
-      player.controlsTimeout = setTimeout(() => {
-        hideControls();
-      }, 3000);
     }).catch(err => {
       console.log('Autoplay prevented:', err);
       showToast('Click to play');
       clearTimeout(player.controlsTimeout);
-      // Keep controls visible indefinitely when paused
-      document.getElementById('controls').classList.add('show');
-      document.getElementById('topControls').classList.add('show');
+      showControls();
     });
   } else {
     clearTimeout(player.controlsTimeout);
-    document.getElementById('controls').classList.add('show');
-    document.getElementById('topControls').classList.add('show');
+    showControls();
   }
 }
 
@@ -1305,21 +1292,8 @@ function handleVideoLoaded(autoplay) {
 
     function toggleFullscreen() {
       if (!document.fullscreenElement) {
-        document.querySelector('.video-wrapper').requestFullscreen().then(() => {
-          // Lock to landscape after entering fullscreen
-          if (screen.orientation && screen.orientation.lock) {
-            screen.orientation.lock('landscape').catch(() => {
-              // Silently ignore if browser doesn't support (e.g. iOS Safari)
-            });
-          }
-        }).catch(err => {
-          console.warn('Fullscreen failed:', err);
-        });
+        document.querySelector('.video-wrapper').requestFullscreen();
       } else {
-        // Unlock orientation before exiting fullscreen
-        if (screen.orientation && screen.orientation.unlock) {
-          screen.orientation.unlock();
-        }
         document.exitFullscreen();
       }
     }
@@ -1393,7 +1367,7 @@ function updateProgress() {
       if (!player.video.paused && !player.video.ended && player.video.currentTime > 0 && !player.isSeeking) {
         player.controlsTimeout = setTimeout(() => {
           hideControls();
-        }, 3000);
+        }, 1000);
       }
     }
 
@@ -1943,19 +1917,7 @@ progressBar.addEventListener('contextmenu', (e) => {
 
       document.addEventListener('fullscreenchange', () => {
         const icon = document.getElementById('fullscreenBtn').querySelector('i');
-        if (document.fullscreenElement) {
-          icon.className = 'fas fa-compress';
-          // Re-lock landscape in case OS tried to override
-          if (screen.orientation && screen.orientation.lock) {
-            screen.orientation.lock('landscape').catch(() => {});
-          }
-        } else {
-          icon.className = 'fas fa-expand';
-          // Unlock orientation when exiting fullscreen so normal portrait usage resumes
-          if (screen.orientation && screen.orientation.unlock) {
-            screen.orientation.unlock();
-          }
-        }
+        icon.className = document.fullscreenElement ? 'fas fa-compress' : 'fas fa-expand';
       });
     }
 
