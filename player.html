@@ -655,7 +655,8 @@ disable-paste='false'>
 	  isSeeking: false,
 	  wasPlayingBeforeSeeking: false,
       hlsInstance: null,
-      dashInstance: null
+      dashInstance: null,
+      loadErrorTimeout: null
     };
 
     // ===== DETECT VIDEO FORMAT =====
@@ -899,7 +900,7 @@ disable-paste='false'>
                 player.hlsInstance.recoverMediaError();
                 break;
               default:
-                showToast('Fatal error, cannot play video');
+                showVideoError('Failed to load video stream.');
                 player.hlsInstance.destroy();
                 break;
             }
@@ -935,7 +936,9 @@ disable-paste='false'>
       
       player.dashInstance.on(dashjs.MediaPlayer.events.ERROR, (e) => {
         console.error('DASH error:', e);
-        showToast('Error loading DASH stream');
+        if (e.error && e.error.code) {
+          showVideoError('Failed to load video stream.');
+        }
       });
     }
 
@@ -944,13 +947,27 @@ disable-paste='false'>
       player.video.src = url;
       player.video.load();
       player.video.addEventListener('loadedmetadata', () => handleVideoLoaded(autoplay), { once: true });
+      player.video.addEventListener('error', () => showVideoError(), { once: true });
+      // Timeout: if nothing loads in 15s, show error
+      if (player.loadErrorTimeout) clearTimeout(player.loadErrorTimeout);
+      player.loadErrorTimeout = setTimeout(() => {
+        if (!document.body.classList.contains('video-loaded')) {
+          showVideoError('Video is taking too long to load. Check your connection.');
+        }
+      }, 15000);
     }
 
     // ===== HANDLE VIDEO LOADED =====
 function handleVideoLoaded(autoplay) {
   document.body.classList.add('video-loaded');
   
-  // Always show controls immediately when video is ready
+  // Clear any load error timeout
+  if (player.loadErrorTimeout) {
+    clearTimeout(player.loadErrorTimeout);
+    player.loadErrorTimeout = null;
+  }
+  
+  // Force show controls immediately — bypass showControls guards
   clearTimeout(player.controlsTimeout);
   document.getElementById('controls').classList.add('show');
   document.getElementById('topControls').classList.add('show');
@@ -959,29 +976,26 @@ function handleVideoLoaded(autoplay) {
   const resumeTime = getResumeTime();
   if (resumeTime > 0 && resumeTime < player.video.duration - 30) {
     player.video.currentTime = resumeTime;
-    showToast(`Resumed from ${formatTime(resumeTime)}`);
+    showToast('Resumed from ' + formatTime(resumeTime));
   }
   
   if (autoplay) {
     player.video.play().then(() => {
       document.body.classList.add('video-loaded');
-      // After autoplay begins, keep controls visible for 3s so user sees them
+      // Keep controls visible for 3s after autoplay starts, then hide
       clearTimeout(player.controlsTimeout);
       player.controlsTimeout = setTimeout(() => {
         hideControls();
       }, 3000);
     }).catch(err => {
       console.log('Autoplay prevented:', err);
-      showToast('Click to play');
+      showToast('Tap to play');
+      // Paused — keep controls visible, no auto-hide
       clearTimeout(player.controlsTimeout);
-      // Keep controls visible indefinitely when paused
-      document.getElementById('controls').classList.add('show');
-      document.getElementById('topControls').classList.add('show');
     });
   } else {
+    // Not autoplaying — keep controls visible, no auto-hide while paused
     clearTimeout(player.controlsTimeout);
-    document.getElementById('controls').classList.add('show');
-    document.getElementById('topControls').classList.add('show');
   }
 }
 
@@ -1379,7 +1393,7 @@ function updateProgress() {
     }
 
     // ===== AUTO HIDE CONTROLS =====
-    function showControls() {
+    function showControls(duration) {
       if (player.isDoubleTapping || player.isKeyboardSeeking) {
         return;
       }
@@ -1390,10 +1404,12 @@ function updateProgress() {
       
       clearTimeout(player.controlsTimeout);
       
-      if (!player.video.paused && !player.video.ended && player.video.currentTime > 0 && !player.isSeeking) {
+      const hideAfter = duration || 3000;
+      // Auto-hide only when playing — no currentTime guard so it works on initial load too
+      if (!player.video.paused && !player.video.ended && !player.isSeeking) {
         player.controlsTimeout = setTimeout(() => {
           hideControls();
-        }, 3000);
+        }, hideAfter);
       }
     }
 
@@ -1401,7 +1417,7 @@ function updateProgress() {
       if (!player.video.paused && !player.video.ended && !player.isSeeking) {
         document.getElementById('controls').classList.remove('show');
         document.getElementById('topControls').classList.remove('show');
-	    document.querySelector('.video-wrapper').classList.remove('show-cursor');
+        document.querySelector('.video-wrapper').classList.remove('show-cursor');
       }
     }
 
@@ -1528,7 +1544,37 @@ function loadMediaToCast(session) {
 }
 
     // ===== UI HELPERS =====
+    function showVideoError(msg) {
+      hideLoading();
+      // Clear any pending error timeout
+      if (player.loadErrorTimeout) {
+        clearTimeout(player.loadErrorTimeout);
+        player.loadErrorTimeout = null;
+      }
+      const message = msg || 'Failed to load video. Please try again.';
+      // Show persistent error overlay
+      let errorEl = document.getElementById('videoError');
+      if (!errorEl) {
+        errorEl = document.createElement('div');
+        errorEl.id = 'videoError';
+        errorEl.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:200;padding:20px;';
+        errorEl.innerHTML = '<i class="fas fa-exclamation-circle" style="font-size:48px;color:#ff4500;display:block;margin-bottom:12px;"></i>' +
+          '<div id="videoErrorMsg" style="font-size:16px;color:#fff;margin-bottom:16px;"></div>' +
+          '<button onclick="window.location.reload()" style="background:#ff4500;border:none;color:#fff;padding:10px 24px;border-radius:6px;font-size:15px;cursor:pointer;">Retry</button>';
+        document.querySelector('.video-wrapper').appendChild(errorEl);
+      }
+      document.getElementById('videoErrorMsg').textContent = message;
+      errorEl.style.display = 'block';
+      // Also show controls so user can go back
+      clearTimeout(player.controlsTimeout);
+      document.getElementById('controls').classList.add('show');
+      document.getElementById('topControls').classList.add('show');
+    }
+
     function showLoading() {
+      // Hide any previous error overlay
+      const errorEl = document.getElementById('videoError');
+      if (errorEl) errorEl.style.display = 'none';
       document.getElementById('loading').classList.add('show');
     }
 
@@ -1610,7 +1656,16 @@ function loadMediaToCast(session) {
         }
       });
 
-      player.video.addEventListener('loadstart', showLoading);
+      player.video.addEventListener('loadstart', () => {
+        showLoading();
+        // Set a 15s timeout — if video never loads, show error
+        if (player.loadErrorTimeout) clearTimeout(player.loadErrorTimeout);
+        player.loadErrorTimeout = setTimeout(() => {
+          if (!document.body.classList.contains('video-loaded')) {
+            showVideoError('Video is taking too long to load. Check your connection or try again.');
+          }
+        }, 15000);
+      });
 
       player.video.addEventListener('canplay', () => {
         hideLoading();
@@ -2154,6 +2209,24 @@ window['__onGCastApiAvailable'] = function(isAvailable) {
     }
   }
 };
+
+    // ===== ORIENTATION LOCK =====
+    // In PWA/browser: prevent auto-rotation. Only landscape allowed via fullscreen button.
+    window.addEventListener('orientationchange', () => {
+      if (!document.fullscreenElement) {
+        // Not in fullscreen — re-lock to portrait if screen API available
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('portrait').catch(() => {});
+        }
+      }
+    });
+
+    // On load: lock to portrait so PWA doesn't auto-rotate
+    window.addEventListener('load', () => {
+      if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock('portrait').catch(() => {});
+      }
+    });
 
     // ===== START APPLICATION =====
     document.addEventListener('DOMContentLoaded', init);
