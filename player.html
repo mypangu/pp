@@ -109,14 +109,16 @@ body {
     .controls.show {
       opacity: 1;
     }
-	
-	/* Show controls by default when video hasn't loaded */
-	body:not(.video-loaded) .controls {
-      opacity: 1;
+
+    /* Show controls by default when video hasn't loaded */
+    body:not(.video-loaded) .controls,
+    body.controls-visible .controls {
+      opacity: 1 !important;
     }
 
-    body:not(.video-loaded) .top-controls {
-      opacity: 1;
+    body:not(.video-loaded) .top-controls,
+    body.controls-visible .top-controls {
+      opacity: 1 !important;
     }
 
     .progress-bar {
@@ -657,7 +659,8 @@ disable-paste='false'>
       hlsInstance: null,
       dashInstance: null,
       loadErrorTimeout: null,
-      _startupHide: false
+      _startupHide: false,
+      _loadHandled: false
     };
 
     // ===== DETECT VIDEO FORMAT =====
@@ -960,6 +963,10 @@ disable-paste='false'>
 
     // ===== HANDLE VIDEO LOADED =====
 function handleVideoLoaded(autoplay) {
+  // Guard: if already called for this load, skip
+  if (player._loadHandled) return;
+  player._loadHandled = true;
+
   document.body.classList.add('video-loaded');
   
   // Clear any load error timeout
@@ -968,12 +975,10 @@ function handleVideoLoaded(autoplay) {
     player.loadErrorTimeout = null;
   }
   
-  // Force show controls immediately — bypass showControls guards
-  clearTimeout(player.controlsTimeout);
-  document.getElementById('controls').classList.add('show');
-  document.getElementById('topControls').classList.add('show');
-  document.querySelector('.video-wrapper').classList.add('show-cursor');
+  // Step 1: Force show controls immediately via CSS body class — synchronous, race-proof
+  forceShowControls();
   
+  // Step 2: Resume playback position if saved
   const resumeTime = getResumeTime();
   if (resumeTime > 0 && resumeTime < player.video.duration - 30) {
     player.video.currentTime = resumeTime;
@@ -982,25 +987,19 @@ function handleVideoLoaded(autoplay) {
   
   if (autoplay) {
     player.video.play().then(() => {
-      // Autoplay succeeded — schedule hide after 3s
-      // Use a flag so no stray event can reset this timer
-      player._startupHide = true;
-      clearTimeout(player.controlsTimeout);
-      player.controlsTimeout = setTimeout(() => {
-        player._startupHide = false;
-        hideControls();
-      }, 3000);
+      // Autoplay succeeded — schedule controls to hide after 3s
+      // forceShowControls already set body.controls-visible so controls ARE visible right now.
+      // scheduleHideControls will remove it after 3s only if video is still playing.
+      scheduleHideControls(3000);
     }).catch(err => {
       console.log('Autoplay prevented:', err);
       showToast('Tap to play');
-      // Paused state — controls stay visible until user taps
+      // Paused — controls stay visible via body.controls-visible, no hide scheduled
       clearTimeout(player.controlsTimeout);
-      player._startupHide = false;
     });
   } else {
     // Not autoplaying — controls stay visible while paused
     clearTimeout(player.controlsTimeout);
-    player._startupHide = false;
   }
 }
 
@@ -1398,33 +1397,44 @@ function updateProgress() {
     }
 
     // ===== AUTO HIDE CONTROLS =====
-    function showControls(duration) {
-      if (player.isDoubleTapping || player.isKeyboardSeeking) {
-        return;
-      }
-      
+    // Simple, race-proof approach:
+    // - body.controls-visible = force show via CSS (used during startup)
+    // - .controls.show / .top-controls.show = show via JS class (used during interaction)
+    // - hideControls only fires when video is actually playing and not seeking
+
+    function forceShowControls() {
+      // Synchronously show controls via CSS body class — immune to any JS race
+      document.body.classList.add('controls-visible');
       document.getElementById('controls').classList.add('show');
       document.getElementById('topControls').classList.add('show');
       document.querySelector('.video-wrapper').classList.add('show-cursor');
-      
-      // If startup hide timer is active (set by handleVideoLoaded), don't override it.
-      // This prevents race conditions in PWA where play/playing/canplay events all
-      // fire within milliseconds and keep resetting the hide timer.
-      if (player._startupHide) return;
-      
+    }
+
+    function scheduleHideControls(delay) {
       clearTimeout(player.controlsTimeout);
-      
-      const hideAfter = duration || 3000;
-      // Auto-hide only when playing
+      player.controlsTimeout = setTimeout(() => {
+        // Only hide if video is playing (not paused, not ended, not seeking)
+        if (!player.video.paused && !player.video.ended && !player.isSeeking) {
+          document.body.classList.remove('controls-visible');
+          document.getElementById('controls').classList.remove('show');
+          document.getElementById('topControls').classList.remove('show');
+          document.querySelector('.video-wrapper').classList.remove('show-cursor');
+        }
+      }, delay || 3000);
+    }
+
+    function showControls(duration) {
+      if (player.isDoubleTapping || player.isKeyboardSeeking) return;
+      forceShowControls();
+      // Only schedule hide if playing
       if (!player.video.paused && !player.video.ended && !player.isSeeking) {
-        player.controlsTimeout = setTimeout(() => {
-          hideControls();
-        }, hideAfter);
+        scheduleHideControls(duration || 3000);
       }
     }
 
     function hideControls() {
       if (!player.video.paused && !player.video.ended && !player.isSeeking) {
+        document.body.classList.remove('controls-visible');
         document.getElementById('controls').classList.remove('show');
         document.getElementById('topControls').classList.remove('show');
         document.querySelector('.video-wrapper').classList.remove('show-cursor');
@@ -1668,6 +1678,9 @@ function loadMediaToCast(session) {
       });
 
       player.video.addEventListener('loadstart', () => {
+        // Reset load guard so handleVideoLoaded fires fresh for each new video
+        player._loadHandled = false;
+        document.body.classList.remove('video-loaded');
         showLoading();
         // Set a 15s timeout — if video never loads, show error
         if (player.loadErrorTimeout) clearTimeout(player.loadErrorTimeout);
