@@ -656,7 +656,8 @@ disable-paste='false'>
 	  wasPlayingBeforeSeeking: false,
       hlsInstance: null,
       dashInstance: null,
-      loadErrorTimeout: null
+      loadErrorTimeout: null,
+      _startupHide: false
     };
 
     // ===== DETECT VIDEO FORMAT =====
@@ -981,21 +982,25 @@ function handleVideoLoaded(autoplay) {
   
   if (autoplay) {
     player.video.play().then(() => {
-      document.body.classList.add('video-loaded');
-      // Keep controls visible for 3s after autoplay starts, then hide
+      // Autoplay succeeded — schedule hide after 3s
+      // Use a flag so no stray event can reset this timer
+      player._startupHide = true;
       clearTimeout(player.controlsTimeout);
       player.controlsTimeout = setTimeout(() => {
+        player._startupHide = false;
         hideControls();
       }, 3000);
     }).catch(err => {
       console.log('Autoplay prevented:', err);
       showToast('Tap to play');
-      // Paused — keep controls visible, no auto-hide
+      // Paused state — controls stay visible until user taps
       clearTimeout(player.controlsTimeout);
+      player._startupHide = false;
     });
   } else {
-    // Not autoplaying — keep controls visible, no auto-hide while paused
+    // Not autoplaying — controls stay visible while paused
     clearTimeout(player.controlsTimeout);
+    player._startupHide = false;
   }
 }
 
@@ -1402,10 +1407,15 @@ function updateProgress() {
       document.getElementById('topControls').classList.add('show');
       document.querySelector('.video-wrapper').classList.add('show-cursor');
       
+      // If startup hide timer is active (set by handleVideoLoaded), don't override it.
+      // This prevents race conditions in PWA where play/playing/canplay events all
+      // fire within milliseconds and keep resetting the hide timer.
+      if (player._startupHide) return;
+      
       clearTimeout(player.controlsTimeout);
       
       const hideAfter = duration || 3000;
-      // Auto-hide only when playing — no currentTime guard so it works on initial load too
+      // Auto-hide only when playing
       if (!player.video.paused && !player.video.ended && !player.isSeeking) {
         player.controlsTimeout = setTimeout(() => {
           hideControls();
@@ -1605,15 +1615,17 @@ function loadMediaToCast(session) {
     function setupEventListeners() {
       player.video.addEventListener('play', () => {
         player.isPlaying = true;
-        //document.body.classList.add('video-loaded');
         updatePlayPauseIcon();
-        showControls();
+        // Don't call showControls() here — it races with handleVideoLoaded's timer.
+        // showControls is called by handleVideoLoaded on initial load,
+        // and by user interaction (tap/click) at all other times.
       });
 	  
-	  player.video.addEventListener('loadedmetadata', () => {
-		document.body.classList.add('video-loaded');
-		showControls();
-	  });
+      player.video.addEventListener('loadedmetadata', () => {
+        // video-loaded class is set by handleVideoLoaded — don't call showControls here
+        // to avoid race condition with handleVideoLoaded's hide timer
+        document.body.classList.add('video-loaded');
+      });
 	  
       player.video.addEventListener('playing', () => {
         player.isPlaying = true;
@@ -1622,14 +1634,13 @@ function loadMediaToCast(session) {
         if (player.isDoubleTapping || player.isKeyboardSeeking) {
           clearTimeout(player.controlsTimeout);
           hideControls();
-          
           setTimeout(() => {
             player.isDoubleTapping = false;
             player.isKeyboardSeeking = false;
           }, 300);
-        } else {
-          showControls();
         }
+        // Do NOT call showControls() here — causes race condition with
+        // handleVideoLoaded's 3s hide timer, especially in PWA where autoplay is instant.
       });
 
       player.video.addEventListener('pause', () => {
